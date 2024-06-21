@@ -7,3 +7,6 @@
     @apply rounded-sm p-6 shadow-lg shadow-gray-200 border mb-3 pl-0;
 }
 
+.menus{
+    @apply text-gray-200 text-3xl font-menuWrite cursor-pointer
+}

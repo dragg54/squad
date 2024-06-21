@@ -7,10 +7,11 @@ function App() {
 
   return (
     <Router>
-      <Layout />
+      <Layout>
       <Routes>
         <Route path='/' element={<Home />} />
       </Routes>
+      </Layout>
     </Router>
   )
 }

@@ -4,7 +4,7 @@ import Goal from "./Goal"
 
 const Home = () => {
   return (
-    <section className="w-screen h-screen overflow-y-scroll pb-20">  
+    <section className="w-screen h-screen overflow-y-scroll pb-40">  
       <div className="w-full p-4">
         <QuoteBox />
         <ProgressChart />
