@@ -23,9 +23,6 @@ export default {
       animation: {
         'slide-down': 'slide-down 0.30s ease-in-out',
         'slide-up': 'slide-up 0.3s ease-in-out',
-      },
-      transitionDuration: {
-        slowWine: '1s'
       }
     },
   },
