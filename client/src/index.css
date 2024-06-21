@@ -1,0 +1,9 @@
+/* src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.goal-box{
+    @apply rounded-sm p-6 shadow-lg shadow-gray-200 border mb-3 pl-0;
+}
+
