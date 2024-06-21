@@ -11,6 +11,7 @@ const Goal = () => {
                 <ul>
                     <li className='goal-box !border-l-8 !border-red-500'><span className="ml-4">Get some good sleep</span></li>
                     <li className='goal-box !border-l-8 !border-green-500'><span className="ml-4">Make some good savings</span></li>
+                    <li className='goal-box !border-l-8 !border-green-500'><span className="ml-4">Go to church at least twice a week</span></li>
                 </ul>
             </div>
         </div>
