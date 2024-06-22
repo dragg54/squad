@@ -5,7 +5,7 @@ import { FaPlus } from "react-icons/fa6";
 
 const AddButton = () => {
   return (
-    <Button name="Add" icon={<FaPlus />} style=""/>
+    <Button name="Add" icon={<FaPlus />} style="!bg-[#5C038C]"/>
   )
 }
 
