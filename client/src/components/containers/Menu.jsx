@@ -7,7 +7,7 @@ const Menu = ({menuContainerOpened, setMenuContainerOpened}) => {
         <ul className="mt-16  gap-10 w-full flex flex-col h-full items-center !text-gray-200">
            <li className="menus" onClick={()=>setMenuContainerOpened(false)}><Link className="menus" to="/">Home</Link></li>
             <li onClick={()=>setMenuContainerOpened(false)} className="menus"><Link className="menus" to="/forum">Forum</Link></li>
-            <li className="menus"><Link className="menus" to="/squad">Squad</Link></li>
+            <li onClick={()=>setMenuContainerOpened(false)} className="menus"><Link className="menus" to="/squad">Squad</Link></li>
             <li className="menus">Vision Board</li>
             <li className="menus">Events</li>
             <li className="menus">Settings</li>
