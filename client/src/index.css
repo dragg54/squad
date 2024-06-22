@@ -10,3 +10,6 @@
 .menus{
     @apply text-gray-200 text-3xl font-menuWrite cursor-pointer
 }
+
+a{
+}
