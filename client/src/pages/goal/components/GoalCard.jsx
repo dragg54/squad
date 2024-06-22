@@ -7,7 +7,7 @@ import { faHeart  } from '@fortawesome/free-solid-svg-icons';
 
 const GoalCard = () => {
     return (
-        <div className='w-full rounded-md border border-gray-200 shadow-sm shadow-gryay-300 h-[260px] mb-3 p-4'>
+        <div className='w-full bg-white rounded-md border  border-gray-200 shadow-lg shadow-gryay-500 h-[260px] mb-3 p-4'>
             <div className="flex justify-start items-center gap-4">
                 <Image source='' style='h-16 w-16' />
                 <div>
