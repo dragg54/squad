@@ -7,8 +7,8 @@ const Menu = ({menuContainerOpened, setMenuContainerOpened}) => {
            <li className="menus" onClick={()=>setMenuContainerOpened(false)}>Home</li>
             <li className="menus">Forum</li>
             <li className="menus">Squad</li>
-            <li className="menus">News</li>
-            <li className="menus">Event</li>
+            <li className="menus">Vision Board</li>
+            <li className="menus">Events</li>
             <li className="menus">Settings</li>
 
         </ul>
