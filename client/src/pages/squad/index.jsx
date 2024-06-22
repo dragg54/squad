@@ -9,13 +9,13 @@ const Squad = () => {
                 <div className="flex justify-between">
                     <div>
                         <p className="font-semibold">Squad Members</p>
-                        <p className="!text-gray-500 text-sm">Know your members</p>
+                        <p className="!text-gray-500 text-sm">Know your squad members</p>
                     </div>
                     <div>
                         <InviteButton />
                     </div>
                 </div>
-                <div className="mt-4">
+                <div className="mt-10">
                     <Link to={"/member"}><ProfileCard /></Link>
                     <Link to={"/member"}><ProfileCard /></Link>
                     <Link to={"/member"}><ProfileCard /></Link>
