@@ -1,6 +1,8 @@
 import ProgressChart from "./components/ProgressChart"
 import QuoteBox from "./components/QuoteBox"
 import Goal from "./Goal"
+import News from "./News"
+import Quotes from "./Quotes"
 
 const Home = () => {
   return (
@@ -9,6 +11,11 @@ const Home = () => {
         <QuoteBox />
         <ProgressChart />
         <Goal />
+        <div className="mt-4">
+          <img src="../../images/planning.png" alt="" />
+        </div>
+        <News />
+        <Quotes />
       </div>
     </section>
   )

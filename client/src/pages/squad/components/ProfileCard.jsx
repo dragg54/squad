@@ -4,7 +4,7 @@ const ProfileCard = () => {
   return (
     <div className='w-full cursor-pointer mb-5 h-28 p-4  rounded-md border shadow-md shadow-gray-500'>
         <div className="flex justify-start items-center gap-4">
-                <Image source='' style='h-20 w-20' />
+                <Image source='' style='h-16 w-[66px]' />
                 <div>
                     <p className='font-semibold'>Mike Oliver</p>
                     <p className=' text-xs mb-2'>@oliver_124</p>
