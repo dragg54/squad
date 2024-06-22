@@ -1,4 +1,4 @@
-import GoalCard from "./components/GoalCard"
+import GoalCard from "../../components/containers/PostCard"
 
 const Goals = () => {
   return (

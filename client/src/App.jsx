@@ -4,6 +4,7 @@ import Home from './pages/home'
 import Layout from './components/layouts'
 import Goals from './pages/goal'
 import Squad from './pages/squad'
+import Member from './pages/squad/Member'
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path="/forum" element={<Goals/>} />
         <Route path="/squad" element={<Squad/>} />
+        <Route path="/member" element={<Member/>} />
       </Routes>
       </Layout>
     </Router>
