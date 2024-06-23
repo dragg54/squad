@@ -1,18 +1,24 @@
+import CreatePost from "../../components/buttons/CreatePostButton"
 import GoalCard from "../../components/containers/PostCard"
 
 const Goals = () => {
   return (
     <section className="p-6 px-3 h-screen overflow-y-scroll pb-40 ">
-        <div className="mb-5">
-        <h1 className="font-semibold">Explore goals</h1>
-        <p className="text-sm text-gray-500 ">See others achievements and help them track their goals</p>
+      <div className="flex justify-between items-center mb-8">
+        <div className="">
+          <h1 className="font-semibold">Explore Posts</h1>
+          <p className="text-sm text-gray-500 ">See what others are saying</p>
         </div>
-        <GoalCard />
-        <GoalCard />
-        <GoalCard />
-        <GoalCard />
-        <GoalCard />
-        <GoalCard />
+        <div>
+          <CreatePost />
+        </div>
+      </div>
+      <GoalCard />
+      <GoalCard />
+      <GoalCard />
+      <GoalCard />
+      <GoalCard />
+      <GoalCard />
     </section>
   )
 }
