@@ -5,7 +5,7 @@ import SliderPositionIndicator from "./components/SliderPositionIndicator"
 const ScreenThree = ({screenToDisplay, sliderIndicatorActive}) => {
   return (
     <div className={`w-full h-screen absolute right-[-100%] ${screenToDisplay == "screenThree" && 'animate-slide-left right-[0%]'}`}>
-        <div className="mt-4 w-full flex flex-col items-center">
+        <div className="mt-10 w-full flex flex-col items-center">
         <img src="../../images/register.png" alt="" />
         <div className="w-full flex flex-col items-center px-8">
             <h1 className="mt-10 font-semibold text-xl">Collaborate with partners</h1>
