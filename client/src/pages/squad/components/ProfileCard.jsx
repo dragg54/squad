@@ -2,7 +2,7 @@ import Image from "../../../components/containers/Image"
 
 const ProfileCard = () => {
   return (
-    <div className='w-full cursor-pointer mb-5 h-28 p-4  rounded-md border shadow-md shadow-gray-500'>
+    <div className='w-full cursor-pointer mb-5 h-32 p-4  rounded-md border shadow-md shadow-gray-500'>
         <div className="flex justify-start items-center gap-4">
                 <Image source='' style='h-16 w-[66px]' />
                 <div>

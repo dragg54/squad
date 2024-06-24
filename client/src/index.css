@@ -4,7 +4,7 @@
 @tailwind utilities;
 
 .goal-box{
-    @apply rounded-sm p-6 shadow-lg shadow-gray-200 border mb-3 pl-0;
+    @apply cursor-pointer hover:shadow-lg  rounded-sm p-6  hover:shadow-gray-400 border mb-3 pl-0;
 }
 
 .menus{

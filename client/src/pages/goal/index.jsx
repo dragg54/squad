@@ -1,5 +1,5 @@
 import CreatePost from "../../components/buttons/CreatePostButton"
-import GoalCard from "../../components/containers/PostCard"
+import PostCard from "../../components/containers/PostCard"
 
 const Goals = () => {
   return (
@@ -13,12 +13,12 @@ const Goals = () => {
           <CreatePost />
         </div>
       </div>
-      <GoalCard />
-      <GoalCard />
-      <GoalCard />
-      <GoalCard />
-      <GoalCard />
-      <GoalCard />
+      <PostCard />
+      <PostCard />
+      <PostCard />
+      <PostCard />
+      <PostCard />
+      <PostCard />
     </section>
   )
 }

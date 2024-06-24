@@ -1,10 +1,13 @@
 /* eslint-disable react/prop-types */
 import { IoNotificationsOutline } from "react-icons/io5";
 import { IoMdMenu } from "react-icons/io";
+import { useLocation } from "react-router-dom";
 
 const Navbar = ({setMenuContainerOpened}) => {
+  const location = useLocation()
+  const url = location.pathname
   return (
-    <div className='w-full h-14 border-b shadow-md shadow-gray-300 p-4 flex justify-between'>
+    <div className={`w-full ${url.includes("intro") && 'hidden'} h-14 border-b shadow-md shadow-gray-300 p-4 flex justify-between`}>
         <div>
         <p className="font-semibold font-playwrite text-sm  text-gray-600">Hello, Mike Oliver</p>
         </div>
