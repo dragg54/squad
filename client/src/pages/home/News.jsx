@@ -3,7 +3,7 @@ import { IoNewspaperOutline } from "react-icons/io5";
 const News = () => {
     return (
         <div className='w-full'>
-            <div className='w-full p-4 rounded-md shadow-md shadow-gray-300 bg-[#21B6A8] h-[200px] mt-6'>
+            <div className='w-full border-4 border-black p-4 rounded-md shadow-md shadow-gray-300 bg-[#21B6A8] h-[200px] mt-6'>
                 <div className="flex gap-4 items-center">
                     <p className="text-4xl text-black"><IoNewspaperOutline /></p>
                     <div>

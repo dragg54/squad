@@ -1,8 +1,10 @@
 /* eslint-disable react/prop-types */
+import { useNavigate } from "react-router-dom"
 import Button from "../../components/buttons"
 import SliderPositionIndicator from "./components/SliderPositionIndicator"
 
 const ScreenThree = ({screenToDisplay, sliderIndicatorActive}) => {
+  const navigate = useNavigate()
   return (
     <div className={`w-full h-screen absolute right-[-100%] ${screenToDisplay == "screenThree" && 'animate-slide-left right-[0%]'}`}>
         <div className="mt-10 w-full flex flex-col items-center">
@@ -17,8 +19,8 @@ const ScreenThree = ({screenToDisplay, sliderIndicatorActive}) => {
             <SliderPositionIndicator {...{isActive: sliderIndicatorActive["3"]}}/>
         </div>
         <div className="flex gap-3 mt-8">
-            <Button name='Register' style={'border bg-white border-[#B175FF] !flex !justify-center w-36 !text-[#B175FF]'}/>
-            <Button name='Login' style={' !flex !bg-[#B175FF] !justify-center w-36 '}/>
+            <Button onClick={()=> navigate("/register")} name='Register' style={'border bg-white border-[#B175FF] !flex !justify-center w-36 !text-[#B175FF]'}/>
+            <Button onClick={()=> navigate("/login")} name='Login' style={' !flex !bg-[#B175FF] !justify-center w-36 '}/>
         </div>
         </div>
     </div>

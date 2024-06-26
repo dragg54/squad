@@ -6,8 +6,10 @@ import { useLocation } from "react-router-dom";
 const Navbar = ({setMenuContainerOpened}) => {
   const location = useLocation()
   const url = location.pathname
+  const pathsToIgnore = ["intro", "login", "register"]
+  const matchFound = pathsToIgnore.some(pattern => url.includes(pattern));
   return (
-    <div className={`w-full ${url.includes("intro") && 'hidden'} h-14 border-b shadow-md shadow-gray-300 p-4 flex justify-between`}>
+    <div className={`w-full ${matchFound && 'hidden'} h-14 border-b shadow-md shadow-gray-300 p-4 flex justify-between`}>
         <div>
         <p className="font-semibold font-playwrite text-sm  text-gray-600">Hello, Mike Oliver</p>
         </div>
