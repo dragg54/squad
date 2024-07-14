@@ -7,7 +7,7 @@ import AssignPartners from "./AssignPartners"
 const AddGoal = () => {
     const dispatch = useDispatch()
     return (
-        <div onClick={(e) => e.stopPropagation()} className='w-2/3 relative mx-auto bg-white h-[460px] rounded-md shadow-md  p-5'>
+        <div onClick={(e) => e.stopPropagation()} className='w-4/5 relative mx-auto bg-white h-[460px] rounded-md shadow-md  p-5'>
             <h1 className="text-xl font-semibold">Add Goals</h1>
             <form action="" className="mt-8 flex-col">
                 <div>
