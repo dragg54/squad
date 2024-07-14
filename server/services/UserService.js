@@ -1,4 +1,4 @@
-import * as User from '../models/User.js'
+import User from '../models/User.js'
 import bcrypt from 'bcryptjs'
 import { generateToken } from '../utils/generateToken.js';
 import { where } from 'sequelize';
@@ -9,70 +9,68 @@ import { DuplicateError } from '../errors/DuplicateError.js';
 
 export const createUser = async (userData) => {
     const existingUser = await User.findOne({
-        where:{
+        where: {
             email: userData.email
         }
     })
-    if(existingUser){
+    if (existingUser) {
         throw new DuplicateError(`User already exists`)
     }
-    const encryptedPassword = bcrypt.genSalt(10, (err, salt)=>{
-        if(err){
-            throw new InternalServerError(err.message)
-        }
-        return salt
-    })
-    userData.password = encryptedPassword
-    User.create(userData)
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(userData.password, salt);
+    userData.password = hashedPassword
+    await User.create(userData)
 };
 
 export const getAllUsers = async () => {
-  return await User.findAll();
+    return await User.findAll();
 };
 
 export const getUserById = async (id) => {
-  return await User.findByPk(id);
+    return await User.findByPk(id, {
+        attributes: ["id", "firstName", "lastName", "email"]
+    });
 };
 
 export const updateUser = async (id, userData) => {
-  const user = await User.findByPk(id);
-  if (user) {
-    if (userData.password) {
-      userData.password = await bcrypt.hash(userData.password, 10);
+    const user = await User.findByPk(id);
+    if (user) {
+        if (userData.password) {
+            userData.password = await bcrypt.hash(userData.password, 10);
+        }
+        await user.update(userData);
+        return user;
     }
-    await user.update(userData);
-    return user;
-  }
-  return null;
+    return null;
 };
 
 export const deleteUser = async (id) => {
-  const user = await User.findByPk(id);
-  if (user) {
-    await user.destroy();
-    return true;
-  }
-  return false;
+    const user = await User.findByPk(id);
+    if (user) {
+        await user.destroy();
+        return true;
+    }
+    return false;
 };
 
-export const loginUser = async (userData) =>{
+export const loginUser = async (userData) => {
     const existingUser = await User.findOne({
-        where:{
+        where: {
             email: userData.email
         }
     },
-    {
-        attributes: ["id", "email", "password"]
-    }
-   
-)
-    if(!existingUser){
+        {
+            attributes: ["id", "email", "password"]
+        }
+
+    )
+    if (!existingUser) {
         throw new NotFoundError(`User does not exist`)
     }
-    const isPasswordValid = await bcrypt.compare(existingUser.password, userData.password);
-  if (!isPasswordValid) {
-    throw new BadRequestError('Invalid email or password');
-  }
-  const token = generateToken(existingUser)
-  return {token}
+    const isPasswordValid = await bcrypt.compare(userData.password, existingUser.password);
+    if (!isPasswordValid) {
+        throw new BadRequestError('Invalid email or password');
+    }
+    const token = generateToken(existingUser)
+    return token
 }

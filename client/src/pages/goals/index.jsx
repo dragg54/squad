@@ -1,8 +1,12 @@
 import { useState } from "react"
 import AddGoalsButton from "../../components/buttons/AddGoalsButton"
+import { useDispatch } from "react-redux"
+import { openModal } from "../../redux/reducers/GlobalModalReducer"
+import AddGoal from "./AddGoal"
 
 const Goals = () => {
     const [presentTab, setPresentTab] = useState("allGoals")
+    const dispatch = useDispatch()
     return (
         <section>
             <div className="w-full h-screen p-4">
@@ -12,7 +16,7 @@ const Goals = () => {
                         <p className="text-gray-500 text-sm">Create and track your goals</p>
                     </div>
                     <div>
-                        <AddGoalsButton />
+                        <AddGoalsButton onClick={()=> dispatch(openModal( <AddGoal/ >))}/>
                     </div>
                 </div>
                 <div className="w-full mt-16">

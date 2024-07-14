@@ -1,10 +1,11 @@
+/* eslint-disable react/prop-types */
 import Button from './'
 import { FaPlus } from "react-icons/fa6";
 
 
-const AddGoalsButton = () => {
+const AddGoalsButton = ({onClick}) => {
   return (
-    <Button style={'!bg-white !text-purple-700 border border-purple-500'} name="Add Goals" icon={<FaPlus />}/>
+    <Button onClick={onClick} style={'!bg-white !text-purple-700 border border-purple-500'} name="Add Goals" icon={<FaPlus />}/>
   )
 }
 

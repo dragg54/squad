@@ -3,9 +3,9 @@ import Button from './'
 import { FaPlus } from "react-icons/fa6";
 
 
-const AddButton = () => {
+const AddButton = ({name, style, type, onClick}) => {
   return (
-    <Button onClick={()=>null} name="Add" icon={<FaPlus />} style="!bg-[#B175FF]"/>
+    <Button type={type} onClick={onClick || function(){return null}} name={name || "Add"} icon={<FaPlus />} style={`!bg-[#B175FF] ${style}`}/>
   )
 }
 

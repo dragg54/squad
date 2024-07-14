@@ -4,7 +4,9 @@ import * as userService from "../services/UserService.js"
 export const createUser = async (req, res) => {
   try {
     const user = await userService.createUser(req.body);
-    res.status(201).json(user);
+    res.status(201).json({
+        message: "user created"
+    });
   } catch (error) {
     res.status(error.statusCode || 500).json({ error: error.message || "Internal server error" });
   }
@@ -60,7 +62,7 @@ export const deleteUser = async (req, res) => {
 
 export const loginUser = async (req, res) =>{
     try{
-        const token = userService.loginUser(req.body)
+        const token = await userService.loginUser(req.body)
         res.cookie('token', token, {
             httpOnly: true, 
             maxAge: 3600000

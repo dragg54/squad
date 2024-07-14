@@ -10,6 +10,11 @@ export default {
         playwrite: ['Playwrite NZ', 'sans-serif'],
         menuWrite: ['Playwrite IS', 'sans']
       },
+      backgroundColor:{
+        primary: '#0000A3',
+        modal: 'rgba(128, 128, 128, 0.5)',
+        secondary: '#4B7BF5'
+      },
       keyframes: {
         'slide-down': {
           '0%': { transform: 'translateY(-100%)' },
