@@ -16,6 +16,5 @@ async function testConnection() {
   }
   
   testConnection();
-
   export default db;
   

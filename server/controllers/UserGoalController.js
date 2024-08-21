@@ -1,13 +1,17 @@
+import db from '../configs/db.js';
 import { BadRequestError } from '../errors/BadRequestError.js';
 import * as userGoalService from '../services/UserGoalService.js'
 
 export const createUserGoal = async (req, res, next) => {
+  const transaction = await db.transaction();
   try {
     req.body.userId = req.user.id
-    const goal = await userGoalService.createUserGoal(req.body);
-    res.status(201).json(goal);
+    const goal = await userGoalService.createUserGoal(req.body, transaction);
+    await transaction.commit();
+    return res.status(201).json({message: "User goal created"});
   } catch (error) {
-     res.statusCode(error.statusCode || 500).send({
+    await transaction.rollback()
+     res.status(error.statusCode || 500).send({
         message: error.message || "Internal Server Error"
      })
   }
@@ -15,10 +19,10 @@ export const createUserGoal = async (req, res, next) => {
 
 export const getAllUserGoals = async (req, res, next) => {
   try {
-    const goals = await userGoalService.getAllUserGoals(req.user.id);
-    res.status(200).json(goals);
+    const goals = await userGoalService.getAllUserGoals(req);
+    return res.status(200).json(goals);
   } catch (error) {
-     res.statusCode(error.statusCode || 500).send({
+     res.status(error.statusCode || 500).send({
         message: error.message || "Internal Server Error"
      })
   }
@@ -33,7 +37,7 @@ export const getUserGoalById = async (req, res, next) => {
       next(new BadRequestError('Goal not found'));
     }
   } catch (error) {
-     res.statusCode(error.statusCode || 500).send({
+     res.status(error.statusCode || 500).send({
         message: error.message || "Internal Server Error"
      })
   }
@@ -48,7 +52,7 @@ export const updateUserGoal = async (req, res, next) => {
       next(new BadRequestError('Goal not found'));
     }
   } catch (error) {
-     res.statusCode(error.statusCode || 500).send({
+     res.status(error.statusCode || 500).send({
         message: error.message || "Internal Server Error"
      })
   }
@@ -63,7 +67,18 @@ export const deleteUserGoal = async (req, res, next) => {
       next(new BadRequestError('Goal not found'));
     }
   } catch (error) {
-     res.statusCode(error.statusCode || 500).send({
+     res.status(error.statusCode || 500).send({
+        message: error.message || "Internal Server Error"
+     })
+  }
+};
+
+export const getUserGoalsByMonth = async (req, res, next) => {
+  try {
+    const goals = await userGoalService.getGoalsGroupedByMonth(req);
+    return res.json(goals)
+  } catch (error) {
+     res.status(error.statusCode || 500).send({
         message: error.message || "Internal Server Error"
      })
   }

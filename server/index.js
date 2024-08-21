@@ -25,6 +25,8 @@ const corsOptions = {
   },
 };
 
+app.use(cors(corsOptions))
+
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Methods', 'GET, PATCH, POST, PUT, DELETE');
@@ -39,7 +41,6 @@ app.use((req, res, next) => {
 
   // app.use(session());
   
-app.use(cors(corsOptions));
 
 //routes
 app.use("/api/v1/users", userRoute)

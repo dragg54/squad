@@ -23,11 +23,16 @@ const UserGoal = db.define('UserGoal', {
     defaultValue: false,
   },
 }, {
-  timestamps: true,
+  start_date: {
+    type: DataTypes.DATE
+  },
+  end_date: {
+    type: DataTypes.DATE
+  },
 });
 
 UserGoal.belongsTo(User, { foreignKey: 'userId' });
-User.hasMany(UserGoal, { foreignKey: 'userId' });
+User.hasMany(UserGoal, { foreignKey: 'userId',  onDelete: 'CASCADE', });
 
 db.sync()
   .then(() => {

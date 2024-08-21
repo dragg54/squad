@@ -23,7 +23,6 @@ const ScreenOne = ({screenToDisplay, setScreenToDisplay, slidePosition, setSlide
                  setSlidePosition("left")
                  setScreenToDisplay("screenTwo")
                  setSliderIndicatorActive({...sliderIndicatorActive , 1: false, 2: true})
-                 console.log(sliderIndicatorActive)
             }} name='Next' style={'!flex !bg-[#B175FF] !justify-center w-36 '}/>
         </div>
         </div>

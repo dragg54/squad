@@ -4,9 +4,12 @@ import { useNavigate } from 'react-router-dom'
 import { useMutation } from 'react-query'
 import { useState } from 'react'
 import { loginUser } from '../../services/user'
+import { useDispatch } from 'react-redux'
+import { openPopup } from '../../redux/reducers/PopUpReducer'
 
 const Login = () => {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const [input, setInput] = useState({
         email: "",
         password: ""
@@ -15,8 +18,12 @@ const Login = () => {
         onSuccess: (data) => {
             if(data){
                 navigate("/")
+                dispatch(openPopup({message: "Login successful", status: status.success}))
             }
         },
+        onError: (err) =>{
+            dispatch(openPopup({status: 'error', message: err.response.data.message}))
+        }
       });
 
     const handleChange = (e) =>{

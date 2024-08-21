@@ -23,7 +23,7 @@ export const createUser = async (userData) => {
 };
 
 export const getAllUsers = async () => {
-    return await User.findAll();
+    return await User.findAll({attributes: ["id", "firstName", "lastName", "email", "userName"]});
 };
 
 export const getUserById = async (id) => {

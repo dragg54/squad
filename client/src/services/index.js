@@ -1,8 +1,8 @@
 import axios from 'axios';
-import Appconfig from '../Appconfig';
+import { BACKEND_SERVER_URL } from '../Appconfig';
 
 const AuthConnect = axios.create({
-  baseURL: `${Appconfig.BACKEND_SERVER_URL}/api/v1`,
+  baseURL: `${BACKEND_SERVER_URL}/api/v1`,
   withCredentials: true,
 });
 

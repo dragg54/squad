@@ -4,9 +4,13 @@ import { useNavigate } from 'react-router-dom'
 import { useMutation } from 'react-query'
 import { createUser } from '../../services/user'
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { openPopup } from '../../redux/reducers/PopUpReducer'
+import { status } from '../../constants/ResponseStatus'
 
 const Register = () => {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const [input, setInput] = useState({
         firstName: "",
         lastName: "",
@@ -18,6 +22,7 @@ const Register = () => {
     const createUserMutation = useMutation(createUser, {
         onSuccess: () => {
            navigate("/login")
+           dispatch(openPopup({message: "User successfully created", status: status.success}))
         },
       });
 
@@ -40,6 +45,7 @@ const Register = () => {
                     <Input onChange={handleChange} name='lastName' placeholder='Last Name' style=''/>
                     <Input onChange={handleChange} name='userName' placeholder='UserName' style=''/>
                     <Input onChange={handleChange} name='email' placeholder='Email' style=''/>
+                    <Input onChange={handleChange} name='userName' placeholder='Username' style=''/>
                     <Input onChange={handleChange} name='sex' placeholder='Sex' style=''/>
                     <Input onChange={handleChange} type="password" name='password' placeholder='Password' style=''/>
                     <Button type='submit' name='Sign in' style={'border !bg-[#B175FF] !py-4 mt-20 !w-full !flex !justify-center w-36 !text-white'}/>

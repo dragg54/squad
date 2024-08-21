@@ -1,39 +1,84 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import AddGoalsButton from "../../components/buttons/AddGoalsButton"
 import { useDispatch } from "react-redux"
 import { openModal } from "../../redux/reducers/GlobalModalReducer"
 import AddGoal from "./AddGoal"
+import { useQuery } from "react-query"
+import { getUserGoals } from "../../services/goal"
+import Pagination from "../../components/Pagination"
+import MonthlyGoals from "./MonthlyGoals"
+import { MdOutlineEnergySavingsLeaf } from 'react-icons/md'
+import { getMonthIndex, getMonthName, getMonthNames } from "../../utils/Months"
 
 const Goals = () => {
     const [presentTab, setPresentTab] = useState("allGoals")
+    const [groupBy, setGroupBy] = useState("")
+    const [page, setPage] = useState(1);
+    const [size, setSize] = useState(5);
+    const allMonths = getMonthNames()
+    const [openMonthGoalsContainer, setOpenMonthGoalsContainer] = useState([{hello: "yessss"}])
     const dispatch = useDispatch()
+    const { data, isLoading, isError } = useQuery(
+        ['goals', { page, size, groupBy }],
+        getUserGoals,
+        // {
+        //   keepPreviousData: true, 
+        // }
+    );
+   
+    useEffect(() => {
+        setPresentTab("allGoals")
+        const goalMonthContainerState = allMonths.map((month) => ({
+            [month]: false
+        }))
+        setOpenMonthGoalsContainer(goalMonthContainerState)
+    }, [])
+
+    console.log("date", getMonthName('6'))
     return (
-        <section>
-            <div className="w-full h-screen p-4">
+        <section className="w-screen h-screen overflow-y-scroll pb-10">
+            <div className="w-full overflow-scroll p-4">
                 <div className="w-full flex justify-between items-center">
                     <div className="">
                         <h1 className="text-xl font-semibold">Goals</h1>
                         <p className="text-gray-500 text-sm">Create and track your goals</p>
                     </div>
                     <div>
-                        <AddGoalsButton onClick={()=> dispatch(openModal( <AddGoal/ >))}/>
+                        <AddGoalsButton onClick={() => dispatch(openModal(<AddGoal />))} />
                     </div>
                 </div>
-                <div className="w-full mt-16">
+                <div className="w-full mt-16 mb-5 overflow-scroll">
                     <div className="mb-3 flex gap-5">
-                        <p onClick={()=>setPresentTab("allGoals")} className={`mb-3 font-semibold ${presentTab == "allGoals" && 'border-b-4 border-[#FF2511]'}`}>All goals</p>
-                        <p onClick={()=>setPresentTab("monthlyGoals")} className={`mb-3  font-semibold ${presentTab == "monthlyGoals" && 'border-b-4 border-[#FF2511]'}`}>Monthly Goals</p>
-                        <p onClick={()=>setPresentTab("yearlyGoals")} className={`mb-3 font-semibold ${presentTab == "yearlyGoals" && 'border-b-4 border-[#FF2511]'}`}>Yearly Goals</p>
+                        <p onClick={() => setPresentTab("allGoals")} className={`mb-3 font-semibold ${presentTab == "allGoals" && 'border-b-4 border-[#FF2511]'}`}>All goals</p>
+                        <p onClick={() => {
+                            setPresentTab("monthlyGoals")
+                            setGroupBy("month")
+                        }
+                        }
+                            className={`mb-3  font-semibold ${presentTab == "monthlyGoals" && 'border-b-4 border-[#FF2511]'}`}>Monthly Goals</p>
+                        <p onClick={() => {
+                            setPresentTab("yearlyGoals")
+                            setGroupBy("month")
+                        }
+                        }
+                            className={`mb-3 font-semibold ${presentTab == "yearlyGoals" && 'border-b-4 border-[#FF2511]'}`}>Yearly Goals</p>
                     </div>
-                    <div className="w-full">
-                <ul className="w-full mt-2">
-                    <p className="!text-gray-600">20 June, 2023</p>
-                <li className='goal-box !border-l-8 !border-red-500'><span className="ml-4">Finish reading an engineering book</span></li>
-                    <li className='goal-box !border-l-8 !border-red-500'><span className="ml-4">Get some good sleep</span></li>
-                    <li className='goal-box !border-l-8 !border-green-500'><span className="ml-4">Make some good savings</span></li>
-                    <li className='goal-box !border-l-8 !border-green-500'><span className="ml-4">Go to church at least twice a week</span></li>
-                </ul>
-            </div>
+                    <MonthlyGoals {...{ allMonths, openMonthGoalsContainer, setOpenMonthGoalsContainer, data, presentTab }} />
+                    {/* <div className="w-full overflow-scroll">
+                        <ul className="w-full mt-2">
+                            {data && data.data?.length > 0 && data.data.map(goal => (
+                                <div key={goal.id} className="w-full rounded-md">
+                                    <p className="!text-gray-500 text-sm">20 June, 2023</p>
+                                    <li className='goal-box flex items-center shadow-sm rounded-md text-base pl-4 !py-6 !border-l-8 shadow-red-400   !border-[#ff2511]'><MdOutlineEnergySavingsLeaf style={{marginLeft: "8px", fontSize:"1.6rem"}}/><span className="ml-2">{goal.title}</span></li>
+                                </div>
+                            ))}
+                        </ul>
+                    </div>
+                    <Pagination
+                       currentPage={page}
+                       totalPages={data?.totalPages}
+                       onPageChange={setPage}
+                    /> */}
                 </div>
             </div>
         </section>

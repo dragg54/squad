@@ -1,22 +1,29 @@
-import axios from 'axios'
+/* eslint-disable no-useless-catch */
 import { BACKEND_SERVER_URL } from '../Appconfig';
+import AuthConnect from './index.js';
 
-export const getUserGoals = async () => {
+const axiosInstance = AuthConnect
+export const getUserGoals = async ({queryKey}) => {
+    const [_key, { page, size, groupBy }] = queryKey;
      try{
-        const response = await axios.get(`${BACKEND_SERVER_URL}/usergoals`);
+        const response = await axiosInstance.get(`${BACKEND_SERVER_URL}/usergoals`,
+          {
+            params: { page, size, groupBy },
+          }
+        );
         return response.data;
      }
      catch(err){
-        console.log(err)
-     }
+      throw err
+   }
   };
 
   export const createUserGoal = async (formData) =>{
     try{
-        const response = await axios.post(`${BACKEND_SERVER_URL}/usergoals`, formData)
+        const response = await axiosInstance.post(`${BACKEND_SERVER_URL}/usergoals`, formData)
         return response
     }
     catch(error){
-        console.log(error)
+        throw error
     }
   }
