@@ -5,6 +5,8 @@ import userGoalRoute from './routes/UserGoalRoute.js'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
+import { UserGoalCategory } from './models/UserGoalCategory.js'
+import userGoalCategoryRouter from './routes/UserGoalCategoryRoute.js'
 
 const app = express()
 app.use(bodyParser.json())
@@ -45,6 +47,7 @@ app.use((req, res, next) => {
 //routes
 app.use("/api/v1/users", userRoute)
 app.use("/api/v1/usergoals", userGoalRoute)
+app.use("/api/v1/usergoalcategories", userGoalCategoryRouter)
 
 app.listen(8080, ()=>{
     console.log("Listening to port 8080")

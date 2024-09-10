@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react"
 import AddGoalsButton from "../../components/buttons/AddGoalsButton"
 import { useDispatch } from "react-redux"
@@ -7,8 +8,8 @@ import { useQuery } from "react-query"
 import { getUserGoals } from "../../services/goal"
 import Pagination from "../../components/Pagination"
 import MonthlyGoals from "./MonthlyGoals"
-import { MdOutlineEnergySavingsLeaf } from 'react-icons/md'
-import { getMonthIndex, getMonthName, getMonthNames } from "../../utils/Months"
+import {getMonthNames } from "../../utils/Months"
+import Goal from "./components/Goal"
 
 const Goals = () => {
     const [presentTab, setPresentTab] = useState("allGoals")
@@ -26,6 +27,8 @@ const Goals = () => {
         // }
     );
    
+    if(isLoading){console.log("loading")}
+    if(isError)console.log("error")
     useEffect(() => {
         setPresentTab("allGoals")
         const goalMonthContainerState = allMonths.map((month) => ({
@@ -34,7 +37,6 @@ const Goals = () => {
         setOpenMonthGoalsContainer(goalMonthContainerState)
     }, [])
 
-    console.log("date", getMonthName('6'))
     return (
         <section className="w-screen h-screen overflow-y-scroll pb-10">
             <div className="w-full overflow-scroll p-4">
@@ -49,7 +51,9 @@ const Goals = () => {
                 </div>
                 <div className="w-full mt-16 mb-5 overflow-scroll">
                     <div className="mb-3 flex gap-5">
-                        <p onClick={() => setPresentTab("allGoals")} className={`mb-3 font-semibold ${presentTab == "allGoals" && 'border-b-4 border-[#FF2511]'}`}>All goals</p>
+                        <p onClick={() => {
+                            setGroupBy("")
+                            setPresentTab("allGoals")}} className={`mb-3 font-semibold ${presentTab == "allGoals" && 'border-b-4 border-[#FF2511]'}`}>All goals</p>
                         <p onClick={() => {
                             setPresentTab("monthlyGoals")
                             setGroupBy("month")
@@ -63,14 +67,12 @@ const Goals = () => {
                         }
                             className={`mb-3 font-semibold ${presentTab == "yearlyGoals" && 'border-b-4 border-[#FF2511]'}`}>Yearly Goals</p>
                     </div>
-                    <MonthlyGoals {...{ allMonths, openMonthGoalsContainer, setOpenMonthGoalsContainer, data, presentTab }} />
-                    {/* <div className="w-full overflow-scroll">
+                    {presentTab == "monthlyGoals" ? <MonthlyGoals {...{ allMonths, openMonthGoalsContainer, setOpenMonthGoalsContainer, data, presentTab }} />:
+                    <div>
+                        <div className="w-full overflow-scroll">
                         <ul className="w-full mt-2">
                             {data && data.data?.length > 0 && data.data.map(goal => (
-                                <div key={goal.id} className="w-full rounded-md">
-                                    <p className="!text-gray-500 text-sm">20 June, 2023</p>
-                                    <li className='goal-box flex items-center shadow-sm rounded-md text-base pl-4 !py-6 !border-l-8 shadow-red-400   !border-[#ff2511]'><MdOutlineEnergySavingsLeaf style={{marginLeft: "8px", fontSize:"1.6rem"}}/><span className="ml-2">{goal.title}</span></li>
-                                </div>
+                               <Goal key={goal.id} {...{goal}}/>
                             ))}
                         </ul>
                     </div>
@@ -78,7 +80,9 @@ const Goals = () => {
                        currentPage={page}
                        totalPages={data?.totalPages}
                        onPageChange={setPage}
-                    /> */}
+                    />
+                    </div>
+                    }
                 </div>
             </div>
         </section>

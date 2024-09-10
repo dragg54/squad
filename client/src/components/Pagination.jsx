@@ -15,7 +15,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   };
 
   return (
-    <div className="flex items-center gap-3 text-gray-500">
+    <div className="flex items-center gap-3 text-gray-500 mt-4">
       <button onClick={handlePreviousPage} disabled={currentPage === 1}>
         <FcPrevious />
       </button>

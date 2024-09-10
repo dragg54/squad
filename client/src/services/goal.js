@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-useless-catch */
 import { BACKEND_SERVER_URL } from '../Appconfig';
 import AuthConnect from './index.js';
@@ -26,4 +27,14 @@ export const getUserGoals = async ({queryKey}) => {
     catch(error){
         throw error
     }
+  }
+
+  export const editUserGoal = async(formData) =>{
+    try{
+      const response = await axiosInstance.put(`${BACKEND_SERVER_URL}/usergoals/${formData.id}`, formData)
+      return response
+  }
+  catch(error){
+      throw error
+  }
   }

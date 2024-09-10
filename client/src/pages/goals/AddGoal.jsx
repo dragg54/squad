@@ -6,11 +6,12 @@ import { useState } from "react"
 import { useForm } from '@mantine/form';
 import validateInput from "../../utils/ValidateInput"
 import { openPopup } from "../../redux/reducers/PopUpReducer"
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { createUserGoal } from "../../services/goal";
 import AssignPartners from "./AssignPartners";
 import useHandleErrorResponse from "../../hooks/useHandleErrorResponse";
 import { closeModal, openModal } from "../../redux/reducers/GlobalModalReducer";
+import { getAllGoalCategories } from "../../services/goalCategory";
 
 const AddGoal = () => {
     const dispatch = useDispatch()
@@ -30,6 +31,10 @@ const AddGoal = () => {
             handleErrorResponse(err.response.status)
         }
     });
+
+    const {data: userGoalCategories, isLoading: userGoalCategoryLoading, isError: userGoalCategoryError} = useQuery("categories", {
+        queryFn: getAllGoalCategories
+    })
 
     const handleChange = (e) => {
         console.log(e.target.value)
@@ -62,12 +67,11 @@ const AddGoal = () => {
         // else{
         //     dispatch(openModal(<AssignPartners goalInputs={input}/>))
         // }
-        console.log(input)
         createGoalMutation.mutate(input)
     }
 
     return (
-        <div onClick={(e) => e.stopPropagation()} className='w-4/5 relative mx-auto bg-white h-[520px] rounded-md shadow-md  p-5'>
+        <div onClick={(e) => e.stopPropagation()} className='w-4/5 relative mx-auto bg-white h-[550px] rounded-md shadow-md  p-5'>
             <h1 className="text-xl font-semibold">Add Goals</h1>
             <form onSubmit={handleSaveGoal} action="" className="mt-8 flex-col">
                 <div>
@@ -110,7 +114,17 @@ const AddGoal = () => {
                         />
                     </div>
                 </div>
-                <AddButton type="submit" style="w-full mt-20 !py-4  bottom-10 z-20 " name="Create Goal" />
+                    <div className="mt-4 w-full ">
+                        <label htmlFor=""><p className="">Goal Category</p></label>
+                        <Input
+                            onChange={handleChange}
+                            style='!text-sm' type='select'
+                            placeholder='End date'
+                            name='usergoalcategoryId'
+                            value= {userGoalCategories?.data}
+                        />
+                    </div>
+                <AddButton type="submit" style="w-full mt-5 !py-4  bottom-10 z-20 " name="Create Goal" />
             </form>
         </div>
     )

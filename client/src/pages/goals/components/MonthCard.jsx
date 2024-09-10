@@ -5,9 +5,7 @@ import { FaChevronUp } from "react-icons/fa6";
 
 const MonthCard = ({month, openMonthGoalsContainer, setOpenMonthGoalsContainer}) => {
   const toggleCardContainerModal = () =>{
-    console.log(openMonthGoalsContainer)
     const newContainerState = openMonthGoalsContainer.map(st => (Object.keys(st)[0] == month ? {[month]: !Object.values(st)[0]} :st))
-    console.log(newContainerState)
     setOpenMonthGoalsContainer(newContainerState)
   }
   return (

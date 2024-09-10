@@ -2,7 +2,7 @@ import db from "../configs/db.js";
 import { DataTypes } from "sequelize";
 import User from "./User.js";
 
-const UserGoal = db.define('UserGoal', {
+const UserGoal = db.define('userGoal', {
   userId: {
     type: DataTypes.INTEGER,
     allowNull: false,
