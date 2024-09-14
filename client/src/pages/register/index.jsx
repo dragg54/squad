@@ -41,7 +41,7 @@ const Register = () => {
                 <h1 className="font-semibold text-xl mt-5">Register</h1>
                 <p className="text-gray-500 text-sm">Create an account</p>
                 <form onSubmit={handleSubmit} action="" className="mt-5">
-                    <Input onChange={handleChange} name='first_name' placeholder='First Name' style=''/>
+                    <Input onChange={handleChange} name='firstName' placeholder='First Name' style=''/>
                     <Input onChange={handleChange} name='lastName' placeholder='Last Name' style=''/>
                     <Input onChange={handleChange} name='userName' placeholder='UserName' style=''/>
                     <Input onChange={handleChange} name='email' placeholder='Email' style=''/>

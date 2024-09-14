@@ -12,14 +12,6 @@ const UserGoal = db.define('userGoal', {
       key: 'id',
     },
   },
-  usergoalcategoryId:{
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: User,
-      key: 'id',
-    },
-  },
   title: {
     type: DataTypes.STRING,
     allowNull: false,
