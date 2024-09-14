@@ -7,7 +7,7 @@ import { Sequelize } from "sequelize";
 // });
 
 const db = new Sequelize( 
-  'accountability',
+  'infonom1_acct',
   'infonom1_infonom',
   'infonomicsng', {
    dialect: 'mysql',
