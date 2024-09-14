@@ -9,7 +9,6 @@ const Input = ({style, placeholder, name, type, onChange, checked, value}) => {
         <input onChange={onChange || function(){return null}}
           type={type || 'text'}
           value={value}
-          checked={checked}
           name={name}
           placeholder={placeholder}
           className={`${style} w-full border rounded-md text-gray-500 outline-none p-3 mt-2`} />
@@ -19,13 +18,17 @@ const Input = ({style, placeholder, name, type, onChange, checked, value}) => {
     else if(type == "checkbox"){
       return(
         <input  
+         checked={checked}
+         name={name}
+         onChange={onChange}
+         value={value}
          className="mr-2 w-4 h-4"
          type="checkbox"/>
       )
     }
     else if(type == "select"){
       return(
-        <select name={name} className="p-3 w-full rounded-md mt-2 text-sm text-gray-600 bg-white border">
+        <select onChange={onChange} name={name} className="p-3 w-full rounded-md mt-2 text-sm text-gray-600 bg-white border">
           <option value="" className="font-semibold w-full py-4 bg-gray-300">Select Your Goal Category</option>
           {
             value?.length > 0 && value.map((val, index) => (
@@ -37,7 +40,7 @@ const Input = ({style, placeholder, name, type, onChange, checked, value}) => {
     }
     else if(type == 'text-area'){
       return(
-        <textarea className={`w-full text-gray-500 resize-none ${style}`} name="" id="">
+        <textarea className={`w-full text-gray-500 resize-none ${style}`} name={name} value={value} onChange={onChange} id="">
           {value}
         </textarea>
       )

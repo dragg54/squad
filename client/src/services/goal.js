@@ -29,7 +29,7 @@ export const getUserGoals = async ({queryKey}) => {
     }
   }
 
-  export const editUserGoal = async(formData) =>{
+  export const updateUserGoal = async(formData) =>{
     try{
       const response = await axiosInstance.put(`${BACKEND_SERVER_URL}/usergoals/${formData.id}`, formData)
       return response

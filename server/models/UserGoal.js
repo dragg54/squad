@@ -1,9 +1,18 @@
 import db from "../configs/db.js";
 import { DataTypes } from "sequelize";
 import User from "./User.js";
+import { UserGoalCategory } from "./UserGoalCategory.js";
 
 const UserGoal = db.define('userGoal', {
   userId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: User,
+      key: 'id',
+    },
+  },
+  usergoalcategoryId:{
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
@@ -22,11 +31,10 @@ const UserGoal = db.define('userGoal', {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
   },
-}, {
-  start_date: {
+  startDate: {
     type: DataTypes.DATE
   },
-  end_date: {
+  endDate: {
     type: DataTypes.DATE
   },
 });

@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { getMonthIndex } from "../../utils/Months"
+import { getMonthIndex } from "../../utils/DateFormatter"
 import MonthCard from "./components/MonthCard"
 import MonthlyGoalCard from "./MonthlyGoalCard"
 

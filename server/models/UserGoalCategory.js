@@ -8,10 +8,6 @@ export const UserGoalCategory = db.define("userGoalCategory", {
     }
 })
 
-
-UserGoalCategory.hasMany(UserGoal);
-UserGoal.belongsTo(UserGoalCategory, {onDelete: "CASCADE"})
-
 db.sync()
   .then(() => {
     console.log('UserGoal category table has been created.');

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react"
 import AddGoalsButton from "../../components/buttons/AddGoalsButton"
@@ -8,8 +9,8 @@ import { useQuery } from "react-query"
 import { getUserGoals } from "../../services/goal"
 import Pagination from "../../components/Pagination"
 import MonthlyGoals from "./MonthlyGoals"
-import {getMonthNames } from "../../utils/Months"
 import Goal from "./components/Goal"
+import { getMonthNames } from "../../utils/DateFormatter"
 
 const Goals = () => {
     const [presentTab, setPresentTab] = useState("allGoals")
@@ -19,14 +20,19 @@ const Goals = () => {
     const allMonths = getMonthNames()
     const [openMonthGoalsContainer, setOpenMonthGoalsContainer] = useState([{hello: "yessss"}])
     const dispatch = useDispatch()
-    const { data, isLoading, isError } = useQuery(
+    const { data, isLoading, isError, refetch } = useQuery(
         ['goals', { page, size, groupBy }],
         getUserGoals,
         // {
         //   keepPreviousData: true, 
         // }
     );
-   
+    const [isUpdated, setIsUpdated] = useState(false)
+    useEffect(()=>{
+        refetch()
+        setIsUpdated(false)
+    }, [isUpdated])
+    
     if(isLoading){console.log("loading")}
     if(isError)console.log("error")
     useEffect(() => {
@@ -46,7 +52,7 @@ const Goals = () => {
                         <p className="text-gray-500 text-sm">Create and track your goals</p>
                     </div>
                     <div>
-                        <AddGoalsButton onClick={() => dispatch(openModal(<AddGoal />))} />
+                        <AddGoalsButton onClick={() => dispatch(openModal(<AddGoal {...{setIsUpdated}}/>))} />
                     </div>
                 </div>
                 <div className="w-full mt-16 mb-5 overflow-scroll">
@@ -72,7 +78,7 @@ const Goals = () => {
                         <div className="w-full overflow-scroll">
                         <ul className="w-full mt-2">
                             {data && data.data?.length > 0 && data.data.map(goal => (
-                               <Goal key={goal.id} {...{goal}}/>
+                               <Goal key={goal.id} {...{goal, setIsUpdated}}/>
                             ))}
                         </ul>
                     </div>

@@ -45,13 +45,10 @@ export const getUserGoalById = async (req, res, next) => {
 
 export const updateUserGoal = async (req, res, next) => {
   try {
-    const goal = await userGoalService.updateUserGoal(req.params.id, req.body);
-    if (goal) {
-      res.status(200).json(goal);
-    } else {
-      next(new BadRequestError('Goal not found'));
-    }
+    await userGoalService.updateUserGoal(req, res);
+    res.json("Goal updated")
   } catch (error) {
+    console.log(error.message)
      res.status(error.statusCode || 500).send({
         message: error.message || "Internal Server Error"
      })

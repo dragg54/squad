@@ -1,8 +1,11 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/jsx-no-undef */
 import { useDispatch } from "react-redux"
 import AddButton from "../../components/buttons/AddButton"
 import Input from "../../components/inputs"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from '@mantine/form';
 import validateInput from "../../utils/ValidateInput"
 import { openPopup } from "../../redux/reducers/PopUpReducer"
@@ -13,7 +16,7 @@ import useHandleErrorResponse from "../../hooks/useHandleErrorResponse";
 import { closeModal, openModal } from "../../redux/reducers/GlobalModalReducer";
 import { getAllGoalCategories } from "../../services/goalCategory";
 
-const AddGoal = () => {
+const AddGoal = ({setIsUpdated}) => {
     const dispatch = useDispatch()
     const handleErrorResponse = useHandleErrorResponse()
     const [input, setInput] = useState({
@@ -23,7 +26,7 @@ const AddGoal = () => {
     const createGoalMutation = useMutation(createUserGoal, {
         onSuccess: () => {
            dispatch(closeModal())
-            dispatch(openModal(<AssignPartners goalInputs={input}/>))
+            dispatch(openModal(<AssignPartners {...{setIsUpdated}} goalInputs={input}/>))
         },
         onError: (err) => {
             console.log(err.response.status)
@@ -32,7 +35,7 @@ const AddGoal = () => {
         }
     });
 
-    const {data: userGoalCategories, isLoading: userGoalCategoryLoading, isError: userGoalCategoryError} = useQuery("categories", {
+    const {data: userGoalCategories, isLoading: userGoalCategoryLoading, isError: userGoalCategoryError, refetch} = useQuery("categories", {
         queryFn: getAllGoalCategories
     })
 
@@ -57,17 +60,8 @@ const AddGoal = () => {
     });
 
     const handleSaveGoal = (e) => {
-        e.preventDefault()
-        form.validate()
-        const isValid = form.isValid()
-        console.log(isValid)
-        if (!form.isValid()) {
-            dispatch(openPopup({ status: 'error', message: form.errors }))
-        }
-        // else{
-        //     dispatch(openModal(<AssignPartners goalInputs={input}/>))
-        // }
-        createGoalMutation.mutate(input)
+        dispatch(closeModal())
+        dispatch(openModal(<AssignPartners {...{setIsUpdated}} goalInputs={input}/>))        
     }
 
     return (
@@ -101,7 +95,7 @@ const AddGoal = () => {
                             value = {input.start_date}
                             type='date'
                             placeholder='Start date'
-                            name='start_date' />
+                            name='startDate' />
                     </div>
                     <div className="w-[48%]">
                         <label htmlFor=""><p className="">To</p></label>
@@ -110,7 +104,7 @@ const AddGoal = () => {
                             style='!text-sm' type='date'
                             value = {input.end_date}
                             placeholder='End date'
-                            name='end_date'
+                            name='endDate'
                         />
                     </div>
                 </div>
