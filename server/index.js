@@ -13,7 +13,7 @@ app.use(bodyParser.json())
 app.use(cookieParser())
 dotenv.config()
 
-const whitelist = ['http://localhost:5173','http://localhost:5000', 'http://127.0.0.1:5173', 'https://bond-1.onrender.com'];
+const whitelist = ['http://localhost:5173','http://localhost:5000', 'http://127.0.0.1:5173', 'https://squad-63mu.onrender.com'];
 
 const corsOptions = {
   credentials: true,
