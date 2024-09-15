@@ -87,13 +87,13 @@ export const getUserGoalById = async (id) => {
 
 export const updateUserGoal = async (req, res) => {
   const { id } = req.params; 
-  const { title, description, completed, startDate, endDate, goalPartners, usergoalcategoryId } = req.body;
+  const { title, description, completed, startDate, endDate, goalPartners, userGoalCategoryId } = req.body;
   if(new Date(startDate) < new Date() || new Date(endDate) < new Date() || new Date(endDate) < startDate){
     throw new BadRequestError("Invalid start date or end date.")
   }
   const trans = await db.transaction();
   const [updated] = await models.UserGoal.update(
-    { title, description, completed, startDate, endDate, usergoalcategoryId },
+    { title, description, completed, startDate, endDate, userGoalCategoryId },
     { where: { id }, transaction: trans }
   );
   if (!updated) {

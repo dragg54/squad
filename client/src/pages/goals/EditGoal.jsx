@@ -104,18 +104,18 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory, localDate }) => {
                     <Input name='title' style='font-extrabold !-ml-3 w-full pb-2 border-none text-xl mt-6 !text-gray-700' value={inputValues.title} onChange={(e) => handleInputValueChange(e)} />
                 </div>
                 <Input onChange={(e) => handleInputValueChange(e)} name='description' type="text-area" style="!mt-3 !border-none text-gray-500 !outline-none" value={inputValues.description} />
-                <div className="mt-5 flex justify-between">
-                    <div className="cursor-pointer" onClick={() => dispatch(openModal(<GoalCategory {...{ goal, inputValues, selectedCategory, setSelectedCategory, setIsUpdated }} />))}>
+                <div className="mt-5 flex justify-between w-full">
+                    <div className="cursor-pointer w-1/2" onClick={() => dispatch(openModal(<GoalCategory {...{ goal, inputValues, selectedCategory, setSelectedCategory, setIsUpdated }} />))}>
                         <p className="font-semibold cursor-pointer">Category</p>
-                        <p className="text-sm mt-1 text-gray-500 inline-flex gap-1 items-center">{localSelectedCategory ? localSelectedCategory.name : selectedCategory.name} {localSelectedCategory ? userGoalCategoryConstant.find(cat =>(cat.categoryName == localSelectedCategory.name)).categoryIcon: userGoalCategoryConstant.find(cat =>(cat.categoryName == selectedCategory.name)).categoryIcon}</p>
+                        <p className="text-sm mt-1 text-gray-500 inline-flex gap-1 items-center">{localSelectedCategory ? localSelectedCategory.name : selectedCategory.name} </p>
                     </div>
-                    <div className='cursor-pointer' onClick={() => dispatch(openModal(<Deadline {...{ goal, setDate, date, setIsUpdated }} />))}>
+                    <div className='cursor-pointer w-1/2' onClick={() => dispatch(openModal(<Deadline {...{ goal, setDate, date, setIsUpdated }} />))}>
                         <p className="font-semibold inline-flex items-center">Deadline <CiClock2 style={{ marginLeft: "5px", fontSize: "20px", color: "#1a5653" }} /></p>
                         <p className="text-sm mt-1 text-gray-500">{formatDate(localDate ? localDate : inputValues.endDate)}</p>
                     </div>
                 </div>
                 <div className="mt-5">
-                    <label htmlFor="" className="inline-flex gap-1">
+                    <label htmlFor="" className="inline-flex items-center">
                         <Input value={inputValues.completed} onChange={(e) => handleInputValueChange(e)} name="completed" type="checkbox" checked={inputValues.completed} className="w-6 h-6 rounded-md bg-green-500" />
                         Completed
                     </label>

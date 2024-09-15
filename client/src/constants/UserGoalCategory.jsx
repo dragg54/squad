@@ -50,7 +50,7 @@ export const userGoalCategoryConstant = [
         categoryIcon: <BsFillHousesFill />
     },
     {
-        categoryName: "Business and Investment",
+        categoryName: "Business and Entrepreneurship",
         categoryIcon: <FaBusinessTime />
     },
     {

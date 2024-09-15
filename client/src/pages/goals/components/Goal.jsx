@@ -8,6 +8,7 @@ import EditGoal from "../EditGoal"
 import { formatDate } from "../../../utils/DateFormatter"
 
 const Goal = ({ goal, setIsUpdated }) => {
+    console.log(goal)
     const dispatch = useDispatch()
     return (
         <ul className="w-full rounded-md -mb-3" onClick={()=>dispatch(openModal(<EditGoal {...{goal, setIsUpdated}}/>))}>

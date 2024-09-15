@@ -113,8 +113,7 @@ const AddGoal = ({setIsUpdated}) => {
                         <Input
                             onChange={handleChange}
                             style='!text-sm' type='select'
-                            placeholder='End date'
-                            name='usergoalcategoryId'
+                            name='userGoalCategoryId'
                             value= {userGoalCategories?.data}
                         />
                     </div>
