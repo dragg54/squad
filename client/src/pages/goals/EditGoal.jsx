@@ -99,12 +99,12 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory, localDate }) => {
     }
     if (goal.id) {
         return (
-            <form onSubmit={submitForm} onClick={(e) => e.stopPropagation()} className='w-[400px] mx-auto h-[600px] p-6 bg-white border rounded-md shadow-gray-300'>
+            <form onSubmit={submitForm} onClick={(e) => e.stopPropagation()} className='w-[350px] mx-auto h-[550px]  p-3 px-5 bg-white border rounded-md shadow-gray-300'>
                 <div className="w-full border-b border-gray-300 pb-2">
-                    <Input name='title' style='font-extrabold !-ml-3 w-full pb-2 border-none text-xl mt-6 !text-gray-700' value={inputValues.title} onChange={(e) => handleInputValueChange(e)} />
+                    <Input name='title' style='font-extrabold !-ml-3 w-full pb-2 border-none text-xl mt-3 !text-gray-700' value={inputValues.title} onChange={(e) => handleInputValueChange(e)} />
                 </div>
                 <Input onChange={(e) => handleInputValueChange(e)} name='description' type="text-area" style="!mt-3 !border-none text-gray-500 !outline-none" value={inputValues.description} />
-                <div className="mt-5 flex justify-between w-full">
+                <div className="mt-3 flex justify-between w-full">
                     <div className="cursor-pointer w-1/2" onClick={() => dispatch(openModal(<GoalCategory {...{ goal, inputValues, selectedCategory, setSelectedCategory, setIsUpdated }} />))}>
                         <p className="font-semibold cursor-pointer">Category</p>
                         <p className="text-sm mt-1 text-gray-500 inline-flex gap-1 items-center">{localSelectedCategory ? localSelectedCategory.name : selectedCategory.name} </p>
@@ -114,7 +114,7 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory, localDate }) => {
                         <p className="text-sm mt-1 text-gray-500">{formatDate(localDate ? localDate : inputValues.endDate)}</p>
                     </div>
                 </div>
-                <div className="mt-5">
+                <div className="mt-3">
                     <label htmlFor="" className="inline-flex items-center">
                         <Input value={inputValues.completed} onChange={(e) => handleInputValueChange(e)} name="completed" type="checkbox" checked={inputValues.completed} className="w-6 h-6 rounded-md bg-green-500" />
                         Completed
