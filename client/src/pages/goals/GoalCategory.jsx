@@ -22,7 +22,7 @@ const GoalCategory = ({goal, selectedCategory, setSelectedCategory, setIsUpdated
         setLocalSelectedCategory(selectedCategory);
       }, [selectedCategory]);
     return (
-        <div onClick={(e) => e.stopPropagation()} className='w-[400px] mx-auto h-[600px] p-6 bg-white border rounded-md shadow-gray-300'>
+        <div onClick={(e) => e.stopPropagation()} className='w-[3500px] mx-auto h-[600px] p-6 py-3 -mt-3 bg-white border rounded-md shadow-gray-300'>
             <h1 className="mt-3 font-extrabold text-xl pb-2 w-full border-b border-gray-300 inline-flex justify-between items-center"><span>Goal Categories </span>
             <Button
                 onClick={()=>{

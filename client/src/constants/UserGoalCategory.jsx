@@ -58,7 +58,7 @@ export const userGoalCategoryConstant = [
         categoryIcon: <FaPeopleGroup />
     },
     {
-        categoryName: "Personal Growth and Development",
+        categoryName: "Personal Development",
         categoryIcon: <GiGrowth />
     },
     {
