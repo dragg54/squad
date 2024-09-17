@@ -34,7 +34,7 @@ const GoalCategory = ({goal, selectedCategory, setSelectedCategory, setIsUpdated
                 {
                     userGoalCategories && userGoalCategories.data && userGoalCategories.data.map(category =>(
                         <label key={category.id}>
-                         <Input name="userGoalCategory" value={category.id} onChange={()=>handleSelectGoalCategory(category)} checked={localSelectedCategory?.name == category.name} type="checkbox" style='ml-3'/>
+                         <Input name="userGoalCategoryId" value={category.id} onChange={()=>handleSelectGoalCategory(category)} checked={localSelectedCategory?.name == category.name} type="checkbox" style='ml-3'/>
                          {category.name}
                         </label>
                     ))

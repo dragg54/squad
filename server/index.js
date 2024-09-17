@@ -1,6 +1,7 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import userRoute from './routes/UserRoute.js'
+import postRoute from './routes/PostRoute.js'
 import userGoalRoute from './routes/UserGoalRoute.js'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
@@ -47,6 +48,7 @@ app.use((req, res, next) => {
 //routes
 app.use("/api/v1/users", userRoute)
 app.use("/api/v1/usergoals", userGoalRoute)
+app.use("/api/v1/posts", postRoute)
 app.use("/api/v1/usergoalcategories", userGoalCategoryRouter)
 
 app.listen(8080, ()=>{

@@ -8,7 +8,7 @@
 }
 
 .menus{
-    @apply text-gray-200 text-3xl font-menuWrite cursor-pointer
+    @apply text-gray-700 text-3xl font-menuWrite cursor-pointer flex gap-3 items-center
 }
 
 a{

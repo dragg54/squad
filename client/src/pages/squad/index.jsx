@@ -4,11 +4,11 @@ import ProfileCard from "./components/ProfileCard"
 
 const Squad = () => {
     return (
-        <section>
-            <div className="w-full h-screen p-4 pb-36 overflow-y-scroll">
+        <section className="w-full overflow-x-visible h-screen overflow-y-scroll p-4 md:p-8 pb-40 md:pb-48 md:ml-[28rem]">  
+            <div className="md:w-[60%] pb-36">
                 <div className="flex justify-between">
                     <div>
-                        <p className="font-semibold">Squad Members</p>
+                        <p className="font-semibold md:text-2xl">Squad Members</p>
                         <p className="!text-gray-500 text-sm">Know your squad members</p>
                     </div>
                     <div>
@@ -21,7 +21,6 @@ const Squad = () => {
                     <Link to={"/member"}><ProfileCard /></Link>
                     <Link to={"/member"}><ProfileCard /></Link>
                     <Link to={"/member"}><ProfileCard /></Link>
-
                 </div>
             </div>
         </section>

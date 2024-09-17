@@ -3,9 +3,9 @@ import PostCard from "../../components/containers/PostCard"
 
 const Member = () => {
   return (
-    <section className="w-full h-screen overflow-scroll">
+    <section className="w-full overflow-x-visible h-screen overflow-y-scroll p-4 md:p-8 pb-40 md:pb-48 md:ml-[28rem]">  
       <div className="w-full">
-        <div className="w-full h-[200px]  bg-gradient-to-r from-[#8155BA] to-[#FE5BD6] ">
+        <div className="w-full md:w-[60%] h-[200px]  bg-gradient-to-r from-[#8155BA] to-[#FE5BD6] ">
         </div>
         <div className="-mt-14 p-4">
           <Image source={''} style={'h-24 w-24 z-10 bg-white'} />
@@ -19,12 +19,14 @@ const Member = () => {
             <p className="mb-3 font-semibold border-b-4 border-[#FF2511]">Posts</p>
             <p className="mb-3 font-semibold">Goals</p>
           </div>
+          <div className="w-full md:w-[60%]">
           <PostCard />
           <PostCard />
           <PostCard />
           <PostCard />
           <PostCard />
           <PostCard />
+          </div>
         </div>
       </div>
     </section>

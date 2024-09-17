@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import Image from './Image'
 import { IoIosHeartEmpty } from "react-icons/io";
 import { MdOutlineComment } from "react-icons/md";
@@ -5,9 +6,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart  } from '@fortawesome/free-solid-svg-icons';
 
 
-const PostCard = () => {
+const PostCard = ({post}) => {
     return (
-        <div className='w-full bg-white rounded-md border  border-gray-200 shadow-lg shadow-gryay-500 h-[260px] mb-3 p-4'>
+        <div className='w-full md:w-full bg-white overflow-x-visible rounded-md border  border-gray-200 shadow-lg shadow-gray-500 h-[260px] mb-3 p-4'>
             <div className="flex justify-start items-center gap-4">
                 <Image source='' style='h-16 w-16' />
                 <div>

@@ -36,16 +36,16 @@ const Login = () => {
     }
 
     return (
-        <section>
-            <div className="w-full p-6 relative h-screen">
-                <h1 className="font-semibold text-xl mt-5">Login</h1>
-                <p className="text-gray-500 text-sm">Sign in to your account</p>
-                <form onSubmit={handleSubmit} action="" className="mt-5 w-full  h-3/5 relative flex-col items-center">
+        <section className='md:flex items-center md:flex-col md:mt-8'>
+            <div className="w-full p-6 relative md:w-1/3  h-screen ">
+                <h1 className="font-semibold text-2xl mt-5 md:text-4xl">Login</h1>
+                <p className="text-gray-500 text-sm md:text-xl">Sign in to your account</p>
+                <form onSubmit={handleSubmit} action="" className="mt-5  mx-center w-full h-3/5 relative flex md:items-start flex-col items-center">
                     <Input onChange={handleChange} name='email' placeholder='Email' style='' />
                     <Input onChange={handleChange} type="password" name='password' placeholder='Password' style='!mt-6' />
                     <Button type="submit" name='Sign in' style={'border left-0 !bg-[#B175FF] mx-auto absolute bottom-20 !py-4 mt-20 !w-full !flex !justify-center w-36 !text-white'} />
                 </form>
-                <p className='-mt-16'>{"Don't"} have an account? <span className='text-[#B175FF] cursor-pointer' onClick={()=> navigate("/register")}> Sign up here</span></p>
+                <p className='-mt-16 font-semibold'>{"Don't"} have an account? <span className='text-[#B175FF] cursor-pointer' onClick={()=> navigate("/register")}> Sign up here</span></p>
             </div>
         </section>
     )

@@ -99,7 +99,7 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory, localDate }) => {
     }
     if (goal.id) {
         return (
-            <form onSubmit={submitForm} onClick={(e) => e.stopPropagation()} className='w-[350px] mx-auto h-[550px]  p-3 px-5 bg-white border rounded-md shadow-gray-300'>
+            <form onSubmit={submitForm} onClick={(e) => e.stopPropagation()} className='w-[350px] md:w-[400px] mx-auto h-[550px]  p-3 px-5 bg-white border rounded-md shadow-gray-300'>
                 <div className="w-full border-b border-gray-300 pb-2">
                     <Input name='title' style='font-extrabold !-ml-3 w-full pb-2 border-none text-xl mt-3 !text-gray-700' value={inputValues.title} onChange={(e) => handleInputValueChange(e)} />
                 </div>

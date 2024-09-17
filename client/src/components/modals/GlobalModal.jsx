@@ -1,11 +1,19 @@
 import { useDispatch, useSelector } from "react-redux"
 import { closeModal } from "../../redux/reducers/GlobalModalReducer"
+import { useLocation } from "react-router-dom"
+import { useEffect } from "react"
 
 // eslint-disable-next-line react/prop-types
 const GlobalModal = () => {
   const dispatch = useDispatch()
   const globalModal = useSelector(state => state.globalModal)
-  console.log(globalModal)
+  const location = useLocation();
+
+  // Close the modal when the route changes
+  useEffect(() => {
+    dispatch(closeModal());
+  }, [location]);
+
   return (
     <div onClick={() => {
       dispatch(closeModal())

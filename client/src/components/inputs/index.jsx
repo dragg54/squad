@@ -40,7 +40,12 @@ const Input = ({style, placeholder, name, type, onChange, checked, value}) => {
     }
     else if(type == 'text-area'){
       return(
-        <textarea className={`w-full text-gray-500 resize-none ${style}`} name={name} value={value} onChange={onChange} id="">
+        <textarea 
+          className={`w-full text-gray-500 outline-none rounded-md resize-none ${style}`} 
+          name={name} 
+          placeholder={placeholder}
+          value={value}
+          onChange={onChange} id="">
           {value}
         </textarea>
       )
