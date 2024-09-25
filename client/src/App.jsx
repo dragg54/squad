@@ -9,6 +9,7 @@ import Goals from './pages/goals'
 import Intro from './pages/intro'
 import Register from './pages/register'
 import Login from './pages/login'
+import Post from './pages/post/Post'
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
         <Route path="/register" element={<Register/>} />
         <Route path="/intro" element={<Intro/>} />
         <Route path="/login" element={<Login/>} />
+        <Route path = "/post/:id" element={<Post/>}/>
       </Routes>
       </Layout>
     </Router>

@@ -1,13 +1,18 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 import AddButton from "../../components/buttons/AddButton"
-import PostCard from "../../components/containers/PostCard"
 import { useDispatch } from "react-redux"
 import { openModal } from "../../redux/reducers/GlobalModalReducer"
 import AddPost from "./AddPost"
 import { useQuery } from "react-query"
 import { useState } from "react"
 import { getPosts } from "../../services/post"
+import Pagination from "../../components/Pagination"
+import PostCard from "../../components/post/PostCard"
+import { Link } from "react-router-dom"
 
-const Post = () => {
+// eslint-disable-next-line react/prop-types
+const Forum = ({ newPosts }) => {
   const dispatch = useDispatch()
   const [groupBy, setGroupBy] = useState("")
   const [page, setPage] = useState(1);
@@ -19,10 +24,9 @@ const Post = () => {
     //   keepPreviousData: true, 
     // }
   );
-  console.log(data)
-  if(isLoading)<p>Loading...</p>
+  if (isLoading) <p>Loading...</p>
   return (
-    <section className="w-full overflow-x-visible h-screen overflow-y-scroll p-4 md:p-8 pb-40 md:pb-48 md:ml-[28rem]">
+    <section className="w-full overflow-x-visible h-screen overflow-y-scroll p-4 md:p-8 pb-40 md:pb-48 md:ml-[20rem]">
       <div className="flex w-full md:w-[60%] justify-between items-center mb-8">
         <div className="">
           <h1 className="font-semibold md:text-2xl">Explore Posts</h1>
@@ -32,18 +36,26 @@ const Post = () => {
           <AddButton
             name="Create Post"
             style='border border-purple-700 !bg-white !text-purple-700'
-            onClick={() => dispatch(openModal(<AddPost />))} />
+            onClick={() => dispatch(openModal(<AddPost {...{ page, size }} />))} />
         </div>
       </div>
       <div className="w-full md:w-[60%]">
         {
-          data && data.rows && data.rows.map(post =>(
-            <PostCard key={post.id} {...{post}}/>
+          data && data.data && data.data.map(post => (
+            <Link key={post.id} className="w-full" to={"/post/"+post.id}>
+              <PostCard {...{ post }} />
+            </Link>
           ))
+      
         }
       </div>
+      <Pagination
+        currentPage={page}
+        totalPages={data?.totalPages}
+        onPageChange={setPage}
+      />
     </section>
   )
 }
 
-export default Post
+export default Forum

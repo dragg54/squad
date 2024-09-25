@@ -1,5 +1,5 @@
 import Image from "../../components/containers/Image"
-import PostCard from "../../components/containers/PostCard"
+import PostCard from "../../components/post/PostCard"
 
 const Member = () => {
   return (

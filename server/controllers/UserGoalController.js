@@ -55,6 +55,7 @@ export const updateUserGoal = async (req, res, next) => {
   }
 };
 
+
 export const deleteUserGoal = async (req, res, next) => {
   try {
     const success = await userGoalService.deleteUserGoal(req.params.id);
