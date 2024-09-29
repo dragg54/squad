@@ -72,5 +72,5 @@ export const loginUser = async (userData) => {
         throw new BadRequestError('Invalid email or password');
     }
     const token = generateToken(existingUser)
-    return token
+    return {token, userDetails:{id: existingUser.id, email: existingUser.email, userName: existingUser.userName, firstName: existingUser.firstName, lastName:existingUser.lastName}}
 }

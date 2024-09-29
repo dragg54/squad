@@ -62,11 +62,11 @@ export const deleteUser = async (req, res) => {
 
 export const loginUser = async (req, res) =>{
     try{
-        const token = await userService.loginUser(req.body)
-        res.cookie('token', token, {
+        const user = await userService.loginUser(req.body)
+        res.cookie('token', user.token, {
             httpOnly: true, 
             maxAge: 3600000
-          }).send(token)
+          }).send(user)
     }
     catch(error){
         res.status(error.statusCode || 500).json({message: error.message || "Internal server error"})

@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { loginUser } from '../../services/user'
 import { useDispatch } from 'react-redux'
 import { openPopup } from '../../redux/reducers/PopUpReducer'
+import { fetchUser } from '../../redux/reducers/UserReducer'
 
 const Login = () => {
     const navigate = useNavigate()
@@ -18,6 +19,7 @@ const Login = () => {
         onSuccess: (data) => {
             if(data){
                 navigate("/")
+                dispatch(fetchUser(data))
                 dispatch(openPopup({message: "Login successful", status: status.success}))
             }
         },

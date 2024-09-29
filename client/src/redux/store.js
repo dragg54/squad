@@ -4,6 +4,7 @@ import globalModalReducer from './reducers/GlobalModalReducer';
 import popupModalReducer from './reducers/PopUpReducer';
 import storage from 'redux-persist/lib/storage'
 import { persistReducer, persistStore } from 'redux-persist';
+import userReducer from './reducers/UserReducer';
 
 const persistConfig = {
     key: "root",
@@ -14,7 +15,8 @@ const persistConfig = {
 
 export const rootReducer = combineReducers({
     globalModal: globalModalReducer,
-    popup: popupModalReducer
+    popup: popupModalReducer,
+    user: userReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

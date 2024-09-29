@@ -9,7 +9,6 @@ import { useState } from "react"
 import { getPosts } from "../../services/post"
 import Pagination from "../../components/Pagination"
 import PostCard from "../../components/post/PostCard"
-import { Link } from "react-router-dom"
 
 // eslint-disable-next-line react/prop-types
 const Forum = ({ newPosts }) => {
@@ -42,9 +41,9 @@ const Forum = ({ newPosts }) => {
       <div className="w-full md:w-[60%]">
         {
           data && data.data && data.data.map(post => (
-            <Link key={post.id} className="w-full" to={"/post/"+post.id}>
+            <div key={post.id}>
               <PostCard {...{ post }} />
-            </Link>
+            </div>
           ))
       
         }

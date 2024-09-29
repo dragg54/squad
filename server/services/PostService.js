@@ -52,7 +52,14 @@ export const getAllPosts = async (req, res) => {
     const postAndLikes = await Promise.all(
         paginatedData.data.map(async (post) => {
             const postLikesCounts = await PostLike.count({ where: { postId: post.id } });
-            return { ...post.toJSON(), noOfLikes: postLikesCounts }; // Convert post instance to JSON object
+            const likesUsers = await PostLike.findAll({where:{postId: post.id}, include:{
+                model: User,
+                attributes: {exclude: ["createdBy", "createdAt", "password", "user"]}
+            }})
+            return { ...post.toJSON(), likes: {
+                noOfLikes: postLikesCounts,
+                likesUsers: likesUsers
+            } }; // Convert post instance to JSON object
         })
     );
 
