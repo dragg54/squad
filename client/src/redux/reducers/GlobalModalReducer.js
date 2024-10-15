@@ -16,6 +16,9 @@ export const globalModalSlice = createSlice({
       state.isOpen = false;
       state.content = null;
     },
+    modifyModalProp: (state) =>{
+      state.isOpen = true
+    }
   },
 });
 

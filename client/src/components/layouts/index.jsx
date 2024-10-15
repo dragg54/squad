@@ -14,11 +14,11 @@ const Layout = ({ children }) => {
       <PopUp />
       <Menu {...{ menuContainerOpened, setMenuContainerOpened }} />
       <Navbar {...{ setMenuContainerOpened }} />
-      <main className='w-full md:flex gap-20'>
+      <main className='w-full md:flex gap-20 fixed top-20'>
         <div className='w-[20%] hidden md:block absolute'>
           <Sidebar />
         </div>
-        <div className='md:w-[85%] md:ml-20 w-full'>
+        <div className='md:w-[85%] md:ml-20 w-full '>
           {children}
         </div>
       </main>

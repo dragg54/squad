@@ -52,7 +52,7 @@ const Goals = () => {
                         <p className="text-gray-500 text-sm">Create and track your goals</p>
                     </div>
                     <div>
-                        <AddGoalsButton onClick={() => dispatch(openModal(<AddGoal {...{setIsUpdated}}/>))} />
+                        <AddGoalsButton onClick={() => dispatch(openModal({component:<AddGoal {...{setIsUpdated}}/>}))} />
                     </div>
                 </div>
                 <div className="w-full mt-16 mb-5 overflow-scroll">

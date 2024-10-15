@@ -1,13 +1,10 @@
 /* eslint-disable react/prop-types */
 import Image from '../containers/Image'
-import { IoIosHeartEmpty } from "react-icons/io";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { formatDate } from '../../utils/DateFormatter';
 import { capitalizeHeader } from '../../utils/CapitalizeHeader';
 import { FaRegComment } from "react-icons/fa";
-import { useQuery } from 'react-query';
-import { getPostLikes } from '../../services/post';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';

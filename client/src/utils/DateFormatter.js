@@ -1,5 +1,6 @@
 import { format, eachMonthOfInterval, setMonth, parse} from 'date-fns';
 
+//for getting month name from january to december
 export const getMonthNames = () => {
   const startOfYear = new Date(2024, 0, 1); 
   const endOfYear = new Date(2024, 11, 31); 
@@ -12,6 +13,8 @@ export const getMonthNames = () => {
   return months;
 };
 
+
+//for getting month index from date string
 export const getMonthIndex = (monthName) => {
   const date = parse(monthName, 'MMMM', new Date());
   const dateIndex = format(date, 'M');
@@ -21,14 +24,23 @@ export const getMonthIndex = (monthName) => {
   return dateIndex.toString()
 };
 
+//for getting month from Date string
 export const getMonthName = (monthIndex) => {
   const date = setMonth(new Date(), monthIndex);
   return format(date, 'MMMM');
 };
 
+//Formats date string to Month and Year
 export const formatDate = (dateString) =>{
   if(dateString){
     return format(new Date(dateString), "do MMMM, yyyy");
+  }
+}
+
+//dd/MM/YYYY
+export const formatDate2 = (dateString) =>{
+  if(dateString){
+    return format(new Date(dateString), "dd/MM/yyyy");
   }
 }
 

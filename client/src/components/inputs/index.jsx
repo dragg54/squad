@@ -1,9 +1,10 @@
 /* eslint-disable react/prop-types */
 
-const Input = ({style, placeholder, name, type, onChange, checked, value}) => {
+import DateInput from "./DateInput"
+
+const Input = ({style, placeholder, name, type, onChange, checked, value, data , id, onClick, done}) => {
     if(!type || type == "text" 
       || type == "password"
-      || type == "date"
     ){
       return(
         <input onChange={onChange || function(){return null}}
@@ -49,6 +50,9 @@ const Input = ({style, placeholder, name, type, onChange, checked, value}) => {
           {value}
         </textarea>
       )
+    }
+    else if(type == "date"){
+      return <DateInput id={id} onDateChange={onClick} name={name} style={style} date={value} data={data} done={done}/>
     }
 }
 
