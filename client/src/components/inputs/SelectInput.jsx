@@ -10,7 +10,7 @@ const SelectInput = ({ style, data, done, placeholder, value }) => {
     return (
         <div onClick={()=>{
             dispatch(openModal({component: <Selection />, props: {data, done, value}}))
-        }} className={`w-full p-3 border rounded-md border-gray-400 text-gray-500 flex justify-between cursor-pointer ${style}`}>
+        }} className={`w-full mt-2 p-3 border rounded-md border-gray-400 text-gray-500 flex justify-between cursor-pointer ${style}`}>
            <p> {placeholder}</p>
            <p><FaChevronDown /></p>
         </div>
