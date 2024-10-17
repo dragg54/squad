@@ -10,7 +10,7 @@ const Navbar = ({setMenuContainerOpened}) => {
   const pathsToIgnore = ["intro", "login", "register"]
   const matchFound = pathsToIgnore.some(pattern => url.includes(pattern));
   return (
-    <div className={`w-full fixed z-20 md:px-7 items-center md:h-20 ${matchFound && 'hidden'} h-14 border-b shadow-md shadow-gray-300 p-4 flex justify-between`}>
+    <div className={`w-full z-20 md:px-7 items-center md:h-20 ${matchFound && 'hidden'} h-14 border-b shadow-md shadow-gray-300 p-4 flex justify-between`}>
         <div className="flex items-center gap-2">
           <Image style="h-10 w-10" source={'images/batman.jpg'}/>
         <p className="font-semibold font-playwrite text-sm  text-gray-600">Hello, Mike Oliver</p>
