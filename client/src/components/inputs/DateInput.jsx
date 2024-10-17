@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { LuCalendarDays } from "react-icons/lu";
 import { useDispatch } from 'react-redux';
-import { closeModal, openModal } from '../../redux/reducers/GlobalModalReducer';
+import {  openModal } from '../../redux/reducers/GlobalModalReducer';
 import CalendarCont from '../containers/CalendarCont';
 import { formatDate2 } from "../../utils/DateFormatter";
 

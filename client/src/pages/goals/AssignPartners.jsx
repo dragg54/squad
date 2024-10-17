@@ -10,13 +10,12 @@ import { openPopup } from "../../redux/reducers/PopUpReducer"
 import { useState } from "react"
 import { getAllUsers } from "../../services/user"
 
-const AssignPartners = ({ goalInputs, setIsUpdated }) => {
+const AssignPartners = ({ goalInputs }) => {
     const dispatch = useDispatch()
     const [selectedItems, setSelectedItems] = useState([])
     const { data: userData, error, isLoading: usersIsLoading, isError: usersIsError } = useQuery(['users'], getAllUsers);
     const createUserGoalMutation = useMutation(createUserGoal, {
         onSuccess: () => {
-            setIsUpdated(true)
             dispatch(closeModal())
             dispatch(openPopup({message: "Goal successfully added" }))
         },

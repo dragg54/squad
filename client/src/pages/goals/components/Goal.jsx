@@ -10,7 +10,7 @@ import { formatDate } from "../../../utils/DateFormatter"
 const Goal = ({ goal, setIsUpdated }) => {
     const dispatch = useDispatch()
     return (
-        <ul className="w-full rounded-md -mb-3" onClick={()=>dispatch(openModal(<EditGoal {...{goal, setIsUpdated}}/>))}>
+        <ul className="w-full rounded-md -mb-3" onClick={()=>dispatch(openModal({component:<EditGoal {...{goal, setIsUpdated}}/>}))}>
             {/* <p className="!text-gray-500 text-sm">20 June, 2023</p> */}
             <li className={`goal-box flex items-center shadow-sm rounded-md text-base pl-4 !py-6 !border-l-8 ${goal.completed ?
                 'shadow-green-700  !border-[#107869]' :

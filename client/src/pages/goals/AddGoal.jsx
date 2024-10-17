@@ -26,8 +26,9 @@ const AddGoal = ({ setIsUpdated }) => {
         description: globalModal.content?.props?.input?.description || ""
     })
     const [date, setDate] = useState({
-        startDate: (globalModal.content?.props?.newDate.startDate) || new Date() ,
-        endDate: (globalModal.content?.props?.newDate.endDate) || new Date() })
+        startDate: (globalModal.content?.props?.newDate?.startDate) || new Date(),
+        endDate: (globalModal.content?.props?.newDate?.endDate) || new Date()
+    })
 
     const handleChangeDate = (e) => {
         // setDate({ ...date, [Object.keys(e)[0]]: [Object.values(e)[0]] })
@@ -69,16 +70,17 @@ const AddGoal = ({ setIsUpdated }) => {
     });
 
     const handleSaveGoal = (e) => {
-        dispatch(closeModal())
-        dispatch(openModal(<AssignPartners {...{ setIsUpdated }} goalInputs={input} />))
+        e.preventDefault()
+        const updatedInput = { ...input, ...date, userGoalCategoryId: globalModal.content?.props?.selectedId}
+        dispatch(openModal({component: <AssignPartners {...{ setIsUpdated }} goalInputs={updatedInput} />}))
     }
 
-    const handleSetNewDate = (prop) =>{
-       setDate(()=>
-        console.log(date)
-       )
+    const handleSetNewDate = (prop) => {
+        setDate(() =>
+            console.log(date)
+        )
     }
-   
+
     return (
         <div onClick={(e) => e.stopPropagation()} className='w-[90%] md:w-[30%] relative mx-auto bg-white h-[550px] rounded-md shadow-md  p-5'>
             <h1 className="text-xl font-semibold">Add Goals</h1>
@@ -113,9 +115,12 @@ const AddGoal = ({ setIsUpdated }) => {
                             placeholder='Start date'
                             id="startDate"
                             done={(prop) => {
-                                dispatch(openModal({ component: <AddGoal />, props: { input, handleChangeDate, date, newDate: {...date, startDate: prop} } }))
+                                dispatch(openModal({
+                                    component: <AddGoal />,
+                                    props: { input, handleChangeDate, date, newDate: { ...date, startDate: prop }, selected: globalModal.content?.props?.selected, selectedId: globalModal.content?.props?.selectedId }
+                                }))
                                 handleSetNewDate(prop)
-                                }}
+                            }}
                             name='startDate' />
                     </div>
                     <div className="w-[48%]">
@@ -127,7 +132,10 @@ const AddGoal = ({ setIsUpdated }) => {
                             id="endDate"
                             value={date?.endDate}
                             done={(prop) => {
-                                dispatch(openModal({ component: <AddGoal />, props: { input, handleChangeDate, date,  newDate: {...date, endDate: prop} } }))
+                                dispatch(openModal({
+                                    component: <AddGoal />,
+                                    props: { input, handleChangeDate, date, newDate: { ...date, endDate: prop } }
+                                }))
                             }}
                             placeholder='End date'
                             name='endDate'
@@ -141,6 +149,14 @@ const AddGoal = ({ setIsUpdated }) => {
                         style='!text-sm' type='select'
                         name='userGoalCategoryId'
                         value={userGoalCategories?.data}
+                        isSelected = {globalModal.content?.props?.selected != null}
+                        placeholder={globalModal.content?.props?.selected ? globalModal.content?.props?.selected : "Select goal category"}
+                        done={(prop, propId) => {
+                            dispatch(openModal({
+                                component: <AddGoal />,
+                                props: { input, handleChangeDate, newDate: globalModal.content?.props?.newDate, selected: globalModal.content?.props?.selected || prop, selectedId: globalModal.content?.props?.selectedId || propId }
+                            }))
+                        }}
                     />
                 </div>
                 <AddButton type="submit" style="w-full mt-5 !py-4  bottom-10 z-20 " name="Create Goal" />
