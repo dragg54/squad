@@ -35,7 +35,7 @@ const Forum = ({ newPosts }) => {
           <AddButton
             name="Create Post"
             style='border border-purple-700 !bg-white !text-purple-700'
-            onClick={() => dispatch(openModal(<AddPost {...{ page, size }} />))} />
+            onClick={() => dispatch(openModal({component: <AddPost {...{ page, size }} />}))} />
         </div>
       </div>
       <div className="w-full md:w-[60%]">
