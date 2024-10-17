@@ -7,7 +7,6 @@ import { LuGoal } from "react-icons/lu";
 import { FaClipboard } from "react-icons/fa";
 import { MdEventAvailable } from "react-icons/md";
 import { MdOutlineSettings } from "react-icons/md";const Menu = ({menuContainerOpened, setMenuContainerOpened}) => {
-    console.log(menuContainerOpened)
   return (
     <div className={`w-screen h-screen fixed bg-gray-50 z-50   ${menuContainerOpened == undefined? 'hidden': menuContainerOpened ? 'block animate-slide-down top-[0%]':'animate-slide-up block -top-[100%]'}`}>
        <div className="w-full flex justify-center">

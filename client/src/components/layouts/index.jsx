@@ -18,7 +18,7 @@ const Layout = ({ children }) => {
         <div className='w-[20%] hidden md:block absolute'>
           <Sidebar />
         </div>
-        <div className='md:w-[85%] md:ml-20 w-full '>
+        <div className='md:w-[85%] md:ml-20 w-full -z-40'>
           {children}
         </div>
       </main>

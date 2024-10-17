@@ -34,16 +34,6 @@ const Input = ({style, placeholder, name, isSelected, type, onChange, checked, v
            {...{value, data, placeholder, name, onSelect, done, isSelected}}
         />
       )
-      // return(
-      //   <select onChange={onChange} name={name} className="p-3 w-full rounded-md mt-2 text-sm text-gray-600 bg-white border">
-      //     <option value="" className="font-semibold w-full py-4 bg-gray-300">Select Your Goal Category</option>
-      //     {
-      //       value?.length > 0 && value.map((val, index) => (
-      //         <option  className="p-2" value={val.id} key={index}>{val.name}</option>
-      //       ))
-      //     }
-      //   </select>
-      // )
     }
     else if(type == 'text-area'){
       return(
