@@ -18,7 +18,6 @@ import { MdOutlineSettings } from "react-icons/md";const Menu = ({menuContainerO
           <li className="menus"><FaClipboard />Vision Board</li>
           <li className="menus"><MdEventAvailable />Events</li>
           <li className="menus"><MdOutlineSettings />Settings</li>
-
         </ul>
       </div>
     </div>
