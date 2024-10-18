@@ -26,16 +26,17 @@ const AddPost = ({ page, size }) => {
     );
     const createPostMutation = useMutation(createPost, {
         onSuccess: () => {
-            refetch
             dispatch(closeModal())
-            //    dispatch(openModal(<Post {...{newPosts, page, size}}/>))
             dispatch(openPopup({ message: "Post created" }))
+            refetch()
         },
         onError: (err) => {
             console.log(err.response.status)
             handleErrorResponse(err.response.status)
         }
     });
+
+    console.log(newPosts)
 
     const handleSubmit = (e) => {
         e.preventDefault()

@@ -16,7 +16,7 @@ const Forum = ({ newPosts }) => {
   const [groupBy, setGroupBy] = useState("")
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(5);
-  const { data, isLoading, isError, refetch } = useQuery(
+  const { data, isLoading } = useQuery(
     ['posts', { page, size, groupBy }],
     getPosts,
     // {
