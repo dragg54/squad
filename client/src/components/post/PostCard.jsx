@@ -7,13 +7,25 @@ import { capitalizeHeader } from '../../utils/CapitalizeHeader';
 import { FaRegComment } from "react-icons/fa";
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import {  useSelector } from 'react-redux';
+import { useMutation } from 'react-query';
+import { likePost, unlikePost } from '../../services/post';
 
 
 const PostCard = ({ post }) => {
     const user = useSelector(state => (state.user))
     const [like, setLike] = useState(post?.likes?.noOfLikes)
     const [isLiked, setIsliked] = useState(post?.likes?.likesUsers?.some(users => users.userId == user.id))
+    const likePostMutation = useMutation(likePost)
+    const unlikePostMutation = useMutation(unlikePost)
+    const handleLikePost = () =>{
+        if(isLiked){
+           unlikePostMutation.mutate({postId: post.id})
+        }
+        else{
+            likePostMutation.mutate({postId: post.id})
+        }
+    }
     return (
         <div className='w-full cursor-pointer md:w-full bg-white overflow-x-visible rounded-md border  border-gray-200 shadow-lg shadow-gray-200 md:min-h-[200px] min-h-[200px] mb-3 p-4'>
             <Link className="w-full" to={"/post/" + post.id}>
@@ -34,14 +46,13 @@ const PostCard = ({ post }) => {
                 <div className=' flex gap-2 items-center' onClick={() => {
                     setLike(like < 1 ? like + 1: like-1)
                     setIsliked(!isLiked)
-                }}>
-                    <div className=''>
+                    handleLikePost()
+               }}>
                         <FontAwesomeIcon stroke={!isLiked && "gray"} strokeWidth={55} icon={faHeart} fill='white' style={{ color: isLiked ? "red": "white", fontSize: "20px" }} />
-                    </div>
                     <p className='!text-gray-400'>{like || 0} Likes</p>
                 </div>
-                <div className='text-xl  text-gray-400 flex gap-2 items-center'>
-                    <FaRegComment fill='gray' /> <span className='text-base'>10 Comments</span>
+                <div className='text-xl  text-gray-400 flex gap-2 items-center' >
+                    <FaRegComment fill='gray' /> <span className='text-base'>{post.comments.noOfComments}</span>
                 </div>
             </div>
         </div>

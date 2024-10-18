@@ -1,5 +1,6 @@
 import { BadRequestError } from "../errors/BadRequestError.js"
 import { DuplicateError } from "../errors/DuplicateError.js"
+import Comment from "../models/Comment.js"
 import Post from "../models/Post.js"
 import PostLike from "../models/PostLike.js"
 import User from "../models/User.js"
@@ -52,14 +53,15 @@ export const getAllPosts = async (req, res) => {
     const postAndLikes = await Promise.all(
         paginatedData.data.map(async (post) => {
             const postLikesCounts = await PostLike.count({ where: { postId: post.id } });
+            const postCommentCounts = await Comment.count({where: {postId: post.id}})
             const likesUsers = await PostLike.findAll({where:{postId: post.id}, include:{
                 model: User,
                 attributes: {exclude: ["createdBy", "createdAt", "password", "user"]}
             }})
             return { ...post.toJSON(), likes: {
                 noOfLikes: postLikesCounts,
-                likesUsers: likesUsers
-            } }; // Convert post instance to JSON object
+                likesUsers: likesUsers,
+            }, comments: {noOfComments: postCommentCounts} }; // Convert post instance to JSON object
         })
     );
 
@@ -75,7 +77,7 @@ export const getPost = async (req, res) => {
         include: {
             model: User,
             attributes: { exclude: ["password", "createdAt", "updatedAt"] }
-        }
+        },
     })
 }
 

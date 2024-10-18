@@ -53,7 +53,7 @@ export const updatePost = async (formData) => {
 
 export const likePost = async(formData)=>{
   try {
-    const response = await axiosInstance.put(`${BACKEND_SERVER_URL}/Posts/${formData.postId}/likes`, formData)
+    const response = await axiosInstance.post(`${BACKEND_SERVER_URL}/Posts/${formData.postId}/likes`, formData)
     return response
   }
   catch (error) {

@@ -4,30 +4,29 @@ import { useState } from 'react'
 import Input from '../../components/inputs'
 import Button from '../../components/buttons'
 import { openPopup } from '../../redux/reducers/PopUpReducer'
-import { createPost, getPosts } from '../../services/post'
+import { createComment, getComments } from '../../services/comment'
 import useHandleErrorResponse from '../../hooks/useHandleErrorResponse'
 import { useDispatch } from 'react-redux'
 import { useMutation, useQuery } from 'react-query'
 import { closeModal } from '../../redux/reducers/GlobalModalReducer'
 
-const AddPost = ({ page, size }) => {
+const AddComment = ({ page, size, postId }) => {
     const [inputValues, setInputValues] = useState({
-        title: "",
-        description: ""
+        content: "",
     })
     const dispatch = useDispatch()
     const handleErrorResponse = useHandleErrorResponse()
-    const { data: newPosts, isLoading, isError, refetch } = useQuery(
-        ['posts', { page, size, groupBy: "" }],
-        getPosts,
+    const { data: newComments, isLoading, isError, refetch } = useQuery(
+        ['Comments', { page, size, groupBy: "" }],
+        getComments,
         // {
         //   keepPreviousData: true, 
         // }
     );
-    const createPostMutation = useMutation(createPost, {
+    const createCommentMutation = useMutation(createComment, {
         onSuccess: () => {
             dispatch(closeModal())
-            dispatch(openPopup({ message: "Post created" }))
+            dispatch(openPopup({ message: "Comment submitted" }))
             refetch()
         },
         onError: (err) => {
@@ -36,39 +35,33 @@ const AddPost = ({ page, size }) => {
         }
     });
 
-
     const handleSubmit = (e) => {
         e.preventDefault()
-        createPostMutation.mutate(inputValues)
+        inputValues.postId = postId
+        createCommentMutation.mutate(inputValues)
     }
 
     const handleChange = (e) => {
         setInputValues({ ...inputValues, [e.target.name]: e.target.value })
     }
     return (
-        <div onClick={(e) => e.stopPropagation()} className='w-5/6 md:w-2/6 rounded-md shadow-md shadow-gray-300 pt-6 p-5 md:h-[400px] h-[450px] bg-white mx-auto'>
+        <div onClick={(e) => e.stopPropagation()} className='w-5/6 md:w-2/6 rounded-md shadow-md shadow-gray-300 pt-6 p-5 md:h-[350px] h-[350px] bg-white mx-auto'>
             <h1 className='w-full text-2xl font-semibold'>
-                Create Post
+                Post Comment
             </h1>
             <form onSubmit={handleSubmit} action="" className='mt-6'>
-                <label htmlFor="">
-                    <Input
-                        placeholder='Title'
-                        name='title'
-                        onChange={handleChange} />
-                </label>
                 <Input
                     style='!mt-5 h-36 outline-none p-2 !border'
-                    name='description'
+                    name='content'
                     onChange={handleChange}
                     type='text-area'
-                    placeholder='Post' />
+                    placeholder='Add comment' />
                 <div className='w-full flex justify-end'>
-                    <Button type='submit' style='mt-6 !py-3 !bg-[#9619b2]' name="Create Post" />
+                    <Button type='submit' style='mt-6 !py-3 !bg-[#9619b2]' name="Submit Comment" />
                 </div>
             </form>
         </div>
     )
 }
 
-export default AddPost
+export default AddComment

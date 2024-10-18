@@ -4,8 +4,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart } from '@fortawesome/free-solid-svg-icons'
 import { formatDate } from '../../utils/DateFormatter'
 import { FaRegComment } from "react-icons/fa";
+import { useDispatch } from 'react-redux';
+import { openModal } from '../../redux/reducers/GlobalModalReducer';
+import AddComment from '../../pages/post/AddComment';
 
 const PostContainer = ({ isParent, data }) => {
+  const dispatch = useDispatch()
   return (
     <div className={`${isParent ? 'w-full' : 'w-[95%] self-end'} border border-gray-300 p-4 shadow-md shadow-gray-300 rounded-md h-auto`}>
       <div className="flex justify-start items-center gap-4">
@@ -26,9 +30,11 @@ const PostContainer = ({ isParent, data }) => {
           <FontAwesomeIcon icon={faHeart} style={{ color: "red", fontSize: "20px" }} />
           <p className='!text-gray-400'>200 Likes</p>
         </div>
-        <div className='flex gap-1 items-center'>
-        <FaRegComment className='text-gray-400 text-[20px]'/>
-        <p className='!text-gray-400  whitespace-nowrap'>10 Comments</p>
+        <div className='flex gap-1 items-center cursor-pointer' onClick={()=>{
+                    dispatch(openModal({component: <AddComment {...{postId: data.id}}/>, }))
+                }}>
+          <FaRegComment className='text-gray-400 text-[20px]' />
+          <p className='!text-gray-400  whitespace-nowrap'>10 Comments</p>
         </div>
       </div>
       {/* {isParent ? <div className='w-full p-3 rounded-md bg-gray-300 mt-4 text-gray-700 font-semibold'>View all comments</div>: ''} */}
