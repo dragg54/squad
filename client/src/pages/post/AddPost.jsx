@@ -26,7 +26,7 @@ const AddPost = ({ page, size }) => {
     );
     const createPostMutation = useMutation(createPost, {
         onSuccess: () => {
-            refetch()
+            refetch
             dispatch(closeModal())
             //    dispatch(openModal(<Post {...{newPosts, page, size}}/>))
             dispatch(openPopup({ message: "Post created" }))

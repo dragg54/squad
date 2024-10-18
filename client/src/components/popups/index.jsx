@@ -13,7 +13,7 @@ const PopUp = ({ autoCloseDuration = 3000 }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!popup.isOpen) {
+    if (popup.isOpen) {
       const timer = setTimeout(() => {
         dispatch(closePopup());
       }, autoCloseDuration);

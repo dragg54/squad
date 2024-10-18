@@ -8,7 +8,7 @@ import { FaClipboard } from "react-icons/fa";
 import { MdEventAvailable } from "react-icons/md";
 import { MdOutlineSettings } from "react-icons/md";const Menu = ({menuContainerOpened, setMenuContainerOpened}) => {
   return (
-    <div className={`w-screen h-screen fixed bg-gray-50 z-50 ${menuContainerOpened == undefined? 'hidden ': menuContainerOpened ? 'block animate-slide-down z-50 top-[0%]':'animate-slide-up block -top-[100%]'}`}>
+    <div className={`w-screen z-50 h-screen fixed bg-gray-50  ${menuContainerOpened == undefined? 'hidden ': menuContainerOpened ? 'block animate-slide-down  top-[0%]':'animate-slide-up block  -top-[150%]'}`}>
        <div className="w-full flex justify-center">
         <ul className="mt-10 gap-10 flex flex-col h-full  !text-gray-200">
           <li className="menus" onClick={()=>setMenuContainerOpened(false)}><GoHome /><Link className="menus" to="/">Home</Link></li>
