@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { authMiddleware } from '../middlewares/authMiddleWare.js';
 import { validateRequest } from '../middlewares/validatorMiddleWare.js';
-import { commentSchema, updateCommentSchema } from '../schemas/CommentSchema.js';
+import { commentSchema, updateCommentSchema } from '../schemas/commentSchema.js';
 import { createComment, deleteCommentLike, getAllComments, getComment, getCommentLikes, likeComment, updateComment } from '../controllers/CommentController.js';
 
 const router = Router();
