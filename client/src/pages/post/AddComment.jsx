@@ -17,7 +17,7 @@ const AddComment = ({ page, size, postId }) => {
     const dispatch = useDispatch()
     const handleErrorResponse = useHandleErrorResponse()
     const { data: newComments, isLoading, isError, refetch } = useQuery(
-        ['Comments', { page, size, groupBy: "" }],
+        ['comment', { page, size, groupBy: "" }],
         getComments,
         // {
         //   keepPreviousData: true, 

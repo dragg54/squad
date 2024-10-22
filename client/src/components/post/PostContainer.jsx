@@ -8,8 +8,9 @@ import { useDispatch } from 'react-redux';
 import { openModal } from '../../redux/reducers/GlobalModalReducer';
 import AddComment from '../../pages/post/AddComment';
 
-const PostContainer = ({ isParent, data }) => {
+const PostContainer = ({ isParent, data, refetchComment }) => {
   const dispatch = useDispatch()
+  console.log(refetchComment)
   return (
     <div className={`${isParent ? 'w-full' : 'w-[95%] self-end'} border border-gray-300 p-4 shadow-md shadow-gray-300 rounded-md h-auto`}>
       <div className="flex justify-start items-center gap-4">
@@ -22,7 +23,7 @@ const PostContainer = ({ isParent, data }) => {
       </div>
       <div className='w-full mt-3'>
         <p>
-          {data?.description}
+          {data?.description || data?.content}
         </p>
       </div>
       <div className='flex mt-4 gap-3'>
@@ -31,7 +32,7 @@ const PostContainer = ({ isParent, data }) => {
           <p className='!text-gray-400'>200 Likes</p>
         </div>
         <div className='flex gap-1 items-center cursor-pointer' onClick={()=>{
-                    dispatch(openModal({component: <AddComment {...{postId: data.id}}/>, }))
+                    dispatch(openModal({component: <AddComment {...{postId: data.id}}/>, props: refetchComment}))
                 }}>
           <FaRegComment className='text-gray-400 text-[20px]' />
           <p className='!text-gray-400  whitespace-nowrap'>10 Comments</p>

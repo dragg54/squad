@@ -82,7 +82,7 @@ const AddGoal = ({ setIsUpdated }) => {
     }
 
     return (
-        <div onClick={(e) => e.stopPropagation()} className='w-[90%] md:w-[30%] relative mx-auto bg-white h-[550px] rounded-md shadow-md  p-5'>
+        <div onClick={(e) => e.stopPropagation()} className='w-[90%] md:w-[30%] -mt-16 md:mt-0 relative mx-auto bg-white h-[550px] rounded-md shadow-md  p-5'>
             <h1 className="text-xl font-semibold">Add Goals</h1>
             <form onSubmit={handleSaveGoal} action="" className="mt-8 flex-col">
                 <div>

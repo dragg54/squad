@@ -5,16 +5,17 @@ import AuthConnect from './index.js';
 
 const axiosInstance = AuthConnect
 export const getComments = async ({ queryKey }) => {
-  const [_key, { page, size, groupBy }] = queryKey;
+  const [_key, { page, size, groupBy, postId }] = queryKey;
   try {
     const response = await axiosInstance.get(`${BACKEND_SERVER_URL}/Comments`,
       {
-        params: { page, size, groupBy },
+        params: { page, size, groupBy, postId },
       }
     );
     return response.data;
   }
   catch (err) {
+    console.log(err.message)
     throw err
   }
 };
