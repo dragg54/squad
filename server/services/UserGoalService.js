@@ -28,6 +28,11 @@ export const getAllUserGoals = async (req) => {
   const { page, size, groupBy } = req.query;
   const { limit, offset } = getPagination(page, size);
 
+  const queryOpts = {}
+  const {userId} = req.query
+  if(userId){
+     queryOpts["userId"] = userId
+  }
   if (groupBy == "month") {
     const goalsGroupedByMonth = await models.UserGoal.findAll({
       attributes: [
@@ -65,7 +70,7 @@ export const getAllUserGoals = async (req) => {
   }
   const userGoalsData = await models.UserGoal.findAndCountAll(
     {
-      where: { userId: 1 },
+      where:  queryOpts,
       attributes: { exclude: 'userGoalCategoryId' },
       include: [
         { model: models.UserGoalCategory, attributes: ['id', 'name'] },

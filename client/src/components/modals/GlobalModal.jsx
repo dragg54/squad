@@ -17,7 +17,7 @@ const GlobalModal = () => {
   return (
     <div onClick={() => {
       dispatch(closeModal())
-    }} className={`w-screen h-screen z-50 overflow-hidden bg-modal ${globalModal.isOpen && globalModal.content?.component ? 'flex' : 'hidden'} items-start pt-28 md:pt-40 justify-center  fixed `}>
+    }} className={`w-screen h-screen z-50 overflow-hidden bg-modal ${globalModal.isOpen && globalModal.content?.component ? 'flex' : 'hidden'} items-start md:items-center pt-28 md:pt-0 justify-center  fixed `}>
       {globalModal?.content?.component}
     </div>
   )

@@ -9,8 +9,11 @@ import useHandleErrorResponse from '../../hooks/useHandleErrorResponse'
 import { useDispatch } from 'react-redux'
 import { useMutation, useQuery } from 'react-query'
 import { closeModal } from '../../redux/reducers/GlobalModalReducer'
+import { useQueryClient } from 'react-query';
+
 
 const AddComment = ({ page, size, postId }) => {
+    const queryClient = useQueryClient();
     const [inputValues, setInputValues] = useState({
         content: "",
     })
@@ -24,16 +27,18 @@ const AddComment = ({ page, size, postId }) => {
         // }
     );
     const createCommentMutation = useMutation(createComment, {
-        onSuccess: () => {
+        onSuccess: async () => {
+            await queryClient.invalidateQueries(['comment']);
             dispatch(closeModal())
             dispatch(openPopup({ message: "Comment submitted" }))
-            refetch()
         },
         onError: (err) => {
             console.log(err.response.status)
             handleErrorResponse(err.response.status)
         }
     });
+
+    if(isLoading) return <p>Loading...</p>
 
     const handleSubmit = (e) => {
         e.preventDefault()

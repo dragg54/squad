@@ -5,6 +5,8 @@ import popupModalReducer from './reducers/PopUpReducer';
 import storage from 'redux-persist/lib/storage'
 import { persistReducer, persistStore } from 'redux-persist';
 import userReducer from './reducers/UserReducer';
+import  authReducer  from './reducers/AuthReducer';
+import  notificationReducer  from './reducers/NotificationReducer';
 
 const persistConfig = {
     key: "root",
@@ -16,7 +18,9 @@ const persistConfig = {
 export const rootReducer = combineReducers({
     globalModal: globalModalReducer,
     popup: popupModalReducer,
-    user: userReducer
+    user: userReducer,
+    auth: authReducer,
+    notification: notificationReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

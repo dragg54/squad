@@ -10,7 +10,6 @@ import AddComment from '../../pages/post/AddComment';
 
 const PostContainer = ({ isParent, data, refetchComment }) => {
   const dispatch = useDispatch()
-  console.log(refetchComment)
   return (
     <div className={`${isParent ? 'w-full' : 'w-[95%] self-end'} border border-gray-300 p-4 shadow-md shadow-gray-300 rounded-md h-auto`}>
       <div className="flex justify-start items-center gap-4">

@@ -7,6 +7,7 @@ import { loginUser } from '../../services/user'
 import { useDispatch } from 'react-redux'
 import { openPopup } from '../../redux/reducers/PopUpReducer'
 import { fetchUser } from '../../redux/reducers/UserReducer'
+import { fetchToken } from '../../redux/reducers/AuthReducer'
 
 const Login = () => {
     const navigate = useNavigate()
@@ -21,6 +22,7 @@ const Login = () => {
                 navigate("/")
                 dispatch(fetchUser(data))
                 dispatch(openPopup({message: "Login successful", status: status.success}))
+                dispatch(fetchToken({token: data.token}))
             }
         },
         onError: (err) =>{

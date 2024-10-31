@@ -9,7 +9,7 @@ const Selection = () => {
     console.log(value)
     const [ selected, setSelected ] = useState(null)
     return (
-        <div className='bg-white w-[96%] md:w-[400px] h-[600px] p-6 shadow-md' onClick={(e)=> e.stopPropagation()}>
+        <div className='bg-white w-[96%] md:w-[400px] -mt-18  h-[600px] p-6 shadow-md' onClick={(e)=> e.stopPropagation()}>
             <h1 className='text-xl font-bold w-full py-2 border-b border-gray-300 inline-flex justify-between items-center'>
                 Select Goal Category 
                 <span><Button onClick={()=> done(selected, value.find(x => x.name == selected).id)} name="Done" style="!bg-purple-700"/></span>

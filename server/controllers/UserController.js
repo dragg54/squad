@@ -14,7 +14,7 @@ export const createUser = async (req, res) => {
 
 export const getAllUsers = async (req, res) => {
   try {
-    const users = await userService.getAllUsers();
+    const users = await userService.getAllUsers(req);
     res.status(200).json(users);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -65,7 +65,7 @@ export const loginUser = async (req, res) =>{
         const user = await userService.loginUser(req.body)
         res.cookie('token', user.token, {
             httpOnly: true, 
-            maxAge: 3600000
+             maxAge: 24 * 60 * 60 * 1000,
           }).send(user)
     }
     catch(error){

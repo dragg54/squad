@@ -7,11 +7,13 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { openPopup } from '../../redux/reducers/PopUpReducer'
 import { status } from '../../constants/ResponseStatus'
+import { SQUAD_ID } from '../../Appconfig'
 
 const Register = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const [input, setInput] = useState({
+        squadId: "",
         firstName: "",
         lastName: "",
         userName: "",
@@ -32,6 +34,7 @@ const Register = () => {
 
     const handleSubmit = (e) =>{
         e.preventDefault()
+        input.squadId = SQUAD_ID,
         createUserMutation.mutate(input)
     }
 

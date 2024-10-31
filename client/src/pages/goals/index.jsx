@@ -44,8 +44,8 @@ const Goals = () => {
     }, [])
 
     return (
-        <section className="w-full overflow-x-visible h-screen overflow-y-scroll p-4 md:p-8 pb-40 md:pb-48 md:ml-[20rem] pb-20">  
-            <div className="md:w-[60%] w-full overflow-scroll p-4">
+        <section className="w-full  h-screen overflow-y-scroll p-4 md:p-8 pb-40 md:pb-48 md:ml-[20rem] pb-20">  
+            <div className="md:w-[60%] w-full p-4">
                 <div className="w-full flex justify-between items-center">
                     <div className="">
                         <h1 className="text-xl font-semibold">Goals</h1>
@@ -55,7 +55,7 @@ const Goals = () => {
                         <AddGoalsButton onClick={() => dispatch(openModal({component:<AddGoal {...{setIsUpdated}}/>}))} />
                     </div>
                 </div>
-                <div className="w-full mt-16 mb-5 overflow-scroll">
+                <div className="w-full mt-16 mb-5 ">
                     <div className="mb-3 flex gap-5">
                         <p onClick={() => {
                             setGroupBy("")
@@ -75,7 +75,7 @@ const Goals = () => {
                     </div>
                     {presentTab == "monthlyGoals" ? <MonthlyGoals {...{ allMonths, openMonthGoalsContainer, setOpenMonthGoalsContainer, data, presentTab }} />:
                     <div>
-                        <div className="w-full overflow-scroll">
+                        <div className="w-full">
                         <ul className="w-full mt-2">
                             {data && data.data?.length > 0 && data.data.map(goal => (
                                <Goal key={goal.id} {...{goal, setIsUpdated}}/>

@@ -5,6 +5,7 @@ import PopUp from '../popups'
 import Navbar from './Navbar'
 import { useState } from 'react'
 import Sidebar from './Sidebar'
+import Aside from './Aside'
 
 const Layout = ({ children }) => {
   const [menuContainerOpened, setMenuContainerOpened] = useState(undefined)
@@ -21,6 +22,7 @@ const Layout = ({ children }) => {
         <div className='md:w-[85%] md:ml-20 w-full -z-40'>
           {children}
         </div>
+        <Aside />
       </main>
     </div>
   )

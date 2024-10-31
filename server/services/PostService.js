@@ -5,12 +5,19 @@ import Post from "../models/Post.js"
 import PostLike from "../models/PostLike.js"
 import User from "../models/User.js"
 import { getPagination, getPagingData } from "../utils/pagination.js"
+import { sendNotificationMessage } from "./NotificationService.js"
+import { getSquadById } from "./SquadService.js"
 
 export const createPost = async (req, res) => {
     const { title, description } = req.body
+    const squadId = req.user.squadId
     const userId = req.user.id
+    const existingSquad = getSquadById(squadId)
+    if(!existingSquad){
+        throw new BadRequestError("Squad must exist before user can be added")
+    }
     await Post.create({
-        userId, title, description
+        userId, squadId, title, description
     })
 }
 
@@ -37,6 +44,7 @@ export const getAllPosts = async (req, res) => {
     let queryOptions = {
         limit,
         offset,
+        where: {squadId: req.user.squadId},
         include: {
             model: User,
             attributes: { exclude: ["password", "createdAt", "updatedAt"] }
@@ -44,7 +52,7 @@ export const getAllPosts = async (req, res) => {
     };
 
     if (userId) {
-        queryOptions.where = { userId: userId };
+        queryOptions.where["userId"] = userId ;
     }
 
     const postData = await Post.findAndCountAll(queryOptions);

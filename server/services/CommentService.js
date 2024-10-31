@@ -30,7 +30,7 @@ export const updateComment = async (req, res) => {
 }
 
 export const getAllComments = async (req, res) => {
-    const { userId, page, size } = req.query;
+    const { userId, page, size, postId } = req.query;
     const { limit, offset } = getPagination(page, size);
 
     let queryOptions = {

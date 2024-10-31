@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Input from '../../components/inputs'
 import Button from '../../components/buttons'
 import { openPopup } from '../../redux/reducers/PopUpReducer'
@@ -24,6 +24,10 @@ const AddPost = ({ page, size }) => {
         //   keepPreviousData: true, 
         // }
     );
+
+    const [message, setMessage] = useState()
+ 
+    console.log(message)
     const createPostMutation = useMutation(createPost, {
         onSuccess: () => {
             dispatch(closeModal())

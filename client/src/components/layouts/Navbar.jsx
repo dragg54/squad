@@ -1,16 +1,13 @@
 /* eslint-disable react/prop-types */
 import { IoNotificationsOutline } from "react-icons/io5";
 import { IoMdMenu } from "react-icons/io";
-import { useLocation } from "react-router-dom";
 import Image from "../containers/Image";
+import { useIgnoreMatchedPath } from "../../hooks/useIgnoreMatchPath";
 
 const Navbar = ({ setMenuContainerOpened }) => {
-  const location = useLocation()
-  const url = location.pathname
-  const pathsToIgnore = ["intro", "login", "register"]
-  const matchFound = pathsToIgnore.some(pattern => url.includes(pattern));
+ if(!useIgnoreMatchedPath())
   return (
-    <div className={`w-full fixed z-40 ${matchFound && 'hidden'} md:h-20  h-20 border-b shadow-md shadow-gray-300 `}>
+    <div className={`w-full fixed z-40 md:h-20  h-20 border-b shadow-md shadow-gray-300 `}>
       <div className="absolute md:px-7 items-center w-full  p-4 flex justify-between">
         <div className="flex items-center gap-2">
           <Image style="h-10 w-10" source={'images/batman.jpg'} />

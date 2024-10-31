@@ -18,7 +18,7 @@ const Sidebar = () => {
         <ul className="mt-10  gap-10 w-full flex flex-col h-full items-start ml-4 !text-gray-200">
            <li className="menus" ><GoHome /><Link className="menus" to="/">Home</Link></li>
             <li  className="menus"><MdForum /><Link className="menus" to="/forum">Forum</Link></li>
-            <li  className="menus"><LuUsers /><Link className="menus" to="/squad">Squad</Link></li>
+            <li  className="menus"><LuUsers /><Link className="menus" to="/member">Squad</Link></li>
             <li  className="menus"><LuGoal /><Link className="menus" to="/goals">Goals</Link></li>
             <li className="menus"><FaClipboard/>Vision Board</li>
             <li className="menus"><MdEventAvailable/>Events</li>

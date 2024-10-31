@@ -26,7 +26,7 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory, localDate }) => {
     console.log(goal)
     const dispatch = useDispatch()
     const { data: userData, error: userError, isLoading: usersIsLoading, isError: usersIsError } = useQuery(['users'], getAllUsers);
-         
+
     const updateGoalMutation = useMutation(updateUserGoal, {
         onSuccess: () => {
             setIsUpdated(true)
@@ -41,6 +41,7 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory, localDate }) => {
     const [inputValues, setInputValues] = useState({
         id: goal?.id,
         title: goal?.title,
+        userGoalCategoryId: goal?.userGoalCategoryId,
         description: goal?.description,
         endDate: goal?.endDate,
         goalPartners: goal?.goalPartners,
@@ -52,6 +53,7 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory, localDate }) => {
         setInputValues({
             id: goal?.id,
             title: goal?.title,
+            userGoalCategoryId: goal?.userGoalCategoryId,
             description: goal?.description,
             endDate: goal?.endDate,
             startDate: goal?.startDate,
@@ -72,9 +74,8 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory, localDate }) => {
         e.preventDefault()
         const updatedValues = {
             ...inputValues, endDate: localDate || inputValues.endDate,
-            usergoalcategoryId: localSelectedCategory ? localSelectedCategory.id : selectedCategory.id
+            userGoalCategoryId: localSelectedCategory ? localSelectedCategory.id : selectedCategory.id
         }
-
         updateGoalMutation.mutate(updatedValues)
     }
 
@@ -109,7 +110,7 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory, localDate }) => {
                         <p className="font-semibold cursor-pointer">Category</p>
                         <p className="text-sm mt-1 text-gray-500 inline-flex gap-1 items-center">{localSelectedCategory ? localSelectedCategory.name : selectedCategory.name} </p>
                     </div>
-                    <div className='cursor-pointer w-1/2' onClick={() => dispatch(openModal(<Deadline {...{ goal, setDate, date, setIsUpdated }} />))}>
+                    <div className='cursor-pointer w-1/2' onClick={() => dispatch(openModal({component:<Deadline {...{ goal, setDate, date, setIsUpdated }} />}))}>
                         <p className="font-semibold inline-flex items-center">Deadline <CiClock2 style={{ marginLeft: "5px", fontSize: "20px", color: "#1a5653" }} /></p>
                         <p className="text-sm mt-1 text-gray-500">{formatDate(localDate ? localDate : inputValues.endDate)}</p>
                     </div>

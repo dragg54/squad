@@ -20,6 +20,11 @@ const User = db.define('user', {
     allowNull: false,
     unique: true,
   },
+  bio:{
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
   password: {
     type: DataTypes.STRING,
     allowNull: false,

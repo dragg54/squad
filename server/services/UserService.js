@@ -6,11 +6,17 @@ import { BadRequestError } from '../errors/BadRequestError.js';
 import { NotFoundError } from '../errors/NotFoundError.js';
 import { InternalServerError } from '../errors/InternalServerError.js';
 import { DuplicateError } from '../errors/DuplicateError.js';
+import { getSquadById } from './SquadService.js';
 
 export const createUser = async (userData) => {
+    const existingSquad = getSquadById(userData.squadId)
+    if(!existingSquad){
+        throw new BadRequestError("Squad must exist before user can be added")
+    }
     const existingUser = await User.findOne({
         where: {
-            email: userData.email
+            email: userData.email,
+            squadId: userData.squadId
         }
     })
     if (existingUser) {
@@ -22,13 +28,15 @@ export const createUser = async (userData) => {
     await User.create(userData)
 };
 
-export const getAllUsers = async () => {
-    return await User.findAll({attributes: ["id", "firstName", "lastName", "email", "userName"]});
+export const getAllUsers = async (req) => {
+    return await User.findAll({ attributes: ["id", "firstName", "lastName", "email", "userName"], 
+        where: {squadId: req.user.squadId}
+    });
 };
 
 export const getUserById = async (id) => {
     return await User.findByPk(id, {
-        attributes: ["id", "firstName", "lastName", "email"]
+        attributes: ["id", "firstName", "lastName", "email", "userName"]
     });
 };
 
@@ -72,5 +80,14 @@ export const loginUser = async (userData) => {
         throw new BadRequestError('Invalid email or password');
     }
     const token = generateToken(existingUser)
-    return {token, userDetails:{id: existingUser.id, email: existingUser.email, userName: existingUser.userName, firstName: existingUser.firstName, lastName:existingUser.lastName}}
+    return {
+        token, userDetails: {
+            id: existingUser.id,
+            squadId: existingUser.squadId,
+            email: existingUser.email,
+            userName: existingUser.userName,
+            firstName: existingUser.firstName,
+            lastName: existingUser.lastName
+        }
+    }
 }

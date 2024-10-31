@@ -32,3 +32,13 @@ export const createUser = async (formData) =>{
         throw error
     }
   }
+
+  export const getUserById = async (id) =>{
+    try{
+        const response = await axiosInstance.get(`${BACKEND_SERVER_URL}/users/${id}`)
+        return response.data
+    }
+    catch(error){
+        throw error
+    }
+  }

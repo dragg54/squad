@@ -24,7 +24,7 @@ const Deadline = ({ goal, setDate, date, setIsUpdated }) => {
                     name='Done'
                     onClick={() => {
                         dispatch(closeModal())
-                        dispatch(openModal(<EditGoal {...{ goal, localDate, setIsUpdated }} />))
+                        dispatch(openModal({component:<EditGoal {...{ goal, localDate, setIsUpdated }} />}))
                     }}
                     style='!bg-white !text-purple-500 border !border-purple-500' /></span></div>
             <div className='w-full mt-6 flex justify-center'>

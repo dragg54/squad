@@ -6,6 +6,7 @@ export const createUserGoal = async (req, res, next) => {
   const transaction = await db.transaction();
   try {
     req.body.userId = req.user.id
+    req.body.squadId = req.user.squadId
     const goal = await userGoalService.createUserGoal(req.body, transaction);
     await transaction.commit();
     return res.status(201).json({message: "User goal created"});
