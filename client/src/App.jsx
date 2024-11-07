@@ -11,23 +11,26 @@ import Register from './pages/register'
 import Login from './pages/login'
 import Post from './pages/post/Post'
 import ProtectedRoute from './components/route/ProtectedRoute'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { socket } from './utils/Socket'
 import { useDispatch, useSelector } from 'react-redux'
-import { setMessage } from './redux/reducers/NotificationReducer'
+import { addNotification } from './redux/reducers/NotificationReducer'
+// import Notification from './pages/notifications'
 
 
 function App() {
+  const user = useSelector(state => state.user)
   const message = useSelector(state => state.notification)
-  socket.emit('register', 123);
+  socket.emit('register', user.id);
+  const dispatch = useDispatch()
   
   useEffect(() => {
     try {
 
       // Listen for notifications sent to this user
-      socket.on('receiveNotification', (message) => {
-          console.log('Received notification:', message);
-          alert(`Notification: ${message}`);
+      socket.on('receiveNotification', () => {
+        console.log("sending notification...")
+          dispatch(addNotification())
       });
       
     } catch (err) {
@@ -62,6 +65,10 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="/goals" element={<Goals />} />
           </Route>
+
+          {/* <Route element={<ProtectedRoute />}>
+            <Route path="/notifications" element={<Notification />} />
+          </Route> */}
 
           <Route path="/register" element={<Register />} />
 

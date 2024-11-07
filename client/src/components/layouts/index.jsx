@@ -6,15 +6,20 @@ import Navbar from './Navbar'
 import { useState } from 'react'
 import Sidebar from './Sidebar'
 import Aside from './Aside'
+import NotificationContainer from '../../pages/notifications'
 
 const Layout = ({ children }) => {
   const [menuContainerOpened, setMenuContainerOpened] = useState(undefined)
+  const [openNotificationContainer, setOpenNotificationContainer] = useState(false)
   return (
-    <div className='w-full relative md:overflow-visible'>
+    <div className='w-full relative md:overflow-visible' onClick={()=>{
+      setOpenNotificationContainer(false)
+    }}>
       <GlobalModal />
       <PopUp />
       <Menu {...{ menuContainerOpened, setMenuContainerOpened }} />
-      <Navbar {...{ setMenuContainerOpened }} />
+      <Navbar {...{ setMenuContainerOpened, setOpenNotificationContainer, openNotificationContainer }} />
+      <NotificationContainer {...{openNotificationContainer}}/>
       <main className='w-full md:flex gap-20 fixed top-20'>
         <div className='w-[20%] hidden md:block absolute'>
           <Sidebar />

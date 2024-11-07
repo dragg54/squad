@@ -6,7 +6,7 @@ import { createUser } from '../../services/user'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { openPopup } from '../../redux/reducers/PopUpReducer'
-import { status } from '../../constants/ResponseStatus'
+import { responseStatus } from '../../constants/ResponseStatus'
 import { SQUAD_ID } from '../../Appconfig'
 
 const Register = () => {
@@ -24,7 +24,7 @@ const Register = () => {
     const createUserMutation = useMutation(createUser, {
         onSuccess: () => {
            navigate("/login")
-           dispatch(openPopup({message: "User successfully created", status: status.success}))
+           dispatch(openPopup({message: "User successfully created", status: responseStatus.success}))
         },
       });
 
@@ -39,7 +39,7 @@ const Register = () => {
     }
 
     return (
-        <section className='md:flex items-center md:flex-col md:mt-8'>
+        <section className='md:flex items-center md:flex-col md:-mt-12'>
             <div className="w-full p-6 md:w-1/3">
                 <h1 className="font-semibold text-2xl mt-5 md:text-4xl">Register</h1>
                 <p className="text-gray-500 text-sm md:text-xl">Create an account</p>

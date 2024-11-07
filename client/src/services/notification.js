@@ -13,4 +13,35 @@ export const subscribeNotification = async (formData) => {
       throw error
     }
   }
+
+  export const getAllNotifications = async() =>{
+    try{
+      const response = await axiosInstance.get(`${BACKEND_SERVER_URL}/Notifications`)
+      return response
+    }
+    catch(err){
+      throw err
+    }
+  }
+
+  export const getNotificationSummary = async() =>{
+    try{
+      const response = await axiosInstance.get(`${BACKEND_SERVER_URL}/NotificationSummaries`)
+      return response
+    }
+    catch(err){
+      throw err
+    }
+  }
+
+  export const readAllNotifications = async() =>{
+    try{
+      const response = await axiosInstance.patch(`${BACKEND_SERVER_URL}/Notifications/readAll`)
+      return response
+    }
+    catch(err){
+      throw err
+    }
+  }
+  
   

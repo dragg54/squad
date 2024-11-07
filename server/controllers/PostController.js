@@ -1,13 +1,17 @@
+import db from '../configs/db.js';
 import { BadRequestError } from '../errors/BadRequestError.js';
 import * as postService from '../services/PostService.js'
 
 export const createPost = async (req, res) => {
+  const trans = await db.transaction()
   try {
     req.body.userId = req.user.id
-    const post = await postService.createPost(req, res);
+    const post = await postService.createPost(req, res, trans);
+    await trans.commit()
     return res.status(201).json({ message: "User Post created" });
   } catch (error) {
     console.log(error)
+    await trans.rollback()
     res.status(error.statusCode || 500).send({
       message: error.message || "Internal Server Error"
     })
@@ -77,11 +81,14 @@ export const getPostsByMonth = async (req, res, next) => {
 };
 
 export const likePost = async (req, res) =>{
+  const trans = await db.transaction()
   try{
-    await postService.likePost(req, res)
+    await postService.likePost(req, res, trans)
+    await trans.commit()
     res.json({message: "Post liked"})
   }
   catch (error) {
+    await trans.rollback()
     res.status(error.statusCode || 500).send({
       message: error.message || "Internal Server Error"
     })

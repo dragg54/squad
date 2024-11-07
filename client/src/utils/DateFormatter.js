@@ -26,6 +26,7 @@ export const getMonthIndex = (monthName) => {
 
 //for getting month from Date string
 export const getMonthName = (monthIndex) => {
+  console.log(monthIndex)
   const date = setMonth(new Date(), monthIndex);
   return format(date, 'MMMM');
 };

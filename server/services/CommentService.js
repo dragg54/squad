@@ -93,7 +93,7 @@ export const likeComment = async (req, res) => {
     }
     const existingLike = await CommentLike.findOne({ CommentId: id, userId: req.user.id })
     if (existingLike) {
-        throw new DuplicateError("Comment already liked by user")
+        return
     }
     await CommentLike.create({
         userId: req.user.id,

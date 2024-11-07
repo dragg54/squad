@@ -11,7 +11,7 @@ export const authMiddleware = async (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.SECRET_KEY);
     const user = await User.findByPk(decoded.id, {
-      attributes: ['id', 'squadId', 'firstName', 'lastName', 'email']
+      attributes: ['id', 'squadId', 'firstName', 'lastName', 'userName', 'email']
     });
 
     if (!user) {

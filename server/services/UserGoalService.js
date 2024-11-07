@@ -6,15 +6,26 @@ import models from "../models/index.js";
 import User from "../models/User.js";
 import UserGoal from "../models/UserGoal.js";
 import { getPagination, getPagingData } from "../utils/pagination.js";
+import { createNotification } from "./NotificationService.js";
+import { notificationType } from "../constants/NotificationConstants.js";
 
-export const createUserGoal = async (goalData, transaction) => {
+export const createUserGoal = async (req, transaction) => {
+  const goalData = req.body
   const userGoal = await models.UserGoal.create(goalData, { transaction });
   if(userGoal.startDate < new Date() || userGoal.endDate < new Date() || userGoal.endDate < userGoal.startDate){
     throw new BadRequestError("Invalid start date or end date.")
   }
   if (goalData.goalPartners && goalData.goalPartners.length > 0) {
-    goalData.goalPartners.forEach((partner) => {
+    goalData.goalPartners.forEach(async(partner) => {
       partner.goalId = userGoal.id
+
+      const notificationRequest = {}
+      notificationRequest.userId = partner.userId
+      notificationRequest.squadId = req.user.squadId
+      notificationRequest.title = "NOTIFICATION"
+      notificationRequest.message = `${req.user.userName} created a goal`
+      notificationRequest.type = notificationType.INFO
+      await createNotification(notificationRequest, transaction)
     })
     await createUserGoalPartner(goalData?.goalPartners, transaction)
   }
@@ -28,11 +39,11 @@ export const getAllUserGoals = async (req) => {
   const { page, size, groupBy } = req.query;
   const { limit, offset } = getPagination(page, size);
 
-  const queryOpts = {}
-  const {userId} = req.query
-  if(userId){
-     queryOpts["userId"] = userId
+  const queryOpts = {
+    userId: req.user.id
   }
+  const {userId} = req.query
+  
   if (groupBy == "month") {
     const goalsGroupedByMonth = await models.UserGoal.findAll({
       attributes: [
@@ -79,7 +90,7 @@ export const getAllUserGoals = async (req) => {
           include: { model: User, attributes: { exclude: ["userId", "password", "createdAt", "updatedAt"] }, as: "user" }
         },
       ],
-
+      order: [['createdAt', 'DESC']],
       limit, offset
     }
   );

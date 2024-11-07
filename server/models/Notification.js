@@ -1,6 +1,7 @@
 import { DataTypes } from "sequelize";
 import User from "./User.js";
 import db from "../configs/db.js";
+import Squad from "./Squad.js";
 
 const Notification = db.define('notification', {
     userId: {
@@ -11,9 +12,17 @@ const Notification = db.define('notification', {
             key: 'id',
         },
     },
+    squadId:{
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: User,
+            key: 'id',
+        },
+    },
     title: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     message: {
         type: DataTypes.STRING,
@@ -35,6 +44,9 @@ const Notification = db.define('notification', {
 
 Notification.belongsTo(User, { foreignKey: 'userId' });
 User.hasMany(Notification, { foreignKey: 'userId', onDelete: 'CASCADE', });
+
+Notification.belongsTo(Squad, { foreignKey: 'squadId' });
+Squad.hasMany(Notification, { foreignKey: 'userId', onDelete: 'CASCADE', });
 
 db.sync()
     .then(() => {

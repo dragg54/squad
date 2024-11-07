@@ -9,7 +9,6 @@ const users = new Map();
  */
 export function registerUser(userId, socketId) {
     users.set(userId, socketId);
-    console.log(`User registered: ${userId} with socket ID ${socketId}`);
 }
 
 /**
@@ -20,7 +19,6 @@ export function removeUser(socketId) {
     for (const [userId, id] of users.entries()) {
         if (id === socketId) {
             users.delete(userId);
-            console.log(`User disconnected: ${userId}`);
             break;
         }
     }
@@ -32,12 +30,11 @@ export function removeUser(socketId) {
  * @param {string} message - The notification message to send.
  * @param {object} io - The Socket.IO server instance.
  */
-export function sendNotificationToUser(userId, message, io) {
+export function sendNotificationToUser(userId, io) {
    try{
-    const recipientSocketId = users.get(123);
+    const recipientSocketId = users.get(userId);
     if (recipientSocketId) {
-        io.to(recipientSocketId).emit('receiveNotification', message);
-        console.log(`Notification sent to user ${userId}`);
+        io.to(recipientSocketId).emit('receiveNotification', "Message delivered");
     } else {
         console.log(`User ${userId} is not connected`);
     }

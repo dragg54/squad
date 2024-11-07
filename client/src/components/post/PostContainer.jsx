@@ -37,7 +37,6 @@ const PostContainer = ({ isParent, data, refetchComment }) => {
           <p className='!text-gray-400  whitespace-nowrap'>10 Comments</p>
         </div>
       </div>
-      {/* {isParent ? <div className='w-full p-3 rounded-md bg-gray-300 mt-4 text-gray-700 font-semibold'>View all comments</div>: ''} */}
     </div>
   )
 }

@@ -6,15 +6,17 @@ import Button from '../../components/buttons'
 import { openPopup } from '../../redux/reducers/PopUpReducer'
 import { createPost, getPosts } from '../../services/post'
 import useHandleErrorResponse from '../../hooks/useHandleErrorResponse'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useMutation, useQuery } from 'react-query'
 import { closeModal } from '../../redux/reducers/GlobalModalReducer'
+import { socket } from '../../utils/Socket'
 
 const AddPost = ({ page, size }) => {
     const [inputValues, setInputValues] = useState({
         title: "",
         description: ""
     })
+    const user = useSelector(state => state.user)
     const dispatch = useDispatch()
     const handleErrorResponse = useHandleErrorResponse()
     const { data: newPosts, isLoading, isError, refetch } = useQuery(
@@ -27,12 +29,12 @@ const AddPost = ({ page, size }) => {
 
     const [message, setMessage] = useState()
  
-    console.log(message)
     const createPostMutation = useMutation(createPost, {
         onSuccess: () => {
             dispatch(closeModal())
             dispatch(openPopup({ message: "Post created" }))
             refetch()
+            socket.emit('postCreated',{authorId: user.id, squadId: user.squadId}, "Post Created");
         },
         onError: (err) => {
             console.log(err.response.status)

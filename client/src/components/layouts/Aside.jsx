@@ -5,7 +5,7 @@ import Image from "../containers/Image"
 const Aside = () => {
     if(!useIgnoreMatchedPath())
     return (
-        <div className='hidden md:flex flex-col w-[300px]  h-screen shadow-l shadow-md shadow-gray-400 justify-start p-8 px-5'>
+        <div className='hidden md:flex right-1 -z-50 absolute flex-col w-[300px]  h-screen shadow-l shadow-md shadow-gray-400 justify-start p-8 px-5'>
             <div>
                 <h1 className="font-bold text-xl w-full p-2 shadow-sm rounded-sm !text-gray-400">Latest Members</h1>
                 <ul className="mt-4 text-sm">

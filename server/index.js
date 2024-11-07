@@ -5,15 +5,17 @@ import userRoute from './routes/UserRoute.js'
 import postRoute from './routes/PostRoute.js'
 import commentRoute from './routes/CommentRoute.js'
 import userGoalRoute from './routes/UserGoalRoute.js'
+import notificationSummaryRoute from './routes/NotificationSummaryRoute.js'
 import squadRoute from './routes/SquadRoute.js'
 import notificationRoute from './routes/NotificationRoute.js'
+import inviteRoute from './routes/InviteRoute.js'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import { UserGoalCategory } from './models/UserGoalCategory.js'
 import userGoalCategoryRouter from './routes/UserGoalCategoryRoute.js'
 import http from 'http'
-import { registerUser, removeUser, sendNotificationToUser } from './utils/notification.js';
+import { registerUser, removeUser, sendGoalCreatedNotification, sendPostCreatedNotification, sendPostLikedNotificationToUser } from './socket.io/index.js';
 
 
 const app = express()
@@ -59,9 +61,10 @@ app.use("/api/v1/usergoals", userGoalRoute)
 app.use("/api/v1/posts", postRoute)
 app.use("/api/v1/comments", commentRoute)
 app.use("/api/v1/squads", squadRoute)
+app.use("/api/v1/invites", inviteRoute)
 app.use("/api/v1/notifications", notificationRoute)
 app.use("/api/v1/usergoalcategories", userGoalCategoryRouter)
-
+app.use("/api/v1/notificationSummaries", notificationSummaryRoute)
 
 
 server.listen(8080, ()=>{
@@ -76,16 +79,21 @@ const io = new Server(server, {
 
 
 io.on('connection', (socket) => {
-  console.log('User connected:', socket.id);
-
   socket.on('register', (userId) => {
       registerUser(userId, socket.id);
   });
 
-  socket.on('postLiked', ({ authorId, likerName }) => {
-      const message = `${likerName} liked your post!`;
-      sendNotificationToUser(authorId, message, io);
+  socket.on('postLiked', ({ authorId }) => {
+      sendPostLikedNotificationToUser(authorId, io);
   });
+
+  socket.on('postCreated', ({ authorId, squadId }) => {
+    sendPostCreatedNotification(authorId, squadId, io);
+});
+
+  socket.on('goalCreated', ({ authorId, squadId}) =>{
+    sendGoalCreatedNotification(authorId, squadId, io)
+  })
 
   socket.on('disconnect', () => {
       removeUser(socket.id);

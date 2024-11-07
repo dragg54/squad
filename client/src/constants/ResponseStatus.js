@@ -1,4 +1,4 @@
-export const status = {
+export const responseStatus = {
     error: 'error',
     success: 'success',
 }

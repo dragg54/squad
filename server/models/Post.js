@@ -1,6 +1,7 @@
 import db from "../configs/db.js";
 import { DataTypes } from "sequelize";
 import User from "./User.js";
+import Squad from "./Squad.js";
 
 const Post = db.define('post', {
   userId: {
@@ -8,6 +9,14 @@ const Post = db.define('post', {
     allowNull: false,
     references: {
       model: User,
+      key: 'id',
+    },
+  },
+  squadId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: Squad,
       key: 'id',
     },
   },

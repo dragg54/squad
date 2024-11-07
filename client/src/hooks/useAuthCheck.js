@@ -6,8 +6,7 @@ import { useSelector } from 'react-redux';
 
 const useAuthCheck = () => {
     const navigate = useNavigate();
-    const token = useSelector(state => state.auth)
-    console.log(token)
+    const token = useSelector(state => state.auth).token
     // useEffect(() => {
     //     console.log(token)
     //     if ( (!token || isTokenExpired(token))) {

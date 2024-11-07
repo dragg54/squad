@@ -23,7 +23,7 @@ const Member = () => {
   if(memberIsLoading) return <>Loading...</> 
   if(postIsLoading) return <>Post Loading ...</>
   return (
-    <section className="w-full overflow-x-visible h-screen overflow-y-scroll p-4 md:p-8 pb-40 md:pb-48 md:ml-[28rem]">  
+    <section className="w-full overflow-x-visible h-screen overflow-y-scroll p-4 md:p-8 pb-40 md:pb-48 md:ml-[20rem]">  
       <div className="w-full">
         <div className="w-full md:w-[60%] h-[200px]  bg-gradient-to-r from-[#8155BA] to-[#FE5BD6] ">
         </div>
