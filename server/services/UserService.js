@@ -10,7 +10,7 @@ import { getSquadById } from './SquadService.js';
 import { getInvitation } from './InviteService.js';
 
 export const createUser = async (req) => {
-    const existingSquad = await getSquadById(req.query.squadId)
+    const existingSquad = await getSquadById(req.body.squadId)
     const existingInvite = await getInvitation(req)
     if(!existingInvite || existingInvite.expiredAt > new Date()){
         throw BadRequestError("User has no invitation or invitation has expired")
@@ -21,15 +21,16 @@ export const createUser = async (req) => {
     const existingUser = await User.findOne({
         where: {
             email: req.body.email,
-            squadId: req.query.squadId
+            squadId: req.body.squadId
         }
     })
     if (existingUser) {
         throw new DuplicateError(`User already exists`)
     }
     const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(userData.password, salt);
-    userData.password = hashedPassword
+    const hashedPassword = await bcrypt.hash(req.body.password, salt);
+    req.body.password = hashedPassword
+    req.body.bio = "A man with integrity"
     await User.create(req.body)
 };
 

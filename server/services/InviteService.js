@@ -8,7 +8,7 @@ function generateInviteToken() {
 export async function createInvitation(req){
     const token = generateInviteToken();
     const {id, squadId} = req.user
-    const inviteLink = `https://localhost:5173/signin?inviteToken=${token}&squad=${squadId}`;
+    const inviteLink = `${req.headers.origin}/register?inviteToken=${token}&squad=${squadId}`;
     const {email} = req.body
     await Invite.create({
         email,
@@ -25,6 +25,6 @@ export async function createInvitation(req){
 }
 
 export async function getInvitation(req){
-    const {token, squadId} = req.query
+    const {token, squadId} = req.body
     return await Invite.findOne({where:{token, squadId}})
 }

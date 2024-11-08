@@ -36,13 +36,23 @@ export const createUserGoalPartner = async (goalPartners, transaction) => {
 }
 
 export const getAllUserGoals = async (req) => {
-  const { page, size, groupBy } = req.query;
+  const { page, size, groupBy, partnerId, userId } = req.query;
   const { limit, offset } = getPagination(page, size);
 
   const queryOpts = {
-    userId: req.user.id
   }
-  const {userId} = req.query
+
+  const partnerQryOpts = {
+
+  }
+
+  if(partnerId){
+    partnerQryOpts["userId"] = partnerId
+  }
+
+  if(userId){
+    queryOpts["userId"] = userId
+  }
   
   if (groupBy == "month") {
     const goalsGroupedByMonth = await models.UserGoal.findAll({
@@ -87,7 +97,8 @@ export const getAllUserGoals = async (req) => {
         { model: models.UserGoalCategory, attributes: ['id', 'name'] },
         {
           model: GoalPartner, attributes: ["id"],
-          include: { model: User, attributes: { exclude: ["userId", "password", "createdAt", "updatedAt"] }, as: "user" }
+          include: { model: User, attributes: { exclude: ["userId", "password", "createdAt", "updatedAt"] }, as: "user" },
+          where:partnerQryOpts,
         },
       ],
       order: [['createdAt', 'DESC']],

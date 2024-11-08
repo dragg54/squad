@@ -3,6 +3,7 @@ import { useQuery } from "react-query"
 import Image from "../../components/containers/Image"
 import { getAllNotifications } from "../../services/notification"
 import { getMonthName } from "../../utils/DateFormatter"
+import { customizeNotificationTime } from "../../utils/customizeNotificationTime"
 
 const NotificationContainer = ({ openNotificationContainer }) => {
   const { data: notificationData, isLoading: notificationSummaryIsLoading } = useQuery('notifications', {
@@ -21,11 +22,13 @@ const NotificationContainer = ({ openNotificationContainer }) => {
                 {getMonthName((Number(notification.month.substring(5, 7)) - 1).toString())}
               </li>
              {
-              notification.notifications.map((not)=>(
+              notification.notifications.map((not)=>{
+                console.log(customizeNotificationTime(not.createdAt))
+                return(
                 <li className="text-[0.6rem] inline-flex items-center gap-2" key={not.id}>
-                <span><Image style={'rounded-full h-8 w-8 text-[0.5rem]'} /></span>{not.message}
+                <span><Image style={'rounded-full h-8 w-8 text-[0.5rem]'} /></span>{not.message}{not.message.lastIndexOf(".") == -1 && '.'} {customizeNotificationTime(not.createdAt)}
               </li>
-              ))
+              )})
              }
             </ul>
           ))

@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react"
 import AddGoalsButton from "../../components/buttons/AddGoalsButton"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { openModal } from "../../redux/reducers/GlobalModalReducer"
 import AddGoal from "./AddGoal"
 import { useQuery } from "react-query"
@@ -18,10 +18,11 @@ const Goals = () => {
     const [page, setPage] = useState(1);
     const [size, setSize] = useState(5);
     const allMonths = getMonthNames()
-    const [openMonthGoalsContainer, setOpenMonthGoalsContainer] = useState([{hello: "yessss"}])
+    const [openMonthGoalsContainer, setOpenMonthGoalsContainer] = useState([{}])
     const dispatch = useDispatch()
+    const user = useSelector(state=> state.user)
     const { data, isLoading, isError, refetch } = useQuery(
-        ['goals', { page, size, groupBy }],
+        ['goals', { page, size, groupBy, userId: user.id }],
         getUserGoals,
         // {
         //   keepPreviousData: true, 

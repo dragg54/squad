@@ -1,10 +1,12 @@
+import { useNavigate } from 'react-router-dom';
 import Button from './'
 import { FaRegEnvelope } from "react-icons/fa6";
 
 
 const InviteButton = () => {
+  const navigate = useNavigate()
   return (
-    <Button style={'!bg-white !text-purple-700 border border-purple-500'} name="Invite People" icon={<FaRegEnvelope />}/>
+    <Button onClick={()=>navigate('/invitation')} style={'!bg-white !text-purple-700 border border-purple-500'} name="Invite People" icon={<FaRegEnvelope />}/>
   )
 }
 

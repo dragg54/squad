@@ -1,6 +1,6 @@
+import dotenv from 'dotenv'
 import express from 'express'
 import { Server } from 'socket.io';
-import dotenv from 'dotenv'
 import userRoute from './routes/UserRoute.js'
 import postRoute from './routes/PostRoute.js'
 import commentRoute from './routes/CommentRoute.js'
@@ -15,13 +15,15 @@ import cors from 'cors'
 import { UserGoalCategory } from './models/UserGoalCategory.js'
 import userGoalCategoryRouter from './routes/UserGoalCategoryRoute.js'
 import http from 'http'
-import { registerUser, removeUser, sendGoalCreatedNotification, sendPostCreatedNotification, sendPostLikedNotificationToUser } from './socket.io/index.js';
+import { registerUser, removeUser } from './socket.io/users.js';
+import { sendPostCreatedNotification, sendPostLikedNotificationToUser } from './socket.io/postNotification.js';
+import { sendGoalCreatedNotification } from './socket.io/goalNotification.js';
 
 
+dotenv.config()
 const app = express()
 app.use(bodyParser.json())
 app.use(cookieParser())
-dotenv.config()
 const server = http.createServer(app,  {cors: {
   origin:"*"
   }});

@@ -5,11 +5,11 @@ import AuthConnect from './index.js';
 
 const axiosInstance = AuthConnect
 export const getUserGoals = async ({queryKey}) => {
-    const [_key, { page, size, groupBy }] = queryKey;
+    const [_key, { page, size, groupBy, userId, partnerId }] = queryKey;
      try{
         const response = await axiosInstance.get(`${BACKEND_SERVER_URL}/usergoals`,
           {
-            params: { page, size, groupBy },
+            params: { page, size, groupBy, userId, partnerId },
           }
         );
         return response.data;

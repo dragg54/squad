@@ -8,6 +8,7 @@ import Member from './pages/squad/Member'
 import Goals from './pages/goals'
 import Intro from './pages/intro'
 import Register from './pages/register'
+import Invitation from './pages/invitation/index'
 import Login from './pages/login'
 import Post from './pages/post/Post'
 import ProtectedRoute from './components/route/ProtectedRoute'
@@ -79,6 +80,11 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="/post/:id" element={<Post />} />
           </Route>
+
+          <Route element={<ProtectedRoute />}>
+            <Route path="/invitation" element={<Invitation />} />
+          </Route>
+          
         </Routes>
       </Layout>
     </Router>

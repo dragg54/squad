@@ -41,7 +41,7 @@ const Navbar = ({ setMenuContainerOpened, setOpenNotificationContainer, openNoti
       <div className={`w-full fixed z-40 md:h-20  h-20 border-b shadow-md shadow-gray-300 `}>
         <div className="absolute md:px-7 items-center w-full  p-4 flex justify-between">
           <div className="flex items-center gap-2">
-            <Image style="h-10 w-10" source={'images/batman.jpg'} />
+            <Image style="h-10 w-10" source={user.id == 5 ? 'avatars/kenny.jpg':'images/batman.jpg'} />
             <p className="font-semibold font-playwrite text-sm  text-gray-600">Hello, {user.firstName}</p>
           </div>
           <div className="flex text-2xl gap-3 items-center relative cursor-pointer" onClick={(e) => {

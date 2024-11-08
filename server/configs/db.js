@@ -1,21 +1,26 @@
 import { Sequelize } from "sequelize";
 
- const db = new Sequelize('accountability', 'root', 'Ajibolas7', {
-  host: 'localhost',
-  dialect: 'mysql',
-  logging: false
-});
+import dotenv from "dotenv";
+dotenv.config();
 
-// const db = new Sequelize( 
-//   'infonom1_acct',
-//   'infonom1_infonom',
-//   'infonomicsng', {
-//    dialect: 'mysql',
-//     host: '176.74.18.130',
-//     // host: '127.0.0.1',
-//     port: 3306,
-//     logging: false
-// });
+const environment = process.env.NODE_ENV || "development";
+console.log(`Environment is ${environment}`);
+
+const dbName = process.env.LOCAL_DB_NAME || process.env.PROD_DB_NAME;
+const dbUserName = process.env.LOCAL_DB_USERNAME || process.env.PROD_DB_USERNAME;
+const dbPassword = process.env.LOCAL_DB_PASSWORD || process.env.PROD_DB_PASSWORD;
+const dbHost = process.env.LOCAL_DB_HOST || process.env.PROD_DB_HOST;
+
+if (!dbName || !dbUserName || !dbPassword) {
+  throw new Error("Database environment variables are missing.");
+}
+
+
+const db = new Sequelize(dbName, dbUserName, dbPassword, {
+  host: dbHost,
+  dialect: "mysql",
+  logging: false,
+});
 
 async function testConnection() {
     try {

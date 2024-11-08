@@ -1,13 +1,12 @@
 import Input from '../../components/inputs/index'
 import Button from '../../components/buttons'
-import { useNavigate } from 'react-router-dom'
+import {  useNavigate, useSearchParams } from 'react-router-dom'
 import { useMutation } from 'react-query'
 import { createUser } from '../../services/user'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { openPopup } from '../../redux/reducers/PopUpReducer'
 import { responseStatus } from '../../constants/ResponseStatus'
-import { SQUAD_ID } from '../../Appconfig'
 
 const Register = () => {
     const navigate = useNavigate()
@@ -32,9 +31,13 @@ const Register = () => {
         setInput({...input, [e.target.name]: e.target.value})
     }
 
+    const [searchParams] = useSearchParams();
+    const squadId = searchParams.get("squad")
+    const token = searchParams.get("inviteToken")
     const handleSubmit = (e) =>{
         e.preventDefault()
-        input.squadId = SQUAD_ID,
+        input.squadId = squadId
+        input.token = token
         createUserMutation.mutate(input)
     }
 

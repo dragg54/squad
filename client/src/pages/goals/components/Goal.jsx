@@ -1,16 +1,17 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-no-undef */
 
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { userGoalCategoryConstant } from "../../../constants/UserGoalCategory"
 import { openModal } from "../../../redux/reducers/GlobalModalReducer"
 import EditGoal from "../EditGoal"
 import { formatDate } from "../../../utils/DateFormatter"
 
 const Goal = ({ goal, setIsUpdated }) => {
+    const user = useSelector(state => state.user)
     const dispatch = useDispatch()
     return (
-        <ul className="w-full rounded-md -mb-3" onClick={()=>dispatch(openModal({component:<EditGoal {...{goal, setIsUpdated}}/>}))}>
+        <ul className="w-full rounded-md -mb-3" onClick={()=>user.id == goal.userId && dispatch(openModal({component:<EditGoal {...{goal, setIsUpdated}}/>}))}>
             {/* <p className="!text-gray-500 text-sm">20 June, 2023</p> */}
             <li className={`goal-box flex items-center shadow-sm rounded-md text-base pl-4 !py-6 !border-l-8 ${goal.completed ?
                 'shadow-green-700  !border-[#107869]' :
