@@ -1,6 +1,5 @@
 export const customizeNotificationTime = (createdAt) =>{
   const timeDifference = new Date().getTime() - new Date(createdAt).getTime()
-  console.log("timeDifference", timeDifference)
   const diffInSeconds= Math.floor(timeDifference / (1000));
 
   if(diffInSeconds < 60){

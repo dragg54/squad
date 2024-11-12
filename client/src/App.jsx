@@ -10,6 +10,7 @@ import Intro from './pages/intro'
 import Register from './pages/register'
 import Invitation from './pages/invitation/index'
 import Login from './pages/login'
+import LeaderBoard from './pages/leaderBoard'
 import Post from './pages/post/Post'
 import ProtectedRoute from './components/route/ProtectedRoute'
 import { useEffect } from 'react'
@@ -84,7 +85,11 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="/invitation" element={<Invitation />} />
           </Route>
-          
+
+          <Route element={<ProtectedRoute />}>
+            <Route path="/leaderboard" element={<LeaderBoard />} />
+          </Route>
+
         </Routes>
       </Layout>
     </Router>

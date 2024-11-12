@@ -10,13 +10,6 @@ export const createNotification = async (req, trans) => {
   await Notification.create(req, { transaction: trans })
 }
 
-export const notificationSubscription = async (req, res) => {
-  const subscription = req.body;
-  // Save subscription to database
-  console.log(req.body)
-  // res.status(201).json({});
-};
-
 export const getAllNotifications = async (req) => {
   const notifications = await Notification.findAll({
     where: {

@@ -1,3 +1,4 @@
+import { getAllUsers } from "../services/UserService.js";
 import { users } from "./users.js";
 
 export function sendPostLikedNotificationToUser(userId, io) {
@@ -24,8 +25,6 @@ export async function sendPostCreatedNotification(userId, squadId, io){
         }
         
         const usersToRecieveNotification = await getAllUsers(userRequest) 
-        console.log(usersToRecieveNotification)
-        console.log(users)
         usersToRecieveNotification.forEach((user)=>{
             if( user.id != userId){
                 const recipientSocketId = users.get(user.id)

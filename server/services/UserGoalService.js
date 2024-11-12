@@ -8,26 +8,38 @@ import UserGoal from "../models/UserGoal.js";
 import { getPagination, getPagingData } from "../utils/pagination.js";
 import { createNotification } from "./NotificationService.js";
 import { notificationType } from "../constants/NotificationConstants.js";
+import { activityPoints } from "../constants/ActivityPoints.js";
+import Point from "../models/Point.js";
+import { addPoint, getUserPoints, updatePoint } from "./PointService.js";
 
 export const createUserGoal = async (req, transaction) => {
   const goalData = req.body
   const userGoal = await models.UserGoal.create(goalData, { transaction });
-  if(userGoal.startDate < new Date() || userGoal.endDate < new Date() || userGoal.endDate < userGoal.startDate){
+  if (userGoal.startDate < new Date() || userGoal.endDate < new Date() || userGoal.endDate < userGoal.startDate) {
     throw new BadRequestError("Invalid start date or end date.")
   }
   if (goalData.goalPartners && goalData.goalPartners.length > 0) {
-    goalData.goalPartners.forEach(async(partner) => {
+    goalData.goalPartners.forEach(async (partner) => {
       partner.goalId = userGoal.id
 
-      const notificationRequest = {}
-      notificationRequest.userId = partner.userId
-      notificationRequest.squadId = req.user.squadId
-      notificationRequest.title = "NOTIFICATION"
-      notificationRequest.message = `${req.user.userName} created a goal`
-      notificationRequest.type = notificationType.INFO
+      const notificationRequest = {
+        userId: partner.userId,
+        squadId: req.user.squadId,
+        title: "NOTIFICATION",
+        message: `${req.user.userName} created a goal`,
+        type: notificationType.INFO
+      }
+
       await createNotification(notificationRequest, transaction)
     })
     await createUserGoalPartner(goalData?.goalPartners, transaction)
+    const addPointRequest = {
+      userId: req.user.id,
+      squadId: req.user.squadId,
+      points: activityPoints.goalCreationPoints
+    }
+
+    await addPoint(addPointRequest, transaction)
   }
 };
 
@@ -46,14 +58,14 @@ export const getAllUserGoals = async (req) => {
 
   }
 
-  if(partnerId){
+  if (partnerId) {
     partnerQryOpts["userId"] = partnerId
   }
 
-  if(userId){
+  if (userId) {
     queryOpts["userId"] = userId
   }
-  
+
   if (groupBy == "month") {
     const goalsGroupedByMonth = await models.UserGoal.findAll({
       attributes: [
@@ -91,14 +103,14 @@ export const getAllUserGoals = async (req) => {
   }
   const userGoalsData = await models.UserGoal.findAndCountAll(
     {
-      where:  queryOpts,
+      where: queryOpts,
       attributes: { exclude: 'userGoalCategoryId' },
       include: [
         { model: models.UserGoalCategory, attributes: ['id', 'name'] },
         {
           model: GoalPartner, attributes: ["id"],
           include: { model: User, attributes: { exclude: ["userId", "password", "createdAt", "updatedAt"] }, as: "user" },
-          where:partnerQryOpts,
+          where: partnerQryOpts,
         },
       ],
       order: [['createdAt', 'DESC']],
@@ -112,13 +124,13 @@ export const getUserGoalById = async (id) => {
   return await models.UserGoal.findByPk(id);
 };
 
-export const updateUserGoal = async (req, res) => {
-  const { id } = req.params; 
+export const updateUserGoal = async (req, res, trans) => {
+  const { id } = req.params;
   const { title, description, completed, startDate, endDate, goalPartners, userGoalCategoryId } = req.body;
-  if(new Date(startDate) < new Date() || new Date(endDate) < new Date() || new Date(endDate) < startDate){
+  const existingGoal = await getUserGoalById(id)
+  if (new Date(startDate) < new Date() || new Date(endDate) < new Date() || new Date(endDate) < startDate) {
     throw new BadRequestError("Invalid start date or end date.")
   }
-  const trans = await db.transaction();
   const [updated] = await models.UserGoal.update(
     { title, description, completed, startDate, endDate, userGoalCategoryId },
     { where: { id }, transaction: trans }
@@ -128,10 +140,13 @@ export const updateUserGoal = async (req, res) => {
   }
 
   if (goalPartners && goalPartners.length > 0) {
-    const partners = goalPartners.map(part => ({userId: part.user.id}))
+    const partners = goalPartners.map(part => ({ userId: part.user.id }))
     await GoalPartner.destroy({ where: { goalId: id }, transaction: trans });
-    await GoalPartner.bulkCreate(partners.map(partner => ({userId: partner.userId})), { transaction: trans });
+    await GoalPartner.bulkCreate(partners.map(partner => ({ userId: partner.userId })), { transaction: trans });
   }
+
+  updateGoalPoint(existingGoal, req.body, trans)
+
   await trans.commit();
 };
 
@@ -169,4 +184,20 @@ function groupData(data, groupBy) {
   }, {});
 
   return groupedGoals;
+}
+
+async function updateGoalPoint(goal, updatedGoal, trans) {
+  if (!goal || !updatedGoal) {
+    throw BadRequestError("Invalid goals")
+  }
+  if ((goal.completed && updatedGoal.completed) || (!goal.completed && !updatedGoal.completed)) {
+    return
+  }
+  const userPoints = getUserPoints(goal.userId)
+  if (goal.completed && !updatedGoal.completed) {
+    await updatePoint({ points: userPoints - activityPoints.goalCompletionPoints }, { transaction: trans })
+  }
+  else if (!goal.completed && updatedGoal.completed) {
+    await updatePoint({ points: userPoints + activityPoints.goalCompletionPoints }, { transaction: trans })
+  }
 }

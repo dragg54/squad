@@ -34,10 +34,12 @@ const Register = () => {
     const [searchParams] = useSearchParams();
     const squadId = searchParams.get("squad")
     const token = searchParams.get("inviteToken")
+    const invitedBy = searchParams.get("invitedBy")
     const handleSubmit = (e) =>{
         e.preventDefault()
         input.squadId = squadId
         input.token = token
+        input.invitedBy = invitedBy
         createUserMutation.mutate(input)
     }
 

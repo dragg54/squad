@@ -15,7 +15,7 @@ import { MdOutlineSettings } from "react-icons/md";const Menu = ({menuContainerO
           <li className="menus" onClick={()=>setMenuContainerOpened(false)} ><MdForum /><Link className="menus" to="/forum">Forum</Link></li>
           <li className="menus" onClick={()=>setMenuContainerOpened(false)}><LuUsers /><Link className="menus" to="/member">Squad</Link></li>
           <li className="menus" onClick={()=>setMenuContainerOpened(false)}><LuGoal /><Link className="menus" to="/goals">Goals</Link></li>
-          <li className="menus"><FaClipboard />Vision Board</li>
+          <li className="menus" onClick={()=>setMenuContainerOpened(false)}><FaClipboard /><Link className="menus" to="/leaderboard">Leaderboard</Link></li>
           <li className="menus"><MdEventAvailable />Events</li>
           <li className="menus"><MdOutlineSettings />Settings</li>
         </ul>

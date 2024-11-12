@@ -11,5 +11,6 @@
     @apply text-gray-700 text-3xl font-ibm cursor-pointer flex gap-3 items-center
 }
 
-a{
-}
+.clip-trapezoid {
+    clip-path: polygon(8% 0%, 90% 0%, 100% 100%, 0% 100%);
+  }

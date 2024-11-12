@@ -45,11 +45,13 @@ export const getUserGoalById = async (req, res, next) => {
 };
 
 export const updateUserGoal = async (req, res, next) => {
+  const transaction = await db.transaction();
   try {
-    await userGoalService.updateUserGoal(req, res);
+    await userGoalService.updateUserGoal(req, res, transaction);
     res.json("Goal updated")
   } catch (error) {
     console.log(error.message)
+    await transaction.rollback()
      res.status(error.statusCode || 500).send({
         message: error.message || "Internal Server Error"
      })

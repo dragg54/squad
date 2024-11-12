@@ -9,7 +9,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useMutation } from 'react-query';
-import { likePost, unlikePost } from '../../services/post';
+import { likePost } from '../../services/post';
 import { socket } from '../../utils/Socket';
 import { addNotification } from '../../redux/reducers/NotificationReducer';
 
@@ -18,17 +18,11 @@ const PostCard = ({ post }) => {
     const [like, setLike] = useState(post?.likes?.noOfLikes)
     const [isLiked, setIsliked] = useState(post?.likes?.likesUsers?.some(users => users.userId == user.id))
     const likePostMutation = useMutation(likePost)
-    const unlikePostMutation = useMutation(unlikePost)
     const dispatch = useDispatch()
     const handleLikePost = () =>{
-        if(isLiked){
-           unlikePostMutation.mutate({postId: post.id})
-        }
-        else{
-            likePostMutation.mutate({postId: post.id})
-        }
+           likePostMutation.mutate({postId: post.id})
     }
-
+  console.log(isLiked)
     return (
         <div className='w-full cursor-pointer md:w-full bg-white overflow-x-visible rounded-md border  border-gray-200 shadow-lg shadow-gray-200 md:min-h-[200px] min-h-[200px] mb-3 p-4'>
             <Link className="w-full" to={"/post/" + post?.id}>
@@ -47,7 +41,7 @@ const PostCard = ({ post }) => {
             <div className='my-4  border w-full'></div>
             <div className='flex gap-5 w-full items-center'>
                 <div className=' flex gap-2 items-center' onClick={() => {
-                    setLike(like < 1 ? like + 1: like-1)
+                    setLike(!isLiked ? like + 1: like-1)
                     setIsliked(!isLiked)
                     handleLikePost()
                     socket.emit('postLiked',{authorId: post.userId}, "Post Liked");

@@ -8,8 +8,11 @@ import { InternalServerError } from '../errors/InternalServerError.js';
 import { DuplicateError } from '../errors/DuplicateError.js';
 import { getSquadById } from './SquadService.js';
 import { getInvitation } from './InviteService.js';
+import Point from '../models/Point.js';
+import { activityPoints } from '../constants/ActivityPoints.js';
+import { addPoint, updatePoint } from './PointService.js';
 
-export const createUser = async (req) => {
+export const createUser = async (req, trans) => {
     const existingSquad = await getSquadById(req.body.squadId)
     const existingInvite = await getInvitation(req)
     if(!existingInvite || existingInvite.expiredAt > new Date()){
@@ -31,7 +34,12 @@ export const createUser = async (req) => {
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
     req.body.password = hashedPassword
     req.body.bio = "A man with integrity"
-    await User.create(req.body)
+    const id = await User.create(req.body, {transaction: trans})
+
+    await addPoint({userId: req.body.invitedBy, squadId: req.body.squadId, points: activityPoints.invitationPoints}, {transaction: trans})
+
+    await addPoint({userId: id, squadId: req.body.squadId, points: activityPoints.registrationPoints}, {transaction: trans})
+
 };
 
 export const getAllUsers = async (req) => {

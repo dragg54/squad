@@ -1,13 +1,17 @@
+import db from "../configs/db.js";
 import { DuplicateError } from "../errors/DuplicateError.js";
 import * as userService from "../services/UserService.js"
 
 export const createUser = async (req, res) => {
+  const transaction = await db.transaction()
   try {
-    const user = await userService.createUser(req);
+    const user = await userService.createUser(req, transaction);
     res.status(201).json({
         message: "user created"
     });
+    await transaction.commit()
   } catch (error) {
+    await transaction.rollback()
     res.status(error.statusCode || 500).json({ error: error.message || "Internal server error" });
   }
 };

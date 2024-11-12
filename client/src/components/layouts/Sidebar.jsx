@@ -4,7 +4,7 @@ import { MdForum } from "react-icons/md";
 import { LuUsers } from "react-icons/lu";
 import { LuGoal } from "react-icons/lu";
 import { FaClipboard } from "react-icons/fa";
-import { MdEventAvailable } from "react-icons/md";
+import { MdOutlinePayment } from "react-icons/md";
 import { MdOutlineSettings } from "react-icons/md";
 
 
@@ -20,8 +20,8 @@ const Sidebar = () => {
             <li  className="menus"><MdForum /><Link className="menus" to="/forum">Forum</Link></li>
             <li  className="menus"><LuUsers /><Link className="menus" to="/member">Squad</Link></li>
             <li  className="menus"><LuGoal /><Link className="menus" to="/goals">Goals</Link></li>
-            <li className="menus"><FaClipboard/>Vision Board</li>
-            <li className="menus"><MdEventAvailable/>Events</li>
+            <li className="menus"><FaClipboard/><Link className="menus" to="/leaderboard">Leaderboard</Link></li>
+            <li className="menus"><MdOutlinePayment/>Donation</li>
             <li className="menus"><MdOutlineSettings/>Settings</li>
 
         </ul>
