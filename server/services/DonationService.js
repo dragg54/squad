@@ -1,7 +1,9 @@
 import { BadRequestError } from "../errors/BadRequestError.js"
 import { InternalServerError } from "../errors/InternalServerError.js"
+import Donation from "../models/Donation.js"
+import DonationPayment from "../models/DonationPayment.js"
 import User from "../models/User.js"
-import { intializePayment } from "./PaymentService.js"
+import { intializePayment, verifyPayment } from "./PaymentService.js"
 import { getUserById } from "./UserService.js"
 
 export const createDonation = async (req) => {
@@ -14,21 +16,36 @@ export const createDonation = async (req) => {
     await Donation.create({ reason, target, squadId: user.squadId })
 }
 
-export const addDonation = async (req) => {
+export const initializeDonationPayment = async(req) =>{
     const { amount } = req.body
     const user = await getUserById(req.user.id)
     if (!user) {
         throw new BadRequestError("User des not exist")
     }
+    const { email, squadId } = user
     const intializePaymentRequest = {
         email: user.email,
         amount: req.body.amount
     }
-    const intializePaymentResponse = await intializePayment(intializePaymentRequest)
-    switch(intializePaymentResponse.status){
-        case 200:
-            
-    }
-    return intializePaymentResponse
+    const initializePaymentResponse = await intializePayment(intializePaymentRequest)
+}
 
+export const createDonationPayment = async (req) => {
+    const { amount } = req.body
+    const user = await getUserById(req.user.id)
+    if (!user) {
+        throw new BadRequestError("User des not exist")
+    }
+    const { email, squadId } = user
+    const intializePaymentRequest = {
+        email: user.email,
+        amount: req.body.amount
+    }
+    const paymentEvents = await intializePayment(intializePaymentRequest)
+    return intializePaymentResponse.data
+}
+
+export const getDonationPayments = async(req) =>{
+    const {squadId} = req.params
+    const verifyPayments = await verifyPayment(req)
 }

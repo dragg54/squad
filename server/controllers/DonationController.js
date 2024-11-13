@@ -1,8 +1,8 @@
 import * as DonationService from "../services/DonationService.js"
 
-export const addDonation = async(req, res) =>{
+export const createDonation = async(req, res) =>{
     try{
-        const response = await DonationService.addDonation(req)
+        const response = await DonationService.createDonation(req)
         res.json(response.data)
     }
     catch (error) {
@@ -11,3 +11,4 @@ export const addDonation = async(req, res) =>{
         })
       }
 }
+
