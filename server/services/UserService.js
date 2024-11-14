@@ -43,14 +43,14 @@ export const createUser = async (req, trans) => {
 };
 
 export const getAllUsers = async (req) => {
-    return await User.findAll({ attributes: ["id", "firstName", "lastName", "email", "userName"], 
+    return await User.findAll({ attributes: ["id", "firstName", "lastName", "email", "userName", "squadId"], 
         where: {squadId: req.user.squadId}
     });
 };
 
 export const getUserById = async (id) => {
     return await User.findByPk(id, {
-        attributes: ["id", "firstName", "lastName", "email", "userName"]
+        attributes: ["id", "firstName", "lastName", "email", "userName", "squadId"]
     });
 };
 

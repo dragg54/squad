@@ -31,10 +31,6 @@ const DonationPayment = db.define('donationPayment', {
     },
     amount:{
         type: DataTypes.INTEGER,
-        references: {
-            model: Donation,
-            key: 'id',
-        },
         allowNull: false,
     },
     status:{

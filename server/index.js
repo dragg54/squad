@@ -13,6 +13,7 @@ import inviteRoute from './routes/InviteRoute.js'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
+import webhookRoute from './routes/WebhookRoute.js'
 import paymentRoute from "./routes/PaymentRoute.js"
 import { UserGoalCategory } from './models/UserGoalCategory.js'
 import userGoalCategoryRouter from './routes/UserGoalCategoryRoute.js'
@@ -73,6 +74,7 @@ app.use("/api/v1/notificationSummaries", notificationSummaryRoute)
 app.use("/api/v1/points", pointRoute)
 app.use("/api/v1/donations", donationRoute)
 app.use("/api/v1/payments", paymentRoute)
+app.use("/api/v1/webhooks", webhookRoute)
 
 server.listen(8080, ()=>{
     console.log("Listening to port 8080")

@@ -7,8 +7,8 @@ import { BadRequestError } from '../errors/BadRequestError.js'
 dotenv.config()
 
 export const intializePayment = async(req) =>{
-    const { amount } = req.body
-    const user = await getUserById(req.user.id)
+    const { amount, userId, metadata } = req
+    const user = await getUserById(userId)
     if (!user) {
         throw new BadRequestError("User des not exist")
     }
@@ -19,6 +19,7 @@ export const intializePayment = async(req) =>{
         {
           email,
           amount: amount * 100,
+          metadata
         },
         {
           headers: {
@@ -51,10 +52,10 @@ export const verifyPayment = async(req) =>{
 
 
 export const getPaymentStatus = (req, res)=> {
-    console.log(req)
     const hash = crypto.createHmac('sha512', process.env.PAYSTACK_SECRET_KEY).update(JSON.stringify(req.body)).digest('hex');
     if (hash == req.headers['x-paystack-signature']) {
     const event = req.body;
     console.log(event)
+    return event
     }
 };

@@ -22,7 +22,6 @@ const PostCard = ({ post }) => {
     const handleLikePost = () =>{
            likePostMutation.mutate({postId: post.id})
     }
-  console.log(isLiked)
     return (
         <div className='w-full cursor-pointer md:w-full bg-white overflow-x-visible rounded-md border  border-gray-200 shadow-lg shadow-gray-200 md:min-h-[200px] min-h-[200px] mb-3 p-4'>
             <Link className="w-full" to={"/post/" + post?.id}>
