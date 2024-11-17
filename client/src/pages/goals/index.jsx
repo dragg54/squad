@@ -46,7 +46,7 @@ const Goals = () => {
 
     return (
         <section className="w-full  h-screen overflow-y-scroll p-4 md:p-8 pb-40 md:pb-48 md:ml-[20rem] pb-20">  
-            <div className="md:w-[60%] w-full p-4">
+            <div className="md:w-[50%] w-full p-4">
                 <div className="w-full flex justify-between items-center">
                     <div className="">
                         <h1 className="text-xl font-semibold">Goals</h1>

@@ -62,7 +62,7 @@ const AddComment = ({ page, size, postId }) => {
                     type='text-area'
                     placeholder='Add comment' />
                 <div className='w-full flex justify-end'>
-                    <Button type='submit' style='mt-6 !py-3 !bg-[#9619b2]' name="Submit Comment" />
+                    <Button type='submit' style='mt-6 !py-3 !bg-[#9619b2]' name="Comment" />
                 </div>
             </form>
         </div>

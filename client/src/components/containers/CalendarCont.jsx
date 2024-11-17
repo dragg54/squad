@@ -8,12 +8,11 @@ import { useState } from 'react';
 const CalendarCont = () => {
     const globalModal = useSelector(state => state.globalModal)
     console.log(globalModal.content.props)
-    const {currentDate, done, data, name, setDate, date } = globalModal.content.props
+    const { done, date } = globalModal.content.props
     const [newDate, setNewDate ] = useState()
     const handleChange = (dt) =>{
         setNewDate(dt)
     }
-    console.log(newDate)
     return (
         <div onClick={(e)=> e.stopPropagation()} className='w-[95%] rounded-sm md:w-[400px] p-8 gap-4 flex-col h-[500px] flex items-center justify-center bg-white'>
             <h1 className='self-start font-bold text-xl inline-flex items-center gap-3'>Select Date <FiCalendar /></h1>

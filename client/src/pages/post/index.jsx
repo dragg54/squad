@@ -26,7 +26,7 @@ const Forum = ({ newPosts }) => {
   if (isLoading) <p>Loading...</p>
   return (
     <section className="w-full overflow-x-visible h-screen overflow-y-scroll p-4 md:p-8 pb-40 md:pb-48 md:ml-[20rem]">
-      <div className="flex w-full md:w-[60%] justify-between items-center mb-8">
+      <div className="flex w-full md:w-[50%] justify-between items-center mb-8">
         <div className="">
           <h1 className="font-semibold md:text-2xl">Explore Posts</h1>
           <p className="text-sm text-gray-500 ">See what others are saying</p>
@@ -34,11 +34,11 @@ const Forum = ({ newPosts }) => {
         <div className="">
           <AddButton
             name="Create Post"
-            style='border border-purple-700 !bg-white !text-purple-700'
+            style='border border-gray-600 !bg-white !text-gray-600'
             onClick={() => dispatch(openModal({component: <AddPost {...{ page, size }} />}))} />
         </div>
       </div>
-      <div className="w-full md:w-[60%]">
+      <div className="w-full md:w-[50%]">
         {
           data && data.data && data.data.map(post => (
             <div key={post.id}>

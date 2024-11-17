@@ -69,7 +69,7 @@ export const loginUser = async (req, res) =>{
         const user = await userService.loginUser(req.body)
         res.cookie('token', user.token, {
             httpOnly: true, 
-             maxAge: 24 * 60 * 60 * 1000,
+            //  maxAge: 24 * 60 * 60 * 1000,
           }).send(user)
     }
     catch(error){

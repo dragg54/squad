@@ -21,9 +21,8 @@ const Sidebar = () => {
             <li  className="menus"><LuUsers /><Link className="menus" to="/member">Squad</Link></li>
             <li  className="menus"><LuGoal /><Link className="menus" to="/goals">Goals</Link></li>
             <li className="menus"><FaClipboard/><Link className="menus" to="/leaderboard">Leaderboard</Link></li>
-            <li className="menus"><MdOutlinePayment/>Donation</li>
+            <li className="menus" ><MdOutlinePayment/><Link className="menus" to="/donation">Donation</Link></li>
             <li className="menus"><MdOutlineSettings/>Settings</li>
-
         </ul>
     </div>
   )

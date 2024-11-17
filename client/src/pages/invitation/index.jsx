@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react"
 import Button from "../../components/buttons"
 import Input from "../../components/inputs"
@@ -12,7 +13,7 @@ const Invitation = () => {
   })
   useEffect(()=>{
     inviteMutation.mutate()
-  },[])
+  }, [])
   return (
     <section className="w-full  h-screen overflow-y-scroll p-4 md:p-8 pb-40 md:pb-48 md:ml-[20rem] pb-20">  
         <div className="w-full">

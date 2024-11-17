@@ -11,7 +11,7 @@ const Squad = () => {
     isLoading && <>Loading...</>
     return (
         <section className="w-full overflow-x-visible h-screen overflow-y-scroll p-4 md:p-8 pb-40 md:pb-48 md:ml-[20rem]">  
-            <div className="md:w-[60%] pb-28">
+            <div className="md:w-[50%] pb-28">
                 <div className="flex justify-between">
                     <div>
                         <p className="font-semibold md:text-2xl">Squad Members</p>

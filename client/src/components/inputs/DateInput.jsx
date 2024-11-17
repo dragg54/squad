@@ -13,7 +13,7 @@ const DateInput = ({ style, date, data, name, onDateChange, done}) => {
         <div className={`rounded-md border p-2 flex justify-start gap-3 items-center text-gray-400` + style} onClick={()=>{
             dispatch(openModal({component: <CalendarCont />, props: {name, currentDate: data[name], setDate: {onDateChange}, done, date }}))
         }}>
-           <LuCalendarDays />
+           <LuCalendarDays className="text-inherit"/>
            <p className='!text-gray-400'>{formattedDate}</p>
         </div>
     )

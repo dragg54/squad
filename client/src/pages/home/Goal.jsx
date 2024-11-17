@@ -5,7 +5,10 @@ const Goal = () => {
     <section>
         <div className='mt-4 w-full rounded-md p-4'>
         <div className="w-full mb-3">
-            <h2 className='text-xl font-semibold'>Goals for this month</h2>
+          <div className="flex justify-between">
+          <h2 className='text-xl font-semibold'>Goals for this month</h2>
+          <AddButton name='Add Goal' style='!bg-gray-700 items-center'/>
+          </div>
             </div>
              <div className="w-full">
                 <ul className="w-full">
@@ -15,7 +18,7 @@ const Goal = () => {
                 </ul>
             </div>
             <div className="w-full flex justify-between items-center">
-            <AddButton /> <p className="text-[#FD7F20] underline">See all</p>
+             <p className="text-gray-600 underline">See all</p>
             </div>
         </div>
     </section>

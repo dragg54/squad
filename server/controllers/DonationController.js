@@ -25,13 +25,41 @@ export const createDonationPayment = async (req, res) => {
   }
 }
 
-
-export const updateDonationPaymentStatus = async (req, res) => {
+export const getDonationPaymentPerDonation = async(req, res) =>{
   try {
-    const response = DonationService.updateDonationPaymentStatus(req)
-    res.json({ data: response.data })
+    const response = await DonationService.getTotalPaymentAmountPerDonation(req)
+    res.json(response)
   }
-  catch (err) {
-    res.status(500).json(err.message)
+  catch (error) {
+    console.log(error)
+    res.status(error.statusCode || 500).send({
+      message: error.message
+    })
+  }
+}
+
+export const getDonations = async(req, res) =>{
+  try {
+    const response = await DonationService.getDonations(req)
+    res.json(response)
+  }
+  catch (error) {
+    console.log(error)
+    res.status(error.statusCode || 500).send({
+      message: error.message
+    })
+  }
+}
+
+export const getDonationPayments = async(req, res) =>{
+  try {
+    const response = await DonationService.getDonationPayments(req)
+    res.json(response)
+  }
+  catch (error) {
+    console.log(error)
+    res.status(error.statusCode || 500).send({
+      message: error.message
+    })
   }
 }

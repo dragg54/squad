@@ -8,6 +8,7 @@ export default {
     extend: {
       fontFamily:{
         playwrite: ['Playwrite NZ', 'sans-serif'],
+        sourGummy: ['Sour Gummy', 'sans-serif'],
         menuWrite: ['Playwrite IS', 'sans'],
         'ibm': '"IBM Plex Sans", sans-serif'
       },

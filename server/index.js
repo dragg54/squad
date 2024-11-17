@@ -13,12 +13,12 @@ import inviteRoute from './routes/InviteRoute.js'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
-import webhookRoute from './routes/WebhookRoute.js'
 import paymentRoute from "./routes/PaymentRoute.js"
 import { UserGoalCategory } from './models/UserGoalCategory.js'
 import userGoalCategoryRouter from './routes/UserGoalCategoryRoute.js'
 import http from 'http'
 import { route as donationRoute } from './routes/DonationRoute.js'
+import donationPaymentRoute from './routes/DonationPaymentRoute.js'
 import { registerUser, removeUser } from './socket.io/users.js';
 import { sendPostCreatedNotification, sendPostLikedNotificationToUser } from './socket.io/postNotification.js';
 import { sendGoalCreatedNotification } from './socket.io/goalNotification.js';
@@ -74,7 +74,7 @@ app.use("/api/v1/notificationSummaries", notificationSummaryRoute)
 app.use("/api/v1/points", pointRoute)
 app.use("/api/v1/donations", donationRoute)
 app.use("/api/v1/payments", paymentRoute)
-app.use("/api/v1/webhooks", webhookRoute)
+app.use("/api/v1/donationPayments", donationPaymentRoute)
 
 server.listen(8080, ()=>{
     console.log("Listening to port 8080")

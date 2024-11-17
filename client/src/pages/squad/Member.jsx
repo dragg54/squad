@@ -46,7 +46,7 @@ const Member = () => {
         <div className="w-full md:w-[60%] h-[200px]  bg-gradient-to-r from-[#8155BA] to-[#FE5BD6] ">
         </div>
         <div className="-mt-14 p-4">
-          <Image source={''} style={'h-24 w-24 z-10 bg-white'} />
+          <Image source={"/avatars/av1.jpg"} style={'h-24 w-24 z-10 bg-white'} />
           <p className="mt-3 font-semibold">{member.firstName} {member.LastName}</p>
           <p className="mt-1 text-sm">@{member.userName}</p>
           <p className="text-gray-500 mt-1">A fun guy who loves to make people around me happy</p>

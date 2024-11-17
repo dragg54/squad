@@ -17,6 +17,17 @@ const Input = ({style, placeholder, name, isSelected, type, onChange, checked, v
 
       )
     }
+    else if(type == 'number'){
+     return(
+      <input onChange={onChange || function(){return null}}
+      type={'number'}
+      value={value}
+      name={name}
+      placeholder={placeholder}
+      className={`${style} w-full border rounded-md text-gray-500 outline-none p-3 mt-2`} />
+
+     )
+    }
     else if(type == "checkbox"){
       return(
         <input  

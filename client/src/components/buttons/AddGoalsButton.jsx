@@ -5,7 +5,7 @@ import { FaPlus } from "react-icons/fa6";
 
 const AddGoalsButton = ({onClick}) => {
   return (
-    <Button onClick={onClick} style={'!bg-white !text-purple-700 border border-purple-500'} name="Add Goals" icon={<FaPlus />}/>
+    <Button onClick={onClick} style={'!bg-white !text-gray-600 border border-gray-600'} name="Add Goals" icon={<FaPlus />}/>
   )
 }
 

@@ -36,7 +36,7 @@ export const createUser = async (req, trans) => {
     req.body.bio = "A man with integrity"
     const id = await User.create(req.body, {transaction: trans})
 
-    await addPoint({userId: req.body.invitedBy, squadId: req.body.squadId, points: activityPoints.invitationPoints}, {transaction: trans})
+    await addPoint({userId: req.body.inviteBy, squadId: req.body.squadId, points: activityPoints.invitationPoints}, {transaction: trans})
 
     await addPoint({userId: id, squadId: req.body.squadId, points: activityPoints.registrationPoints}, {transaction: trans})
 

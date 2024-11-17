@@ -1,8 +1,6 @@
 import { Router } from "express";
 import { authMiddleware } from "../middlewares/authMiddleWare.js";
-import { initializePayment } from "../controllers/PaymentController.js";
-import { getPaymentStatus } from "../services/PaymentService.js";
-import { updateDonationPaymentStatus } from "../controllers/DonationController.js";
+import { initializePayment, getPaymentStatus } from "../controllers/PaymentController.js";
 
 const route = Router()
 

@@ -17,6 +17,10 @@ import { useEffect } from 'react'
 import { socket } from './utils/Socket'
 import { useDispatch, useSelector } from 'react-redux'
 import { addNotification } from './redux/reducers/NotificationReducer'
+import Donations from './pages/donation'
+import Donation from './pages/donation/Donation'
+import CreateDonation from './pages/donation/CreateDonation'
+import Donate from './pages/donation/Donate'
 // import Notification from './pages/notifications'
 
 
@@ -90,6 +94,21 @@ function App() {
             <Route path="/leaderboard" element={<LeaderBoard />} />
           </Route>
 
+          <Route element={<ProtectedRoute />}>
+            <Route path="/donation" element={<Donations />} />
+          </Route>
+
+          <Route element={<ProtectedRoute />}>
+            <Route path="/donation/:id" element={<Donation />} />
+          </Route>
+
+          <Route element={<ProtectedRoute />}>
+            <Route path="/donation/create" element={<CreateDonation />} />
+          </Route>
+
+          <Route element={<ProtectedRoute />}>
+            <Route path="/donation/:id/donate" element={<Donate />} />
+          </Route>
         </Routes>
       </Layout>
     </Router>

@@ -17,8 +17,15 @@ const Donation = db.define('donation', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    target: {
+    targetAmount: {
         type: DataTypes.INTEGER
+    },
+    targetDate:{
+        type: DataTypes.DATE
+    },
+    status:{
+        type: DataTypes.ENUM('OPENED', 'CLOSED'),
+        defaultValue: 'OPENED'
     }
 }, {
     timestamps: true,
