@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { BACKEND_SERVER_URL } from '../../Appconfig';
 
 export const userSlice = createSlice({
   name: 'user',
@@ -19,7 +20,8 @@ export const userSlice = createSlice({
             userName,
             email,
             firstName,
-            lastName
+            lastName,
+            profileAvatar,
         } = action.payload.userDetails
 
       state.id = id
@@ -28,7 +30,8 @@ export const userSlice = createSlice({
       state.email = email
       state.firstName = firstName
       state.lastName = lastName
-      state.isLoggedIn = true
+      state.isLoggedIn = true,
+      state.profileAvatar = BACKEND_SERVER_URL+"/avatars/"+profileAvatar
     }
   },
 });

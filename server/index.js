@@ -9,6 +9,7 @@ import userGoalRoute from './routes/UserGoalRoute.js'
 import notificationSummaryRoute from './routes/NotificationSummaryRoute.js'
 import squadRoute from './routes/SquadRoute.js'
 import notificationRoute from './routes/NotificationRoute.js'
+import avatarRoute from "./routes/AvatarRoute.js"
 import inviteRoute from './routes/InviteRoute.js'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
@@ -22,6 +23,11 @@ import donationPaymentRoute from './routes/DonationPaymentRoute.js'
 import { registerUser, removeUser } from './socket.io/users.js';
 import { sendPostCreatedNotification, sendPostLikedNotificationToUser } from './socket.io/postNotification.js';
 import { sendGoalCreatedNotification } from './socket.io/goalNotification.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 
 dotenv.config()
@@ -45,6 +51,8 @@ const corsOptions = {
     return callback(null, true);
   },
 };
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(cors(corsOptions))
 app.use((req, res, next) => {
@@ -74,6 +82,7 @@ app.use("/api/v1/notificationSummaries", notificationSummaryRoute)
 app.use("/api/v1/points", pointRoute)
 app.use("/api/v1/donations", donationRoute)
 app.use("/api/v1/payments", paymentRoute)
+app.use("/api/v1/avatars", avatarRoute)
 app.use("/api/v1/donationPayments", donationPaymentRoute)
 
 server.listen(8080, ()=>{

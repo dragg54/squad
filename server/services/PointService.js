@@ -2,7 +2,6 @@ import Point from "../models/Point.js"
 import User from "../models/User.js"
 
 export const addPoint = async(req, trans) =>{
-    console.log(req.userId)
     const existingPoints = await getUserPoints(req.userId)
     if(!existingPoints){
         await Point.create(req, {transaction: trans})

@@ -1,12 +1,12 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-useless-catch */
-import { BACKEND_SERVER_URL } from '../Appconfig';
+import { BACKEND_SERVER_URL, BACKEND_SERVER_VERSION } from '../Appconfig';
 import AuthConnect from './index.js';
 
 const axiosInstance = AuthConnect
 export const getDonations = async () => {
   try {
-    const response = await axiosInstance.get(`${BACKEND_SERVER_URL}/Donations`
+    const response = await axiosInstance.get(`${BACKEND_SERVER_URL}/${BACKEND_SERVER_VERSION}/Donations`
     );
     return response.data;
   }
@@ -18,7 +18,7 @@ export const getDonations = async () => {
 
 export const getDonationPayments = async (id) => {
   try {
-    const response = await axiosInstance.get(`${BACKEND_SERVER_URL}/Donations/${id}/payments`
+    const response = await axiosInstance.get(`${BACKEND_SERVER_URL}/${BACKEND_SERVER_VERSION}/Donations/${id}/payments`
     );
     return response.data;
   }
@@ -30,7 +30,7 @@ export const getDonationPayments = async (id) => {
 
 export const createDonation = async (formData) => {
   try {
-    const response = await axiosInstance.post(`${BACKEND_SERVER_URL}/Donations`, formData)
+    const response = await axiosInstance.post(`${BACKEND_SERVER_URL}/${BACKEND_SERVER_VERSION}/Donations`, formData)
     return response
   }
   catch (error) {
@@ -40,7 +40,7 @@ export const createDonation = async (formData) => {
 
 export const updateDonation = async (formData) => {
   try {
-    const response = await axiosInstance.put(`${BACKEND_SERVER_URL}/Donations/${formData.id}`, formData)
+    const response = await axiosInstance.put(`${BACKEND_SERVER_URL}/${BACKEND_SERVER_VERSION}/Donations/${formData.id}`, formData)
     return response
   }
   catch (error) {
@@ -49,7 +49,7 @@ export const updateDonation = async (formData) => {
 }
 export const getDonationLikes = async (formData) => {
   try {
-    const response = await axiosInstance.get(`${BACKEND_SERVER_URL}/Donations/${formData.DonationId}/likes`
+    const response = await axiosInstance.get(`${BACKEND_SERVER_URL}/${BACKEND_SERVER_VERSION}/Donations/${formData.DonationId}/likes`
     );
     return response.data;
   }
@@ -60,7 +60,7 @@ export const getDonationLikes = async (formData) => {
 
 export const donate = async(formData) =>{
   try {
-    const response = await axiosInstance.post(`${BACKEND_SERVER_URL}/Donations/${formData.donationId}/payment`, formData
+    const response = await axiosInstance.post(`${BACKEND_SERVER_URL}/${BACKEND_SERVER_VERSION}/Donations/${formData.donationId}/payment`, formData
     );
     return response.data;
   }

@@ -8,14 +8,14 @@ function generateInviteToken() {
 export async function createInvitation(req){
     const token = generateInviteToken();
     const {id, squadId} = req.user
-    const inviteLink = `${req.headers.origin}/register?inviteToken=${token}&squad=${squadId}&inviteBy=${req.user.id}`;
+    const inviteLink = `${req.headers.origin}/register?inviteToken=${token}&squad=${squadId}&invitedBy=${req.user.id}`;
     const {email} = req.body
     await deleteExistingInvitation({squadId, userId: req.user.id})
     await Invite.create({
         email,
         token,
         squadId,
-        inviteBy: id,
+        invitedBy: id,
         expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000) 
     });
 
@@ -31,9 +31,9 @@ export async function getInvitation(req){
 }
 
 export async function deleteExistingInvitation(req){
-    const existingInvite = getInvites({inviteBy: req.userId, squadId: req.squadId})
+    const existingInvite = getInvites({invitedBy: req.userId, squadId: req.squadId})
     if(existingInvite && existingInvite.length > 0){
-        await Invite.destroy({where:{inviteBy: req.userId, squadId: req.squadId}})
+        await Invite.destroy({where:{invitedBy: req.userId, squadId: req.squadId}})
     }
 }
 

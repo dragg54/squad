@@ -14,3 +14,53 @@
 .clip-trapezoid {
     clip-path: polygon(8% 0%, 90% 0%, 100% 100%, 0% 100%);
   }
+
+  .swiper {
+    width: 50%;
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
+  
+  .swiper-slide {
+    background-position: center;
+    background-size: cover;
+    width: 300px;
+    height: 300px;
+  }
+  
+  .swiper-slide img {
+    display: block;
+    width: 100%;
+  }
+
+  .swiper-button-next,
+.swiper-button-prev {
+    color: purple; 
+    font-size: 1.5rem; 
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+    color: purple; 
+}
+
+.swiper-pagination-bullet {
+    background-color: purple; 
+    opacity: 0.6;
+    width: 12px; 
+    height: 12px;
+    margin: 0 5px; 
+    transition: background-color 0.3s ease, opacity 0.3s ease
+}
+
+.swiper-pagination-bullet-active {
+    background-color: purple;
+    opacity: 1; 
+    transform: scale(1.2); 
+}
+
+
+.mySwiper{
+    @apply w-[200px]
+}
+

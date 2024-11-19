@@ -21,6 +21,7 @@ import Donations from './pages/donation'
 import Donation from './pages/donation/Donation'
 import CreateDonation from './pages/donation/CreateDonation'
 import Donate from './pages/donation/Donate'
+import UserAvatar from './pages/register/UserAvatar'
 // import Notification from './pages/notifications'
 
 
@@ -109,6 +110,8 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="/donation/:id/donate" element={<Donate />} />
           </Route>
+
+            <Route path="register/userAvatar" element={<UserAvatar />} />
         </Routes>
       </Layout>
     </Router>

@@ -11,6 +11,8 @@ import { getInvitation } from './InviteService.js';
 import Point from '../models/Point.js';
 import { activityPoints } from '../constants/ActivityPoints.js';
 import { addPoint, updatePoint } from './PointService.js';
+import { getAllFiles } from '../utils/getAllFiles.js';
+import path from 'path'
 
 export const createUser = async (req, trans) => {
     const existingSquad = await getSquadById(req.body.squadId)
@@ -34,23 +36,22 @@ export const createUser = async (req, trans) => {
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
     req.body.password = hashedPassword
     req.body.bio = "A man with integrity"
-    const id = await User.create(req.body, {transaction: trans})
+    const newUser = await User.create(req.body, {transaction: trans})
+    await addPoint({userId: req.body.invitedBy, squadId: req.body.squadId, points: activityPoints.invitationPoints}, {transaction: trans})
 
-    await addPoint({userId: req.body.inviteBy, squadId: req.body.squadId, points: activityPoints.invitationPoints}, {transaction: trans})
-
-    await addPoint({userId: id, squadId: req.body.squadId, points: activityPoints.registrationPoints}, {transaction: trans})
+    // await addPoint({userId: newUser.id, squadId: req.body.squadId, points: activityPoints.registrationPoints}, {transaction: trans})
 
 };
 
 export const getAllUsers = async (req) => {
-    return await User.findAll({ attributes: ["id", "firstName", "lastName", "email", "userName", "squadId"], 
+    return await User.findAll({ attributes: ["id", "firstName", "lastName", "email", "userName", "squadId", "profileAvatar"], 
         where: {squadId: req.user.squadId}
     });
 };
 
 export const getUserById = async (id) => {
     return await User.findByPk(id, {
-        attributes: ["id", "firstName", "lastName", "email", "userName", "squadId"]
+        attributes: ["id", "firstName", "lastName", "email", "userName", "squadId", "profileAvatar"]
     });
 };
 
@@ -101,7 +102,18 @@ export const loginUser = async (userData) => {
             email: existingUser.email,
             userName: existingUser.userName,
             firstName: existingUser.firstName,
-            lastName: existingUser.lastName
+            lastName: existingUser.lastName,
+            profileAvatar: existingUser.profileAvatar
         }
+    }
+}
+
+export const getUserAvatars = async() =>{
+    try{
+        const dir = path.join(process.cwd(), 'public/avatars')
+        return await getAllFiles(dir)
+    }
+    catch(err){
+        throw new InternalServerError(err)
     }
 }

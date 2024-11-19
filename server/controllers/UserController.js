@@ -11,6 +11,7 @@ export const createUser = async (req, res) => {
     });
     await transaction.commit()
   } catch (error) {
+    console.log(error)
     await transaction.rollback()
     res.status(error.statusCode || 500).json({ error: error.message || "Internal server error" });
   }
@@ -77,3 +78,13 @@ export const loginUser = async (req, res) =>{
     }
 }
 
+
+export const getUserAvatars = async(req, res) =>{
+  try{
+    const avatarFiles = await userService.getUserAvatars()
+    return res.json(avatarFiles)
+  }
+  catch(err){
+    res.status(500).json({message: err.message})
+  }
+}

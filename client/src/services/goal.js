@@ -1,13 +1,13 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-useless-catch */
-import { BACKEND_SERVER_URL } from '../Appconfig';
+import { BACKEND_SERVER_URL, BACKEND_SERVER_VERSION } from '../Appconfig';
 import AuthConnect from './index.js';
 
 const axiosInstance = AuthConnect
 export const getUserGoals = async ({queryKey}) => {
     const [_key, { page, size, groupBy, userId, partnerId }] = queryKey;
      try{
-        const response = await axiosInstance.get(`${BACKEND_SERVER_URL}/usergoals`,
+        const response = await axiosInstance.get(`${BACKEND_SERVER_URL}//${BACKEND_SERVER_VERSION}/usergoals`,
           {
             params: { page, size, groupBy, userId, partnerId },
           }
@@ -21,7 +21,7 @@ export const getUserGoals = async ({queryKey}) => {
 
   export const createUserGoal = async (formData) =>{
     try{
-        const response = await axiosInstance.post(`${BACKEND_SERVER_URL}/usergoals`, formData)
+        const response = await axiosInstance.post(`${BACKEND_SERVER_URL}//${BACKEND_SERVER_VERSION}/usergoals`, formData)
         return response
     }
     catch(error){
@@ -31,7 +31,7 @@ export const getUserGoals = async ({queryKey}) => {
 
   export const updateUserGoal = async(formData) =>{
     try{
-      const response = await axiosInstance.put(`${BACKEND_SERVER_URL}/usergoals/${formData.id}`, formData)
+      const response = await axiosInstance.put(`${BACKEND_SERVER_URL}//${BACKEND_SERVER_VERSION}/usergoals/${formData.id}`, formData)
       return response
   }
   catch(error){

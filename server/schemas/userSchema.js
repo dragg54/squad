@@ -7,6 +7,8 @@ export const userSchema = Joi.object({
     email: Joi.string().email().required(),
     userName: Joi.string().min(3).required(),
     password: Joi.string().min(8),
-    sex: Joi.string(),
-    token: Joi.string()
+    sex: Joi.string().required(),
+    token: Joi.string().required(),
+    invitedBy: Joi.string().required(),
+    profileAvatar: Joi.string()
   });

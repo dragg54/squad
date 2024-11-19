@@ -10,7 +10,7 @@ const Donations = () => {
     {queryFn: getDonations}
   )
   if(isLoadingDonation){
-    return <p>Loading...</p>
+    console.log("Loading")
   }
   return (
     <section className="w-full md:w-[50%] !overflow-visible p-2  md:p-8 pb-10 md:pb-48 md:ml-[20rem]">

@@ -4,7 +4,7 @@ import db from "../configs/db.js";
 import Squad from "./Squad.js";
 
 const Invite = db.define('invite', {
-    inviteBy: {
+    invitedBy: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {

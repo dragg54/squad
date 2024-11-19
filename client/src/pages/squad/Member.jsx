@@ -10,6 +10,7 @@ import { getUserGoals } from "../../services/goal"
 import { useSelector } from "react-redux"
 import Goal from "../goals/components/Goal"
 import Pagination from "../../components/Pagination"
+import { BACKEND_SERVER_URL } from "../../Appconfig"
 
 const Member = () => {
   const { id } = useParams()
@@ -38,7 +39,7 @@ const Member = () => {
       keepPreviousData: false,
     }
   );
-  if (memberIsLoading) return <>Loading...</>
+  if (memberIsLoading) console.log("Loading...")
   if (postIsLoading) return <>Post Loading ...</>
   return (
     <section className="w-full overflow-x-visible h-screen overflow-y-scroll p-4 md:p-8 pb-40 md:pb-48 md:ml-[20rem]">
@@ -46,7 +47,7 @@ const Member = () => {
         <div className="w-full md:w-[60%] h-[200px]  bg-gradient-to-r from-[#8155BA] to-[#FE5BD6] ">
         </div>
         <div className="-mt-14 p-4">
-          <Image source={"/avatars/av1.jpg"} style={'h-24 w-24 z-10 bg-white'} />
+          <Image source={BACKEND_SERVER_URL+"/avatars/"+ member.profileAvatar} style={'h-24 w-24 z-10 bg-white'} />
           <p className="mt-3 font-semibold">{member.firstName} {member.LastName}</p>
           <p className="mt-1 text-sm">@{member.userName}</p>
           <p className="text-gray-500 mt-1">A fun guy who loves to make people around me happy</p>

@@ -1,16 +1,11 @@
 import Input from '../../components/inputs/index'
 import Button from '../../components/buttons'
 import {  useNavigate, useSearchParams } from 'react-router-dom'
-import { useMutation } from 'react-query'
-import { createUser } from '../../services/user'
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { openPopup } from '../../redux/reducers/PopUpReducer'
-import { responseStatus } from '../../constants/ResponseStatus'
+
 
 const Register = () => {
     const navigate = useNavigate()
-    const dispatch = useDispatch()
     const [input, setInput] = useState({
         squadId: "",
         firstName: "",
@@ -20,12 +15,7 @@ const Register = () => {
         sex: "",
         password: ""
     })
-    const createUserMutation = useMutation(createUser, {
-        onSuccess: () => {
-           navigate("/login")
-           dispatch(openPopup({message: "User successfully created", status: responseStatus.success}))
-        },
-      });
+
 
     const handleChange = (e) =>{
         setInput({...input, [e.target.name]: e.target.value})
@@ -40,7 +30,7 @@ const Register = () => {
         input.squadId = squadId
         input.token = token
         input.invitedBy = invitedBy
-        createUserMutation.mutate(input)
+        navigate("userAvatar", {state:{input}})
     }
 
     return (

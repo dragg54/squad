@@ -1,11 +1,12 @@
 /* eslint-disable react/prop-types */
+import { BACKEND_SERVER_URL } from "../../../Appconfig"
 import Image from "../../../components/containers/Image"
 
 const ProfileCard = ({user}) => {
   return (
     <div className='w-full cursor-pointer mb-5 h-32 p-4  rounded-md border shadow-md shadow-gray-500'>
         <div className="flex justify-start items-center gap-4">
-                <Image source='avatars/av1.jpg' style='h-16 w-[66px]' />
+                <Image  source={BACKEND_SERVER_URL+"/avatars/"+ user.profileAvatar} style='h-16 w-[66px]' />
                 <div>
                     <p className='font-semibold'>{user.firstName} {user.lastName}</p>
                     <p className=' text-xs mb-2'>@{user.userName}</p>
