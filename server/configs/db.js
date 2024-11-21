@@ -4,7 +4,6 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const environment = process.env.NODE_ENV || "development";
-console.log(`Environment is ${environment}`);
 
 const dbName = process.env.LOCAL_DB_NAME || process.env.PROD_DB_NAME;
 const dbUserName = process.env.LOCAL_DB_USERNAME || process.env.PROD_DB_USERNAME;

@@ -4,6 +4,7 @@ import { getPoints } from "../../services/point"
 import PointBox from "./components/PointBox"
 import UserBox from "./components/UserBox"
 import { useQuery } from "react-query"
+import { BACKEND_SERVER_URL } from "../../Appconfig"
 
 const LeaderBoard = () => {
     const user = useSelector(state => state.user)
@@ -38,7 +39,7 @@ if(isError){
                     </div>
                 </div>
                 <div className="flex flex-col w-60 items-center relative -ml-12 md:-ml-24 z-40">
-                    <Image source='avatars/av2.jpg' style="mb-4 h-20 w-20 rounded-full bg-yellow-500" />
+                    <Image source={data && BACKEND_SERVER_URL+"/avatar/"+data[0]?.user?.profileAvatar} style="mb-4 h-20 w-20 rounded-full bg-yellow-500" />
                     <PointBox {...{ background: "bg-purple-700", points:  data && data[0]?.points }} />
                     <p className="text-[0.5rem] md:text-xs mb-3">{data && data[0]?.user?.userName}
                     </p>

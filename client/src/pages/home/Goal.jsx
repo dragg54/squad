@@ -5,7 +5,7 @@ const Goal = () => {
     <section>
         <div className='mt-4 w-full rounded-md p-4'>
         <div className="w-full mb-3">
-          <div className="flex justify-between">
+          <div className="flex justify-between items-center">
           <h2 className='text-[1.1rem] md:text-xl font-semibold'>Goals for this month</h2>
           <AddButton name='Add Goal' style='!bg-white !text-gray-800 !rounded-full !border border-gray-700 items-center'/>
           </div>

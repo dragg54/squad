@@ -26,7 +26,7 @@ export const getPoints = async(req) =>{
         {where:{squadId: req.user.squadId}, order:[["points", "DESC"]],
         include: {
             model: User,
-            attributes: ["firstName", "lastName", "userName"] 
+            attributes: ["firstName", "lastName", "userName", "profileAvatar"] 
         },
     })
 }
