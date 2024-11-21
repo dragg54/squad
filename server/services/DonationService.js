@@ -117,7 +117,7 @@ export const getDonationPayments = async (req) => {
         },
         include: {
             model: User,
-            attributes: ['firstName', 'lastName', 'userName']
+            attributes: ['firstName', 'lastName', 'userName', 'profileAvatar']
         },
         order:[['amount', 'DESC']]
     })

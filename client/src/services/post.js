@@ -6,7 +6,6 @@ import AuthConnect from './index.js';
 const axiosInstance = AuthConnect
 export const getPosts = async ({ queryKey }) => {
   const [_key, { page, size, groupBy, userId }] = queryKey;
-  console.log(userId)
   try {
     const response = await axiosInstance.get(`${BACKEND_SERVER_URL}/${BACKEND_SERVER_VERSION}/Posts`,
       {

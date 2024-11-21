@@ -78,7 +78,7 @@ const AddPost = ({ page, size }) => {
                     type='text-area'
                     placeholder='Post' />
                 <div className='w-full flex justify-end'>
-                    <Button disabled={isButtonDisabled} type='submit' style='mt-6 !py-3 !rounded-full' name="Create Post" />
+            <Button disabled={isButtonDisabled} type='submit' style='mt-6 !py-3 !rounded-full' name="Create Post" />
                 </div>
             </form>
         </div>

@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import { BACKEND_SERVER_URL } from "../../../Appconfig"
 import Image from "../../../components/containers/Image"
 
 const UserBox = ({ isCurrentUser, userPointData, position}) => {
@@ -8,7 +9,7 @@ const UserBox = ({ isCurrentUser, userPointData, position}) => {
         <p className="text-xl !text-inherit font-semibold">
             #{position}
         </p>
-        <Image source="avatars/kenny.jpg" style='h-12 w-12' />
+        <Image source={ BACKEND_SERVER_URL+"/avatars/"+ userPointData.user.profileAvatar} style=" h-16 w-16 rounded-full bg-yellow-500" />
         <div >
             <p className=" !text-inherit font-semibold">
                 {userPointData?.user?.userName}</p>

@@ -28,8 +28,8 @@ if(isError){
            <UserBox {...{isCurrentUser: true, userPointData: data && data.find(pointData => pointData.userId ==  user.id), position: data && data.findIndex(pointData => pointData.userId ==  user.id)+1}}/>
             <div className="w-full flex h-100 mt-12 md:ml-10 items-end">
                 <div className="flex flex-col w-60 items-center relative">
-                    <Image source='avatars/kenny.jpg' style="mb-4 h-20 w-20 rounded-full bg-yellow-500" />
-                    <PointBox {...{ background: "bg-blue-500", points: data && data[1]?.points }} />
+                <Image source={data && data.length > 0 && BACKEND_SERVER_URL+"/avatars/"+data[1]?.user?.profileAvatar} style="mb-4 h-20 w-20 rounded-full bg-yellow-500" />
+                <PointBox {...{ background: "bg-blue-500", points: data && data[1]?.points }} />
                     <p className="text-[0.5rem] md:text-xs mb-3">{data && data[1]?.user?.userName}
                     </p>
                     <div className=" w-[131px] h-12 bg-blue-500 clip-trapezoid text-white border border-blue-700  shadow-md shadow-blue-500"></div>
@@ -39,7 +39,7 @@ if(isError){
                     </div>
                 </div>
                 <div className="flex flex-col w-60 items-center relative -ml-12 md:-ml-24 z-40">
-                    <Image source={data && BACKEND_SERVER_URL+"/avatar/"+data[0]?.user?.profileAvatar} style="mb-4 h-20 w-20 rounded-full bg-yellow-500" />
+                    <Image source={data && data.length > 0 && BACKEND_SERVER_URL+"/avatars/"+data[0]?.user?.profileAvatar} style="mb-4 h-20 w-20 rounded-full bg-yellow-500" />
                     <PointBox {...{ background: "bg-purple-700", points:  data && data[0]?.points }} />
                     <p className="text-[0.5rem] md:text-xs mb-3">{data && data[0]?.user?.userName}
                     </p>
@@ -49,8 +49,8 @@ if(isError){
                     </div>
                 </div>
                 <div className="flex flex-col w-60 items-center relative -ml-12 md:-ml-24">
-                    <Image source='avatars/av1.jpg' style="mb-4 h-20 w-20 rounded-full bg-yellow-500" />
-                    <PointBox {...{ background: "bg-green-500", points: data && data[2]?.points }} />
+                <Image source={data && data.length > 0 && BACKEND_SERVER_URL+"/avatars/"+data[2]?.user?.profileAvatar} style="mb-4 h-20 w-20 rounded-full bg-yellow-500" />
+                <PointBox {...{ background: "bg-green-500", points: data && data[2]?.points }} />
                     <p className="text-[0.5rem] md:text-xs mb-3">{data && data[2]?.user?.userName}
                     </p>
                     <div className=" w-[131px] h-12 bg-green-500 clip-trapezoid text-white border border-green-700  shadow-md shadow-green-500"></div>

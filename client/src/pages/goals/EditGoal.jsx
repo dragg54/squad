@@ -108,7 +108,7 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory, localDate }) => {
                 <div className="mt-3 flex justify-between w-full">
                     <div className="cursor-pointer w-1/2" onClick={() => dispatch(openModal(<GoalCategory {...{ goal, inputValues, selectedCategory, setSelectedCategory, setIsUpdated }} />))}>
                         <p className="font-semibold cursor-pointer">Category</p>
-                        <p className="text-sm mt-1 text-gray-500 inline-flex gap-1 items-center">{localSelectedCategory ? localSelectedCategory.name : selectedCategory.name} </p>
+                        <p className="text-sm mt-1 text-gray-500 inline-flex gap-1 items-center">{localSelectedCategory ? localSelectedCategory.name : selectedCategory?.name} </p>
                     </div>
                     <div className='cursor-pointer w-1/2' onClick={() => dispatch(openModal({component:<Deadline {...{ goal, setDate, date, setIsUpdated }} />}))}>
                         <p className="font-semibold inline-flex items-center">Deadline <CiClock2 style={{ marginLeft: "5px", fontSize: "20px", color: "#1a5653" }} /></p>
