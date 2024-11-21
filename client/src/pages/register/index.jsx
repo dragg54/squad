@@ -34,8 +34,9 @@ const Register = () => {
     }
 
     return (
-        <section className='md:flex items-center md:flex-col md:-mt-12'>
-            <div className="w-full p-6 md:w-1/3">
+        <section className='flex items-center flex-col md:mt-10 mt-10'>
+            <div className="w-full p-6 md:w-1/3 flex items-center flex-col">
+            <p className='text-5xl mb-2 font-bold text-purple-800 font-sourGummy'>MomenTom</p>
                 <h1 className="font-semibold text-2xl mt-5 md:text-4xl">Register</h1>
                 <p className="text-gray-500 text-sm md:text-xl">Create an account</p>
                 <form onSubmit={handleSubmit} action="" className="mt-5">
@@ -45,9 +46,8 @@ const Register = () => {
                     <Input onChange={handleChange} name='email' placeholder='Email' style=''/>
                     <Input onChange={handleChange} name='sex' placeholder='Sex' style=''/>
                     <Input onChange={handleChange} type="password" name='password' placeholder='Password' style=''/>
-                    <Button type='submit' name='Sign up' style={'border !bg-[#B175FF] !py-4 mt-20 !w-full !flex !justify-center w-36 !text-white'}/>
+                    <Button type='submit' name='Sign up' style={'border !bg-[#B175FF] !py-4 mt-4 !rounded-full !w-full !flex !justify-center w-36 !text-white'}/>
                     </form>
-                    <p className='mt-3'>Already have an account? <span className='text-[#B175FF] mt-4 cursor-pointer' onClick={()=> navigate("/login")}> Sign in here</span></p>
             </div>
         </section>
     )

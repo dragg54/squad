@@ -69,12 +69,12 @@ const Login = () => {
                 <form onSubmit={handleSubmit} action="" className="mt-5  mx-center w-full h-3/5 relative flex md:items-start flex-col items-center">
                     <div className='relative w-full'>
                         <CiMail className='absolute left-2  text-2xl text-gray-300 top-5' />
-                        <Input onChange={handleChange} name='email' placeholder='' style='!w-full !pl-10' />
+                        <Input hasError={error["email"]} onChange={handleChange} name='email' placeholder='' style='!w-full !pl-10' />
                     <span className='error'>{error["email"]}</span>
                     </div>
                     <div className='relative w-full'>
                         <CiLock className='absolute left-2  text-2xl text-gray-300 top-5' />
-                        <Input onChange={handleChange} name='password' placeholder='' style='!w-full !pl-10' />
+                        <Input type='password' onChange={handleChange} hasError={error["password"]} name='password' placeholder='' style='!w-full !pl-10' />
                     <span className='error'>{error["password"]}</span>
                     </div>
                     <Button type="submit" name='Sign in' style={'border !rounded-full left-0 !bg-[#B175FF] mx-auto mt-8 bottom-20 !py-4  !w-full !flex !justify-center w-36 !text-white'} />

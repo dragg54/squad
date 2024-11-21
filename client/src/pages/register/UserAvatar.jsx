@@ -40,7 +40,7 @@ const UserAvatar = () => {
     ))
 
     return (
-        <div className=' flex flex-col !overflow-x-visible items-center justify-center'>
+        <div className='flex items-center flex-col md:mt-28 mt-32'>
             <h1 className='text-2xl md:text-4xl font-bold mb-4'>Choose Your Avatar</h1>
             <Slider imgs={avatarImgs} autoplay={false} setActiveIndex={setActiveIndex} activeIndex={activeIndex}/>
             <Button type={'button'} onClick={()=>handleSelectAvatar()} name='Select Avatar' style={'!border !border-purple-500 !bg-white !text-purple-500 hover:!bg-purple-100 hover:border-2'} />

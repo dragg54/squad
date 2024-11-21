@@ -69,10 +69,10 @@ function App() {
             <Route path="/donation/create" element={<CreateDonation />} />
             <Route path="/donation/:id/donate" element={<Donate />} />
           </Route>
-          <Route path="/register/userAvatar" element={<UserAvatar />} />
         </Route>
 
-        =        <Route path="/intro" element={<Intro />} />
+        <Route path="/intro" element={<Intro />} />
+        <Route path="/register/userAvatar" element={<UserAvatar />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 

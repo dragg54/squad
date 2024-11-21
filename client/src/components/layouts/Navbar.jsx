@@ -9,7 +9,7 @@ import { getNotificationSummary, readAllNotifications } from "../../services/not
 import { useDispatch, useSelector } from "react-redux";
 import { fetchNotifications, readNotifications } from "../../redux/reducers/NotificationReducer";
 
-const Navbar = ({ setMenuContainerOpened, setOpenNotificationContainer, openNotificationContainer }) => {
+const Navbar = ({ setMenuContainerOpened, setOpenNotificationContainer, openNotificationContainer , setOpenUserContainer}) => {
 
   const { data: notificationSummaryData, isLoading: isLoadingNotificationSummary, refetch } = useQuery('notificationSummary', {
     queryFn: getNotificationSummary
@@ -35,10 +35,9 @@ const Navbar = ({ setMenuContainerOpened, setOpenNotificationContainer, openNoti
   if (!isLoadingNotificationSummary && notificationSummaryData) {
     dispatch(fetchNotifications({ data: notificationSummaryData?.data[0] }))
   }
-  console.log(user.profileAvatar)
   if (!useIgnoreMatchedPath())
     return (
-      <div className={`w-full fixed z-40 md:h-20  h-20 border-b shadow-md shadow-gray-300 `}>
+      <div className={`w-full fixed z-40 md:h-20   h-20 border-b shadow-md shadow-gray-300 `}>
         <div className="absolute md:px-7 items-center w-full  p-4 flex justify-between">
           <p className="font-sourGummy !text-purple-900 font-semibold text-xl">MomenTom</p>
           <div className="flex text-2xl gap-3 items-center relative cursor-pointer" onClick={(e) => {
@@ -48,8 +47,11 @@ const Navbar = ({ setMenuContainerOpened, setOpenNotificationContainer, openNoti
               handleReadAllNotifications()
             }
           }}>
-            <div onClick={(e) => e.stopPropagation()}>
-              <Image style="h-10 w-10" source={user.profileAvatar} />
+            <div onClick={(e) =>{
+               e.stopPropagation()
+               setOpenUserContainer(true)
+            }}>
+              <Image style="h-10 w-10" source={user.profileAvatar}/>
             </div>
             <p className="cursor-pointer md:text-3xl"><IoNotificationsOutline className="cursor-pointer" /></p>
             < p className="cursor-pointer md:hidden" onClick={(e) => {
