@@ -7,6 +7,7 @@ import { useState } from 'react'
 import Sidebar from './Sidebar'
 import Aside from './Aside'
 import NotificationContainer from '../../pages/notifications'
+import { Outlet } from 'react-router-dom'
 
 const Layout = ({ children }) => {
   const [menuContainerOpened, setMenuContainerOpened] = useState(undefined)
@@ -24,8 +25,8 @@ const Layout = ({ children }) => {
         <div className='w-[20%] hidden md:block absolute'>
           <Sidebar />
         </div>
-        <div className='md:w-[85%] md:ml-20 w-full -z-40'>
-          {children}
+        <div className="md:w-[85%] md:ml-20 w-full z-10">
+          <Outlet />
         </div>
         <Aside />
       </main>

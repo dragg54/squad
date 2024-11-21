@@ -3,7 +3,7 @@
 import DateInput from "./DateInput"
 import SelectInput from "./SelectInput"
 
-const Input = ({style, placeholder, name, isSelected, type, onChange, checked, value, data , id, onClick, done, onSelect}) => {
+const Input = ({style, placeholder, name, hasError, isSelected, type, onChange, checked, value, data , id, onClick, done, onSelect}) => {
     if(!type || type == "text" 
       || type == "password"
     ){
@@ -13,7 +13,7 @@ const Input = ({style, placeholder, name, isSelected, type, onChange, checked, v
           value={value}
           name={name}
           placeholder={placeholder}
-          className={`${style} w-full border rounded-md text-gray-500 outline-none p-3 mt-2`} />
+          className={`${style} w-full border ${hasError && 'border-red-500'} rounded-md text-gray-500 outline-none p-3 mt-2`} />
 
       )
     }
@@ -24,7 +24,7 @@ const Input = ({style, placeholder, name, isSelected, type, onChange, checked, v
       value={value}
       name={name}
       placeholder={placeholder}
-      className={`${style} w-full border rounded-md text-gray-500 outline-none p-3 mt-2`} />
+      className={`${style} w-full ${hasError && 'border-red-500'} border rounded-md text-gray-500 outline-none p-3 mt-2`} />
 
      )
     }
@@ -49,7 +49,7 @@ const Input = ({style, placeholder, name, isSelected, type, onChange, checked, v
     else if(type == 'text-area'){
       return(
         <textarea 
-          className={`w-full text-gray-500 outline-none rounded-md resize-none ${style}`} 
+          className={`w-full text-gray-500 ${hasError && 'border-red-500'} outline-none rounded-md resize-none ${style}`} 
           name={name} 
           placeholder={placeholder}
           value={value}
@@ -59,7 +59,7 @@ const Input = ({style, placeholder, name, isSelected, type, onChange, checked, v
       )
     }
     else if(type == "date"){
-      return <DateInput id={id} onDateChange={onClick} name={name} style={style} date={value} data={data} done={done}/>
+      return <DateInput id={id}  onDateChange={onClick} name={name} style={style} date={value} data={data} done={done}/>
     }
 }
 

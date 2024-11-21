@@ -63,11 +63,12 @@ export const getAllUserGoals = async (req) => {
   }
 
   if (userId) {
-    queryOpts["userId"] = userId
+    queryOpts["userId"] = Number(userId)
   }
 
   if (groupBy == "month") {
     const goalsGroupedByMonth = await models.UserGoal.findAll({
+      where: queryOpts,
       attributes: [
         [db.fn('DATE_FORMAT', db.col('UserGoal.createdAt'), '%m'), 'month'],
         'title', 'description', 'completed'
@@ -96,28 +97,30 @@ export const getAllUserGoals = async (req) => {
           include: { model: User, attributes: { exclude: ["userId", "password", "createdAt", "updatedAt"] }, as: "user" }
         }
       ],
+      where: partnerQryOpts,
       order: [[db.literal('year'), 'ASC']],
     });
 
     return groupData(goalsGroupedByYear, groupBy)
   }
-  const userGoalsData = await models.UserGoal.findAndCountAll(
-    {
-      where: queryOpts,
-      attributes: { exclude: 'userGoalCategoryId' },
-      include: [
-        { model: models.UserGoalCategory, attributes: ['id', 'name'] },
-        {
-          model: GoalPartner, attributes: ["id"],
-          include: { model: User, attributes: { exclude: ["userId", "password", "createdAt", "updatedAt"] }, as: "user" },
-          where: partnerQryOpts,
-        },
-      ],
-      order: [['createdAt', 'DESC']],
-      limit, offset
-    }
-  );
-  return getPagingData(userGoalsData, page, size)
+  else{
+    const userGoalsData = await models.UserGoal.findAndCountAll(
+      {
+        attributes: { exclude: 'userGoalCategoryId' },
+        include: [
+          { model: models.UserGoalCategory, attributes: ['id', 'name'] },
+          {
+            model: GoalPartner, attributes: ["id"],
+            include: { model: User, attributes: { exclude: ["userId", "password", "createdAt", "updatedAt"] }, as: "user" },
+          },
+        ],
+        where: queryOpts,
+        order: [['createdAt', 'DESC']],
+        limit, offset
+      }
+    );
+    return getPagingData(userGoalsData, page, size)
+  }
 };
 
 export const getUserGoalById = async (id) => {
@@ -145,7 +148,7 @@ export const updateUserGoal = async (req, res, trans) => {
     await GoalPartner.bulkCreate(partners.map(partner => ({ userId: partner.userId })), { transaction: trans });
   }
 
-  updateGoalPoint(existingGoal, req.body, trans)
+  // updateGoalPoint(existingGoal, req.body, trans)
 
   await trans.commit();
 };

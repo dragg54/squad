@@ -23,7 +23,7 @@ const NotificationContainer = ({ openNotificationContainer }) => {
              {
               notification.notifications.map((not)=>{
                 return(
-                <li className="text-[0.6rem] inline-flex items-center gap-2" key={not.id}>
+                <li className="text-[0.75rem] inline-flex items-center gap-2" key={not.id}>
                 <span><Image style={'rounded-full h-8 w-8 text-[0.5rem]'} /></span>{not.message}{not.message.lastIndexOf(".") == -1 && '.'} {customizeNotificationTime(not.createdAt)}
               </li>
               )})

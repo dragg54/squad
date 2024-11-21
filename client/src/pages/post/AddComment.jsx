@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux'
 import { useMutation, useQuery } from 'react-query'
 import { closeModal } from '../../redux/reducers/GlobalModalReducer'
 import { useQueryClient } from 'react-query';
+import useDisableButton from '../../hooks/useDisabledButton'
 
 
 const AddComment = ({ page, size, postId }) => {
@@ -38,6 +39,11 @@ const AddComment = ({ page, size, postId }) => {
         }
     });
 
+    const validationRules = {
+        content: value => value.length > 0
+    }
+    const isButtonDisabled = useDisableButton(inputValues, validationRules);
+
     if(isLoading) return <p>Loading...</p>
 
     const handleSubmit = (e) => {
@@ -62,7 +68,7 @@ const AddComment = ({ page, size, postId }) => {
                     type='text-area'
                     placeholder='Add comment' />
                 <div className='w-full flex justify-end'>
-                    <Button type='submit' style='mt-6 !py-3 !bg-[#9619b2]' name="Comment" />
+                    <Button disabled={isButtonDisabled} type='submit' style='mt-6 !py-3 !bg-[#9619b2]' name="Comment" />
                 </div>
             </form>
         </div>

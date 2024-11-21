@@ -7,7 +7,6 @@ import { useState } from 'react';
 
 const CalendarCont = () => {
     const globalModal = useSelector(state => state.globalModal)
-    console.log(globalModal.content.props)
     const { done, date } = globalModal.content.props
     const [newDate, setNewDate ] = useState()
     const handleChange = (dt) =>{

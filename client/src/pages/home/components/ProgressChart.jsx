@@ -9,7 +9,7 @@ const ProgressChart = () => {
     { name: 'May', progress: 56 },
   ];
 
-  const colors = ['#3182ce', '#9f7aea', '#4fd1c5', '#f6ad55', '#63b3ed'];
+  const colors = ['#9619b2', '#9619b2', '#9619b2', '#9619b2', '#9619b2'];
 
   return (
     <div className='mt-10 border border-gray-200 flex mx-auto justify-center text-xs p h-[400px]' style={{ width: '100%', height: 300 }}>

@@ -4,7 +4,7 @@ import Image from '../../../components/containers/Image'
 const DonorBox = ({donationPayment}) => {
   return (
     <div className='w-full min-h-20 border p-4 rounded-md flex gap-2 items-center'>
-        <Image style='rounded-full h-6 w-6' source='/avatars/av1.jpg'/>
+        <Image style='rounded-full h-10 w-10' source='/avatars/av1.jpg'/>
         <div>
         <p className='font-bold text-xl'>{donationPayment?.user?.firstName} {donationPayment?.user?.lastName}</p>
         <p className='text-xs text-gray-500 '>{donationPayment?.user?.userName}</p>

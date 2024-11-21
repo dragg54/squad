@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useMutation, useQuery } from 'react-query'
 import { closeModal } from '../../redux/reducers/GlobalModalReducer'
 import { socket } from '../../utils/Socket'
+import useDisableButton from '../../hooks/useDisabledButton'
 
 const AddPost = ({ page, size }) => {
     const [inputValues, setInputValues] = useState({
@@ -26,8 +27,13 @@ const AddPost = ({ page, size }) => {
         //   keepPreviousData: true, 
         // }
     );
+    
+    const validationRules = {
+        description: value => value.length > 0,
+        title: value => value.length > 0,
+    };
 
-    const [message, setMessage] = useState()
+    const isButtonDisabled = useDisableButton(inputValues, validationRules);
  
     const createPostMutation = useMutation(createPost, {
         onSuccess: () => {
@@ -45,7 +51,9 @@ const AddPost = ({ page, size }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        createPostMutation.mutate(inputValues)
+        if(!isButtonDisabled){
+            createPostMutation.mutate(inputValues)
+        }
     }
 
     const handleChange = (e) => {
@@ -70,7 +78,7 @@ const AddPost = ({ page, size }) => {
                     type='text-area'
                     placeholder='Post' />
                 <div className='w-full flex justify-end'>
-                    <Button type='submit' style='mt-6 !py-3 !bg-[#9619b2]' name="Create Post" />
+                    <Button disabled={isButtonDisabled} type='submit' style='mt-6 !py-3 !rounded-full' name="Create Post" />
                 </div>
             </form>
         </div>

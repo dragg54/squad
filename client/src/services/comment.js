@@ -7,7 +7,7 @@ const axiosInstance = AuthConnect
 export const getComments = async ({ queryKey }) => {
   const [_key, { page, size, groupBy, postId }] = queryKey;
   try {
-    const response = await axiosInstance.get(`${BACKEND_SERVER_URL}//${BACKEND_SERVER_VERSION}/Comments`,
+    const response = await axiosInstance.get(`${BACKEND_SERVER_URL}/${BACKEND_SERVER_VERSION}/Comments`,
       {
         params: { page, size, groupBy, postId },
       }
@@ -22,7 +22,7 @@ export const getComments = async ({ queryKey }) => {
 
 export const getComment = async (id) => {
   try {
-    const response = await axiosInstance.get(`${BACKEND_SERVER_URL}//${BACKEND_SERVER_VERSION}/Comments/${id}`
+    const response = await axiosInstance.get(`${BACKEND_SERVER_URL}/${BACKEND_SERVER_VERSION}/Comments/${id}`
     );
     return response.data;
   }
@@ -34,7 +34,7 @@ export const getComment = async (id) => {
 
 export const createComment = async (formData) => {
   try {
-    const response = await axiosInstance.post(`${BACKEND_SERVER_URL}//${BACKEND_SERVER_VERSION}/Comments`, formData)
+    const response = await axiosInstance.post(`${BACKEND_SERVER_URL}/${BACKEND_SERVER_VERSION}/Comments`, formData)
     return response
   }
   catch (error) {
@@ -44,7 +44,7 @@ export const createComment = async (formData) => {
 
 export const updateComment = async (formData) => {
   try {
-    const response = await axiosInstance.put(`${BACKEND_SERVER_URL}//${BACKEND_SERVER_VERSION}/Comments/${formData.id}`, formData)
+    const response = await axiosInstance.put(`${BACKEND_SERVER_URL}/${BACKEND_SERVER_VERSION}/Comments/${formData.id}`, formData)
     return response
   }
   catch (error) {
@@ -54,7 +54,7 @@ export const updateComment = async (formData) => {
 
 export const likeComment = async(formData)=>{
   try {
-    const response = await axiosInstance.Comment(`${BACKEND_SERVER_URL}//${BACKEND_SERVER_VERSION}/Comments/${formData.commentId}/likes`, formData)
+    const response = await axiosInstance.Comment(`${BACKEND_SERVER_URL}/${BACKEND_SERVER_VERSION}/Comments/${formData.commentId}/likes`, formData)
     return response
   }
   catch (error) {
@@ -64,7 +64,7 @@ export const likeComment = async(formData)=>{
 
 export const unlikeComment = async(formData)=>{
   try {
-    const response = await axiosInstance.delete(`${BACKEND_SERVER_URL}//${BACKEND_SERVER_VERSION}/Comments/${formData.commentId}/likes`, formData)
+    const response = await axiosInstance.delete(`${BACKEND_SERVER_URL}/${BACKEND_SERVER_VERSION}/Comments/${formData.commentId}/likes`, formData)
     return response
   }
   catch (error) {
@@ -74,7 +74,7 @@ export const unlikeComment = async(formData)=>{
 
 export const getCommentLikes = async (formData) => {
   try {
-    const response = await axiosInstance.get(`${BACKEND_SERVER_URL}//${BACKEND_SERVER_VERSION}/Comments/${formData.commentId}/likes`
+    const response = await axiosInstance.get(`${BACKEND_SERVER_URL}/${BACKEND_SERVER_VERSION}/Comments/${formData.commentId}/likes`
     );
     return response.data;
   }

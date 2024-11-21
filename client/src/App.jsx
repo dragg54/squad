@@ -22,6 +22,7 @@ import Donation from './pages/donation/Donation'
 import CreateDonation from './pages/donation/CreateDonation'
 import Donate from './pages/donation/Donate'
 import UserAvatar from './pages/register/UserAvatar'
+import NotFound from './pages/notFound'
 // import Notification from './pages/notifications'
 
 
@@ -30,90 +31,55 @@ function App() {
   const message = useSelector(state => state.notification)
   socket.emit('register', user.id);
   const dispatch = useDispatch()
-  
+
   useEffect(() => {
     try {
 
       // Listen for notifications sent to this user
       socket.on('receiveNotification', () => {
         console.log("sending notification...")
-          dispatch(addNotification())
+        dispatch(addNotification())
       });
-      
+
     } catch (err) {
-        console.log('Error:', err);
+      console.log('Error:', err);
     }
 
     return () => {
-        socket.off('receiveNotification');
+      socket.off('receiveNotification');
     };
-}, [message]);
+  }, [message]);
 
   return (
     <Router>
-      <Layout>
-        <Routes>
+      <Routes>
+        {/* Protected Routes */}
+        <Route element={<Layout />}>
           <Route element={<ProtectedRoute />}>
             <Route path="/" element={<Home />} />
-          </Route>
-
-          <Route element={<ProtectedRoute />}>
             <Route path="/forum" element={<Forum />} />
-          </Route>
-
-          <Route element={<ProtectedRoute />}>
             <Route path="/member" element={<Squad />} />
-          </Route>
-
-          <Route element={<ProtectedRoute />}>
             <Route path="/member/:id" element={<Member />} />
-          </Route>
-
-          <Route element={<ProtectedRoute />}>
             <Route path="/goals" element={<Goals />} />
-          </Route>
-
-          {/* <Route element={<ProtectedRoute />}>
-            <Route path="/notifications" element={<Notification />} />
-          </Route> */}
-
-          <Route path="/register" element={<Register />} />
-
-          <Route path="/intro" element={<Intro />} />
-
-          <Route path="/login" element={<Login />} />
-
-          <Route element={<ProtectedRoute />}>
             <Route path="/post/:id" element={<Post />} />
-          </Route>
-
-          <Route element={<ProtectedRoute />}>
             <Route path="/invitation" element={<Invitation />} />
-          </Route>
-
-          <Route element={<ProtectedRoute />}>
             <Route path="/leaderboard" element={<LeaderBoard />} />
-          </Route>
-
-          <Route element={<ProtectedRoute />}>
             <Route path="/donation" element={<Donations />} />
-          </Route>
-
-          <Route element={<ProtectedRoute />}>
             <Route path="/donation/:id" element={<Donation />} />
-          </Route>
-
-          <Route element={<ProtectedRoute />}>
             <Route path="/donation/create" element={<CreateDonation />} />
-          </Route>
-
-          <Route element={<ProtectedRoute />}>
             <Route path="/donation/:id/donate" element={<Donate />} />
           </Route>
+          <Route path="/register/userAvatar" element={<UserAvatar />} />
+        </Route>
 
-            <Route path="register/userAvatar" element={<UserAvatar />} />
-        </Routes>
-      </Layout>
+        =        <Route path="/intro" element={<Intro />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+
+        <Route element={<ProtectedRoute />}>
+          <Route path="/*" element={<NotFound />} />
+        </Route>
+      </Routes>
     </Router>
   )
 }

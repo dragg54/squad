@@ -14,7 +14,7 @@ const Sidebar = () => {
   const pathsToIgnore = ["intro", "login", "register"]
   const matchFound = pathsToIgnore.some(pattern => url.includes(pattern));
   return (
-    <div className={`w-full  h-full bg-gray-50 border-r ${matchFound && 'hidden'}`}>
+    <div className={`w-full  h-screen bg-gray-50 border-r ${matchFound && 'hidden'}`}>
       <ul className="gap-10 w-full flex flex-col  items-start ml-4 !text-gray-200 ">
         <li className="menus mt-8" ><GoHome /><Link className="menus" to="/">Home</Link></li>
         <li className="menus"><MdForum /><Link className="menus" to="/forum">Forum</Link></li>

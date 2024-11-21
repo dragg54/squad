@@ -7,7 +7,6 @@ import AddButton from "../../components/buttons/AddButton"
 import Input from "../../components/inputs"
 import { useCallback, useEffect, useState } from "react"
 import { useForm } from '@mantine/form';
-import validateInput from "../../utils/ValidateInput"
 import { openPopup } from "../../redux/reducers/PopUpReducer"
 import { useMutation, useQuery } from "react-query";
 import { createUserGoal } from "../../services/goal";
@@ -16,11 +15,15 @@ import useHandleErrorResponse from "../../hooks/useHandleErrorResponse";
 import { closeModal, openModal } from "../../redux/reducers/GlobalModalReducer";
 import { getAllGoalCategories } from "../../services/goalCategory";
 import DateInput from "../../components/inputs/DateInput";
+import { validateForm } from "../../utils/ValidateInput";
+import { formatDate2 } from "../../utils/DateFormatter";
+import Button from "../../components/buttons";
 
 const AddGoal = ({ setIsUpdated }) => {
     const dispatch = useDispatch()
     const handleErrorResponse = useHandleErrorResponse()
     const globalModal = useSelector(state => state.globalModal)
+    const [error, setError] =useState({})
     const [input, setInput] = useState({
         title: globalModal.content?.props?.input?.title || "",
         description: globalModal.content?.props?.input?.description || ""
@@ -34,18 +37,6 @@ const AddGoal = ({ setIsUpdated }) => {
         // setDate({ ...date, [Object.keys(e)[0]]: [Object.values(e)[0]] })
     }
 
-    const createGoalMutation = useMutation(createUserGoal, {
-        onSuccess: () => {
-            dispatch(closeModal())
-            dispatch(openModal(<AssignPartners {...{ setIsUpdated }} goalInputs={input} />))
-        },
-        onError: (err) => {
-            console.log(err.response.status)
-            // dispatch(openPopup({ status: 'error', message: err.response.data.message || err.response.data.error || "Request Failed" }))
-            handleErrorResponse(err.response.status)
-        }
-    });
-
     const { data: userGoalCategories, isLoading: userGoalCategoryLoading, isError: userGoalCategoryError, refetch } = useQuery("categories", {
         queryFn: getAllGoalCategories
     })
@@ -54,61 +45,59 @@ const AddGoal = ({ setIsUpdated }) => {
         setInput({ ...input, [e.target.name]: e.target.value })
     }
 
-    const form = useForm({
-        initialValues: {
-            title: '',
-            description: ''
-        },
-        validate: {
-            title: (value) => validateInput(value, { required: true, minLength: 6 }).length === 0,
-            description: (value) => validateInput(value, { required: true, minLength: 6 }).length === 0,
-        },
-        errorMessages: {
-            title: 'Title must be at least 6 characters long',
-            description: 'Description must be at least 6 characters long',
-        }
-    });
+    const validationRules = {
+        title: { required: true },
+        description: { required:true },
+        startDate: {isValid: (new Date().getDay() <= new Date(date.startDate).getDay()), message: "Invalid start date"},
+        endDate: {isValid: ((new Date() < new Date(date.endDate) && (date.startDate < date.endDate))), message: "Invalid end date"}, 
+    };
+
 
     const handleSaveGoal = (e) => {
         e.preventDefault()
-        const updatedInput = { ...input, ...date, userGoalCategoryId: globalModal.content?.props?.selectedId}
-        dispatch(openModal({component: <AssignPartners {...{ setIsUpdated }} goalInputs={updatedInput} />}))
+        const { errors, hasErrors } = validateForm(input, validationRules);
+        if (hasErrors) {
+            setError(errors);
+        }
+        else{
+            const updatedInput = { ...input, ...date, userGoalCategoryId: globalModal.content?.props?.selectedId}
+            dispatch(openModal({component: <AssignPartners {...{ setIsUpdated }} goalInputs={updatedInput} />}))
+        }
     }
 
-    const handleSetNewDate = (prop) => {
-        setDate(() =>
-            console.log(date)
-        )
-    }
 
     return (
-        <div onClick={(e) => e.stopPropagation()} className='w-[90%] md:w-[30%] -mt-16 md:mt-0 relative mx-auto bg-white h-[550px] rounded-md shadow-md  p-5'>
+        <div onClick={(e) => e.stopPropagation()} className='w-[90%] md:w-[30%] -mt-16 md:mt-0 relative mx-auto bg-white min-h-[550px] rounded-md shadow-md  p-5'>
             <h1 className="text-xl font-semibold">Add Goals</h1>
             <form onSubmit={handleSaveGoal} action="" className="mt-8 flex-col">
                 <div>
                     <label htmlFor="title" className="">Goal</label>
                     <Input
+                        hasError={error['title']?.length}
                         onChange={handleChange}
                         placeholder='Add Goal'
                         name='title'
                         value={input.title}
                     />
+                <span className='error'>{error["title"]}</span>
                 </div>
                 <div className="mt-3">
                     <label htmlFor="description" className="mt-3">Description</label>
                     <Input
+                        hasError={error['description']?.length}
                         onChange={handleChange}
                         placeholder='Description'
                         name='description'
                         value={input.description}
                     />
+                <span className='error'>{error["description"]}</span>
                 </div>
                 <div className="mt-3 flex justify-between items-center">
                     <div className="w-[48%]" id="startDate">
                         <label htmlFor="start_date" className=""><p className="">From</p></label>
                         <Input
-                            onClick={handleChangeDate}
-                            style='!text-sm !text-gray-500'
+                            onClick={()=>handleChangeDate()}
+                            style={`!text-sm !text-gray-500 ${error['startDate']?.length && '!border !border-red-500'}`}
                             data={date}
                             value={date?.startDate}
                             type='date'
@@ -119,16 +108,17 @@ const AddGoal = ({ setIsUpdated }) => {
                                     component: <AddGoal />,
                                     props: { input, handleChangeDate, date, newDate: { ...date, startDate: prop }, selected: globalModal.content?.props?.selected, selectedId: globalModal.content?.props?.selectedId }
                                 }))
-                                handleSetNewDate(prop)
                             }}
                             name='startDate' />
+                        <span className='error'>{error["startDate"]}</span>
                     </div>
                     <div className="w-[48%]">
                         <label htmlFor="end_date"><p className="">To</p></label>
                         <Input
-                            onClick={handleChangeDate}
+                            onClick={()=>handleChangeDate()}
                             data={date}
-                            style='!text-sm !text-gray-500' type='date'
+                            type={'date'}
+                            style={`!text-sm !text-gray-500 ${error['endDate']?.length && '!border !border-red-500'}`}
                             id="endDate"
                             value={date?.endDate}
                             done={(prop) => {
@@ -140,6 +130,7 @@ const AddGoal = ({ setIsUpdated }) => {
                             placeholder='End date'
                             name='endDate'
                         />
+                 <span className='error'>{error["endDate"]}</span>
                     </div>
                 </div>
                 <div className="mt-4 w-full ">
@@ -159,8 +150,8 @@ const AddGoal = ({ setIsUpdated }) => {
                         }}
                     />
                 </div>
-                <AddButton type="submit" style="w-full mt-5 !py-4  bottom-10 z-20 " name="Create Goal" />
-            </form>
+                <Button type='submit' style='mt-6 !py-3 !rounded-full ml-auto' name="Create Goal" />
+                </form>
         </div>
     )
 }

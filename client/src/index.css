@@ -64,3 +64,6 @@
     @apply w-[200px]
 }
 
+.error{
+  @apply text-xs text-gray-600
+}

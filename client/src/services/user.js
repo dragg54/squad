@@ -15,13 +15,7 @@ export const createUser = async (formData) =>{
 //   ?inviteToken=d31ec0d7602fe4ffde59fdabc87be07b36ecc44c801d4b0fbc3242f8ccff114a&squad=1&inviteBy=1
   export const loginUser = async (formData) =>{
     try{
-        const response = await axiosInstance.post(`${BACKEND_SERVER_URL}/${BACKEND_SERVER_VERSION}/users/login`, formData,{
-            params:{
-                inviteToken: "d31ec0d7602fe4ffde59fdabc87be07b36ecc44c801d4b0fbc3242f8ccff114a",
-                squad: 1,
-                inviteBy: 1
-            }
-        })
+        const response = await axiosInstance.post(`${BACKEND_SERVER_URL}/${BACKEND_SERVER_VERSION}/users/login`, formData)
         return response.data
     }
     catch(error){

@@ -18,7 +18,7 @@ const Donation = () => {
         <section className="w-full md:w-3/5 h-screen  p-4 md:p-8 pb-40 md:pb-48 md:ml-[20rem] pb-20">
             <div className="flex justify-between items-center mb-8">
             <h1 className="text-2xl font-bold ">{state.donation.reason}</h1>
-            <Button name='Donate' style='!border bg-white border-gray-600 !text-gray-600' onClick={()=>navigate(`donate`, {state: {donationId: state.donation.id}})}/>
+            <Button name='Donate' style='!border !bg-white border-gray-600 !text-gray-600' onClick={()=>navigate(`donate`, {state: {donationId: state.donation.id}})}/>
             </div>
             <div className="flex gap-2">
                 <p className="bg-[#ca5cf1] flex items-center gap-1 p-1"><span className="font-semibold text-xs inline-flex gap-1 md:text-base items-center p-1"><PiTarget /> Target</span>: #{state.donation.targetAmount}</p>

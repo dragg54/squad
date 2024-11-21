@@ -15,8 +15,11 @@ const Donations = () => {
   return (
     <section className="w-full md:w-[50%] !overflow-visible p-2  md:p-8 pb-10 md:pb-48 md:ml-[20rem]">
       <div className="flex justify-between !overflow-y-visible  items-center mt-4">
+        <div>
         <h1 className="text-2xl font-bold">Donations</h1>
-        <AddButton style='!bg-white border !border-gray-600 !text-gray-600' name='Create Donation' onClick={() => navigate('create')} />
+        <small className="text-gray-500">Contribute to financial goals</small>
+        </div>
+        <AddButton style='!bg-white border !border-gray-500 !text-gray-600' name='Create Donation' onClick={() => navigate('create')} />
       </div>
       <div className="mt-10 h-[500px] overflow-y-scroll">
         {

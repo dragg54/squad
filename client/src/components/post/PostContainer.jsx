@@ -7,13 +7,14 @@ import { FaRegComment } from "react-icons/fa";
 import { useDispatch } from 'react-redux';
 import { openModal } from '../../redux/reducers/GlobalModalReducer';
 import AddComment from '../../pages/post/AddComment';
+import { BACKEND_SERVER_URL } from '../../Appconfig';
 
 const PostContainer = ({ isParent, data, refetchComment }) => {
   const dispatch = useDispatch()
   return (
     <div className={`${isParent ? 'w-full' : 'w-[95%] self-end'} border border-gray-300 p-4 shadow-md shadow-gray-300 rounded-md h-auto`}>
       <div className="flex justify-start items-center gap-4">
-        <Image source='' style='h-16 w-16' />
+        <Image  source={BACKEND_SERVER_URL+"/avatars/"+ data?.user?.profileAvatar}  style='h-16 w-16' />
         <div>
           <p className={`font-semibold text-black text-xl md:text-2xl ${isParent ? 'block' : 'hidden'}`}>{data?.title}</p>
           <p className=''>By {data?.user?.userName}</p>

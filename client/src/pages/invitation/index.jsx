@@ -17,8 +17,8 @@ const Invitation = () => {
   return (
     <section className="w-full  h-screen overflow-y-scroll p-4 md:p-8 pb-40 md:pb-48 md:ml-[20rem] pb-20">  
         <div className="w-full">
-           <h1 className="text-2xl font-bold">Invite User</h1>
-           <p className="mt-4">New users can be invited by email</p>
+           <h1 className="text-2xl font-bold">Invite your friend</h1>
+           <p className="mt-4 w-72 text-gray-500 text-sm">Send invitation to friends to make them a member of your squad</p>
            <Input placeholder='Enter user email' style={'md:w-[600px]'}/>
            <Button name='Send'style='mt-1 !bg-purple-500'/>
            <p className="my-4 text-xl font-semibold">or copy link</p>

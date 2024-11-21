@@ -32,10 +32,13 @@ export const userSlice = createSlice({
       state.lastName = lastName
       state.isLoggedIn = true,
       state.profileAvatar = BACKEND_SERVER_URL+"/avatars/"+profileAvatar
+    },
+    clearUser: (state) =>{
+      state.isLoggedIn = false
     }
   },
 });
 
-export const { fetchUser } = userSlice.actions;
+export const { fetchUser, clearUser } = userSlice.actions;
 
 export default userSlice.reducer;
