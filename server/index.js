@@ -46,7 +46,7 @@ const corsOptions = {
     if (!origin) {
       return callback(null, true);
     } else if (whitelist.indexOf(origin) === -1) {
-      return callback(new Error('not allowed by CORS'), false);
+      return callback(new Error('not allowed by cors'), false);
     }
     return callback(null, true);
   },
