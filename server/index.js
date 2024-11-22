@@ -35,6 +35,12 @@ const app = express()
 app.use(bodyParser.json())
 app.use(cookieParser())
 
+app.use(cors({
+  origin: "*"
+}))
+const server = http.createServer(app,  {cors: {
+  origin:"*"
+  }});
 
 const whitelist = ['http://localhost:5173', 'https://localhost:5173', 'http://localhost:5000', 'http://127.0.0.1:5173', 'https://squad-63mu.onrender.com'];
 
@@ -52,9 +58,6 @@ const corsOptions = {
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(cors({
-  origin: "*"
-}))
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Methods', 'GET, PATCH, POST, PUT, DELETE');
     res.header(
@@ -85,7 +88,7 @@ app.use("/api/v1/payments", paymentRoute)
 app.use("/api/v1/avatars", avatarRoute)
 app.use("/api/v1/donationPayments", donationPaymentRoute)
 
-app.listen(8080, ()=>{
+server.listen(8080, ()=>{
     console.log("Listening to port 8080")
 })
 
