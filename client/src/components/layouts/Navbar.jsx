@@ -9,7 +9,7 @@ import { getNotificationSummary, readAllNotifications } from "../../services/not
 import { useDispatch, useSelector } from "react-redux";
 import { fetchNotifications, readNotifications } from "../../redux/reducers/NotificationReducer";
 
-const Navbar = ({ setMenuContainerOpened, setOpenNotificationContainer, openNotificationContainer , setOpenUserContainer}) => {
+const Navbar = ({ setMenuContainerOpened, setOpenNotificationContainer, openNotificationContainer , openUserContainer, setOpenUserContainer}) => {
 
   const { data: notificationSummaryData, isLoading: isLoadingNotificationSummary, refetch } = useQuery('notificationSummary', {
     queryFn: getNotificationSummary
@@ -43,13 +43,15 @@ const Navbar = ({ setMenuContainerOpened, setOpenNotificationContainer, openNoti
           <div className="flex text-2xl gap-3 items-center relative cursor-pointer" onClick={(e) => {
             e.stopPropagation()
             setOpenNotificationContainer(!openNotificationContainer)
+            setOpenUserContainer(false)
             if (!openNotificationContainer) {
               handleReadAllNotifications()
             }
           }}>
             <div onClick={(e) =>{
                e.stopPropagation()
-               setOpenUserContainer(true)
+               setOpenUserContainer(!openUserContainer)
+               setOpenNotificationContainer(false)
             }}>
               <Image style="h-10 w-10" source={user.profileAvatar}/>
             </div>

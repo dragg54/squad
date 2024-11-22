@@ -22,9 +22,9 @@ const Layout = () => {
       <GlobalModal />
       <PopUp />
       <Menu {...{ menuContainerOpened, setMenuContainerOpened }} />
-      <Navbar {...{ setMenuContainerOpened, setOpenNotificationContainer, openNotificationContainer, setOpenUserContainer }} />
-      <CurrentUser {...{openUserContainer}}/>
-      <NotificationContainer {...{openNotificationContainer}}/>
+      <Navbar {...{ setMenuContainerOpened, setOpenNotificationContainer, openNotificationContainer,openUserContainer, setOpenUserContainer }} />
+      <CurrentUser {...{openUserContainer, setOpenUserContainer, setOpenNotificationContainer}}/>
+      <NotificationContainer {...{openNotificationContainer, setOpenUserContainer}}/>
       <main className='w-full md:flex gap-20 fixed top-20'>
         <div className='w-[20%] hidden md:block absolute'>
           <Sidebar />

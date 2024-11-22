@@ -3,6 +3,7 @@ import { getPost } from '../../services/post';
 import { useQuery } from 'react-query';
 import PostContainer from '../../components/post/PostContainer';
 import {  getComments } from '../../services/comment';
+import BackButton from '../../components/buttons/BackButton';
 
 const Post = () => {
     const id = useParams().id
@@ -24,6 +25,7 @@ const Post = () => {
     if(commentLoading)console.log("Loading...")
     return (
         <section className="w-full overflow-x-visible h-screen  overflow-y-scroll p-4 md:p-8 pb-40 md:pb-48 md:ml-[20rem]">
+            <BackButton />
             <div className='w-full md:w-[50%] flex flex-col items-center gap-2'>
                 <PostContainer {...{ data, isParent: true }} />
                 {
