@@ -35,14 +35,6 @@ const app = express()
 app.use(bodyParser.json())
 app.use(cookieParser())
 
-const server = http.createServer(app,  {cors: {
-  origin:"*"
-}});
-
-app.use(cors({
-  origin: "*"
-}))
-
 const whitelist = ['http://localhost:5173', 'https://localhost:5173', 'http://localhost:5000', 'http://127.0.0.1:5173', 'https://squad-63mu.onrender.com'];
 
 const corsOptions = {
@@ -51,14 +43,16 @@ const corsOptions = {
     if (!origin) {
       return callback(null, true);
     } else if (whitelist.indexOf(origin) === -1) {
-      return callback(new Error('not allowed by cors'), false);
+      return callback(new Error('not allowed by CORS'), false);
     }
     return callback(null, true);
   },
 };
+const server = http.createServer(app,  {cors: corsOptions});
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(cors(corsOptions))
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Methods', 'GET, PATCH, POST, PUT, DELETE');
     res.header(
@@ -95,7 +89,7 @@ server.listen(8080, ()=>{
 
 const io = new Server(server, {
   cors: {
-    origin: 'https://squad-63mu.onrender.com'
+    origin: 'http://localhost:5173'
   }
 })
 
