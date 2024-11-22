@@ -70,7 +70,7 @@ export const getAllUserGoals = async (req) => {
     const goalsGroupedByMonth = await models.UserGoal.findAll({
       where: queryOpts,
       attributes: [
-        [db.fn('DATE_FORMAT', db.col('UserGoal.createdAt'), '%m'), 'month'],
+        [db.fn('DATE_FORMAT', db.col('user_goal.createdAt'), '%m'), 'month'],
         'title', 'description', 'completed'
       ],
       include: [

@@ -132,7 +132,6 @@ export const likePost = async (req, res, trans) => {
     }
     const existingLike = await PostLike.findOne({ where: { postId: id, userId: req.user.id } })
     if (existingLike) {
-        console.log("hello")
         await PostLike.destroy({
             where: { postId: id, userId: req.user.id }
         })

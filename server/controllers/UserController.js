@@ -68,9 +68,11 @@ export const deleteUser = async (req, res) => {
 export const loginUser = async (req, res) =>{
     try{
         const user = await userService.loginUser(req.body)
+       
         res.cookie('token', user.token, {
-            httpOnly: true, 
-            //  maxAge: 24 * 60 * 60 * 1000,
+          sameSite: 'None',
+          secure: true,
+          httpOnly: true,
           }).send(user)
     }
     catch(error){

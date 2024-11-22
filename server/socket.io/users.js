@@ -1,7 +1,12 @@
 export const users = new Map();
 
 export function registerUser(userId, socketId) {
-    users.set(userId, socketId);
+    try{
+        users.set(userId, socketId);
+    }
+    catch(err){
+        console.log("User connection failed", err.message)
+    }
  }
 
  export function removeUser(socketId) {

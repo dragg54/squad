@@ -89,7 +89,7 @@ server.listen(8080, ()=>{
 
 const io = new Server(server, {
   cors: {
-    origin: 'https://squad-63mu.onrender.com'
+    origin: 'http://localhost:5173'
   }
 })
 

@@ -3,6 +3,7 @@ import Notification from '../models/Notification.js'
 import { notificationStatus } from '../constants/NotificationConstants.js';
 import { BadRequestError } from '../errors/BadRequestError.js';
 import db from '../configs/db.js';
+import User from '../models/User.js';
 const { sendNotification } = pkg;
 
 export const createNotification = async (req, trans) => {
@@ -16,6 +17,10 @@ export const getAllNotifications = async (req) => {
       squadId: req.user.squadId,
       userId: req.user.id,
     },
+    include:[{
+      model: User,
+      attributes: ['profileAvatar']
+    }],
     order: [['createdAt', 'DESC']],
     raw: true,
   });
