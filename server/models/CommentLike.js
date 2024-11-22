@@ -3,7 +3,7 @@ import { DataTypes } from "sequelize";
 import User from "./User.js";
 import Comment from "./Comment.js";
 
-const CommentLike = db.define('commentLike', {
+const CommentLike = db.define('comment_like', {
   userId: {
     type: DataTypes.INTEGER,
     allowNull: false,

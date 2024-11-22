@@ -3,7 +3,7 @@ import { DataTypes } from "sequelize";
 import User from "./User.js";
 import { UserGoalCategory } from "./UserGoalCategory.js";
 
-const UserGoal = db.define('userGoal', {
+const UserGoal = db.define('user_goal', {
   userId: {
     type: DataTypes.INTEGER,
     allowNull: false,

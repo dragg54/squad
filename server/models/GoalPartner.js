@@ -3,7 +3,7 @@ import db from '../configs/db.js'
 import User from './User.js';
 import UserGoal from './UserGoal.js';
 
-const GoalPartner = db.define('goalPartner', {
+const GoalPartner = db.define('goal_partner', {
  
 });
 

@@ -2,7 +2,7 @@ import { DataTypes } from "sequelize";
 import db from "../configs/db.js";
 import UserGoal from "./UserGoal.js";
 
-export const UserGoalCategory = db.define("userGoalCategory", {
+export const UserGoalCategory = db.define("user_goal_category", {
     name: {
         type: DataTypes.STRING
     }

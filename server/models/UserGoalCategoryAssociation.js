@@ -3,7 +3,7 @@ import db from "../configs/db.js";
 import UserGoal from "./UserGoal.js";
 import { UserGoalCategory } from "./UserGoalCategory.js";
 
-export const UserGoalCategoryAssociation = db.define("userGoalCategoryAssociation", {
+export const UserGoalCategoryAssociation = db.define("user_goal_category_association", {
 })
 
 

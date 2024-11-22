@@ -5,7 +5,7 @@ import User from "./User.js";
 import Squad from "./Squad.js";
 import Donation from "./Donation.js";
 
-const DonationPayment = db.define('donationPayment', {
+const DonationPayment = db.define('donation_payment', {
     squadId:{
         type: DataTypes.INTEGER,
         references: {

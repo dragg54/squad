@@ -1,20 +1,10 @@
 import Point from "../models/Point.js"
 import User from "../models/User.js"
 
-export const addPoint = async(req, trans) =>{
-    const existingPoints = await getUserPoints(req.userId)
-    if(!existingPoints){
-        await Point.create(req, {transaction: trans})
-    }
-    else{
-        req.points = existingPoints.points + req.points
-        await updatePoint(req, trans)
-    }
-}
 
 export const updatePoint = async(req, trans) =>{
     const {points, userId} = req
-    await Point.update({points: points},{where:{userId: userId}}, {transaction: trans})
+    await Point.update({points},{where:{userId}}, {transaction: trans})
  }
 
 export const getUserPoints = async(id) =>{
@@ -29,4 +19,13 @@ export const getPoints = async(req) =>{
             attributes: ["firstName", "lastName", "userName", "profileAvatar"] 
         },
     })
+}
+
+export const addPoint = async(req) =>{
+    await Point.increment('points', {
+        by: req.points, 
+        where: {
+          id: req.userId,
+        },
+      });
 }
