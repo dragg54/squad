@@ -34,9 +34,7 @@ dotenv.config()
 const app = express()
 app.use(bodyParser.json())
 app.use(cookieParser())
-const server = http.createServer(app,  {cors: {
-  origin:"*"
-  }});
+
 
 const whitelist = ['http://localhost:5173', 'https://localhost:5173', 'http://localhost:5000', 'http://127.0.0.1:5173', 'https://squad-63mu.onrender.com'];
 
@@ -87,7 +85,7 @@ app.use("/api/v1/payments", paymentRoute)
 app.use("/api/v1/avatars", avatarRoute)
 app.use("/api/v1/donationPayments", donationPaymentRoute)
 
-server.listen(8080, ()=>{
+app.listen(8080, ()=>{
     console.log("Listening to port 8080")
 })
 
