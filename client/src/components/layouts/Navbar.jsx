@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchNotifications, readNotifications } from "../../redux/reducers/NotificationReducer";
 import { useNavigate } from "react-router-dom";
 
-const Navbar = ({ setMenuContainerOpened, setOpenNotificationContainer, openNotificationContainer , openUserContainer, setOpenUserContainer}) => {
+const Navbar = ({ setMenuContainerOpened, setOpenNotificationContainer, openNotificationContainer, openUserContainer, setOpenUserContainer }) => {
 
   const { data: notificationSummaryData, isLoading: isLoadingNotificationSummary, refetch } = useQuery('notificationSummary', {
     queryFn: getNotificationSummary
@@ -28,7 +28,7 @@ const Navbar = ({ setMenuContainerOpened, setOpenNotificationContainer, openNoti
     },
     onError: (err) => console.log(err.message)
   })
- const navigate = useNavigate()
+  const navigate = useNavigate()
   const handleReadAllNotifications = () => {
     dispatch(readNotifications())
     readAllNotificationsMutation.mutate({ status: 'READ' })
@@ -40,7 +40,7 @@ const Navbar = ({ setMenuContainerOpened, setOpenNotificationContainer, openNoti
     return (
       <div className={`w-full fixed z-40 md:h-20   h-20 border-b shadow-md shadow-gray-300 `}>
         <div className="absolute md:px-7 items-center w-full  p-4 flex justify-between">
-          <p className="font-sourGummy !text-purple-900 font-semibold text-xl cursor-pointer" onClick={()=>{
+          <p className="font-sourGummy !text-purple-900 font-semibold text-xl cursor-pointer" onClick={() => {
             navigate("/home")
           }}>MomenTom</p>
           <div className="flex text-2xl gap-3 items-center relative cursor-pointer" onClick={(e) => {
@@ -51,16 +51,18 @@ const Navbar = ({ setMenuContainerOpened, setOpenNotificationContainer, openNoti
               handleReadAllNotifications()
             }
           }}>
-            <div onClick={(e) =>{
-               e.stopPropagation()
-               setOpenUserContainer(!openUserContainer)
-               setOpenNotificationContainer(false)
+            <div onClick={(e) => {
+              e.stopPropagation()
+              setOpenUserContainer(!openUserContainer)
+              setOpenNotificationContainer(false)
             }}>
-              <Image style="h-10 w-10" source={user.profileAvatar}/>
+              <Image style="h-10 w-10" source={user.profileAvatar} />
             </div>
             <p className="cursor-pointer md:text-3xl"><IoNotificationsOutline className="cursor-pointer" /></p>
             < p className="cursor-pointer md:hidden" onClick={(e) => {
               e.stopPropagation()
+              setOpenNotificationContainer(false)
+              setOpenUserContainer(false)
               setMenuContainerOpened(true)
             }}><IoMdMenu /></p>
             {notifications && notifications.unread > 0 && <p className="absolute md:top-1 top-2 md:right-1 md:left-16 left-16 z-40 bg-red-700 font-semibold rounded-full w-4 text-xs inline-flex justify-center items-center h-4 text-white p-1">

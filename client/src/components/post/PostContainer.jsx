@@ -4,13 +4,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart } from '@fortawesome/free-solid-svg-icons'
 import { formatDate } from '../../utils/DateFormatter'
 import { FaRegComment } from "react-icons/fa";
-import { useDispatch } from 'react-redux';
-import { openModal } from '../../redux/reducers/GlobalModalReducer';
-import AddComment from '../../pages/post/AddComment';
 import { BACKEND_SERVER_URL } from '../../Appconfig';
+import CommentField from '../../pages/post/CommentField';
 
-const PostContainer = ({ isParent, data, refetchComment }) => {
-  const dispatch = useDispatch()
+const PostContainer = ({ isParent, data,  commentState, setCommentState,}) => {
   return (
     <div className={`${isParent ? 'w-full' : 'w-[95%] self-end'} border border-gray-300 p-4 shadow-md shadow-gray-300 rounded-md h-auto`}>
       <div className="flex justify-start items-center gap-4">
@@ -32,12 +29,14 @@ const PostContainer = ({ isParent, data, refetchComment }) => {
           <p className='!text-gray-400'>200 Likes</p>
         </div>
         <div className='flex gap-1 items-center cursor-pointer' onClick={()=>{
-                    dispatch(openModal({component: <AddComment {...{postId: data.id}}/>, props: refetchComment}))
+            // setShowCommentField(true)
+            setCommentState({...commentState, [data.id]:true})
                 }}>
           <FaRegComment className='text-gray-400 text-[20px]' />
           <p className='!text-gray-400  whitespace-nowrap'>10 Comments</p>
         </div>
       </div>
+      <CommentField isChild={!isParent} {...{commentState, data, setCommentState}}/>
     </div>
   )
 }
