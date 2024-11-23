@@ -19,6 +19,9 @@ const PostLike = db.define('like', {
       model: Post,
       key: 'id',
     },
+  },
+  liked:{
+    type: DataTypes.BOOLEAN
   }
 });
 

@@ -10,3 +10,8 @@ export const notificationType= {
     WARNING: 'WARNING',
     REMINDER: 'REMINDER'
 }
+
+export const notificationSource = {
+    POST: 'POST',
+    GOAL:' GOAL',
+}

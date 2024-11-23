@@ -89,7 +89,7 @@ server.listen(8080, ()=>{
 
 const io = new Server(server, {
   cors: {
-    origin: 'https://squad-63mu.onrender.com'
+    origin: process.env.CLIENT_BASE_URL
   }
 })
 
@@ -99,8 +99,8 @@ io.on('connection', (socket) => {
       registerUser(userId, socket.id);
   });
 
-  socket.on('postLiked', ({ authorId }) => {
-      sendPostLikedNotificationToUser(authorId, io);
+  socket.on('postLiked', ({ authorId, senderId }) => {
+      sendPostLikedNotificationToUser(authorId, io, senderId);
   });
 
   socket.on('postCreated', ({ authorId, squadId }) => {

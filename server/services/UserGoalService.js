@@ -7,7 +7,7 @@ import User from "../models/User.js";
 import UserGoal from "../models/UserGoal.js";
 import { getPagination, getPagingData } from "../utils/pagination.js";
 import { createNotification } from "./NotificationService.js";
-import { notificationType } from "../constants/NotificationConstants.js";
+import { notificationSource, notificationType } from "../constants/NotificationConstants.js";
 import { activityPoints } from "../constants/ActivityPoints.js";
 import Point from "../models/Point.js";
 import { addPoint, getUserPoints, updatePoint } from "./PointService.js";
@@ -23,11 +23,14 @@ export const createUserGoal = async (req, transaction) => {
       partner.goalId = userGoal.id
 
       const notificationRequest = {
-        userId: partner.userId,
+        senderId: req.user.id,
+        recipientId: partner.userId,
         squadId: req.user.squadId,
         title: "NOTIFICATION",
         message: `${req.user.userName} created a goal`,
-        type: notificationType.INFO
+        type: notificationType.INFO,
+        sourceId: userGoal.id,
+        sourceName: notificationSource.GOAL
       }
 
       await createNotification(notificationRequest, transaction)

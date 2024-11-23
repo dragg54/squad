@@ -2,9 +2,18 @@ import { DataTypes } from "sequelize";
 import User from "./User.js";
 import db from "../configs/db.js";
 import Squad from "./Squad.js";
+import NotificationSource from "./NotificationSource.js";
 
 const Notification = db.define('notification', {
-    userId: {
+    senderId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: User,
+            key: 'id',
+        },
+    },
+    recipientId: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
@@ -42,11 +51,18 @@ const Notification = db.define('notification', {
       },
 });
 
-Notification.belongsTo(User, { foreignKey: 'userId' });
-User.hasMany(Notification, { foreignKey: 'userId', onDelete: 'CASCADE', });
+Notification.belongsTo(User, { foreignKey: 'recipientId' });
+User.hasMany(Notification, { foreignKey: 'recipientId', onDelete: 'CASCADE', });
+
+
+Notification.belongsTo(User, { foreignKey: 'senderId' });
+User.hasMany(Notification, { foreignKey: 'senderId', onDelete: 'CASCADE', });
 
 Notification.belongsTo(Squad, { foreignKey: 'squadId' });
-Squad.hasMany(Notification, { foreignKey: 'userId', onDelete: 'CASCADE', });
+Squad.hasMany(Notification, { foreignKey: 'squadId', onDelete: 'CASCADE', });
+
+
+
 
 db.sync()
     .then(() => {

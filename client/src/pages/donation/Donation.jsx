@@ -7,14 +7,15 @@ import { getDonationPayments } from "../../services/donation";
 import { useQuery } from "react-query";
 import DonationStatusBar from "./components/DonationStatusBar";
 import BackButton from "../../components/buttons/BackButton";
+import LoadingSpinner from "../../components/LoadingSpinner";
 
 const Donation = () => {
     const state = useLocation().state
     const {data: donationData, isLoading: donationDataLoading } = useQuery(['donationPayments', state.donation.id], () => getDonationPayments( state.donation.id))
-    if(!donationDataLoading){
-        console.log(donationData)
-    }
     const navigate = useNavigate()
+    if(donationDataLoading){
+        return <LoadingSpinner {...{isLoading: donationDataLoading}}/>
+    }
     return (
         <section className="w-full md:w-3/5 h-screen  p-4 md:p-8 pb-40 md:pb-48 md:ml-[20rem] pb-20">
             <BackButton />

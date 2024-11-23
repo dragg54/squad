@@ -7,19 +7,17 @@ import { capitalizeHeader } from '../../utils/CapitalizeHeader';
 import { FaRegComment } from "react-icons/fa";
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useMutation } from 'react-query';
 import { likePost } from '../../services/post';
 import { socket } from '../../utils/Socket';
-import { addNotification } from '../../redux/reducers/NotificationReducer';
 import { BACKEND_SERVER_URL } from '../../Appconfig';
 
 const PostCard = ({ post }) => {
     const user = useSelector(state => (state.user))
     const [like, setLike] = useState(post?.likes?.noOfLikes)
-    const [isLiked, setIsliked] = useState(post?.likes?.likesUsers?.some(users => users.userId == user.id))
+    const [isLiked, setIsliked] = useState(post?.likes?.likesUsers?.some(users => (users.userId == user.id)))
     const likePostMutation = useMutation(likePost)
-    const dispatch = useDispatch()
     const handleLikePost = () =>{
            likePostMutation.mutate({postId: post.id})
     }
@@ -41,15 +39,15 @@ const PostCard = ({ post }) => {
             <div className='my-4  border w-full'></div>
             <div className='flex gap-5 w-full items-center'>
                 <div className=' flex gap-2 items-center' onClick={() => {
-                    setLike(!isLiked ? like + 1: like-1)
+                    setLike(!isLiked ? Number(like) + 1: Number(like)-1)
                     setIsliked(!isLiked)
                     handleLikePost()
-                    socket.emit('postLiked',{authorId: post.userId}, "Post Liked");
-                    dispatch(addNotification())
+                    socket.emit('postLiked',{authorId: post.userId, senderId: user.id}, "Post Liked");
+                    // dispatch(addNotification())
                     
                 }}>
                         <FontAwesomeIcon stroke={!isLiked && "gray"} strokeWidth={55} icon={faHeart} fill='white' style={{ color: isLiked ? "red": "white", fontSize: "20px" }} />
-                    <p className='!text-gray-400'>{like || 0} Likes</p>
+                    <p className='!text-gray-400'>{like || 0}</p>
                 </div>
                 <div className='text-xl  text-gray-400 flex gap-2 items-center' >
                     <FaRegComment fill='gray' /> <span className='text-base'>{post?.comments.noOfComments}</span>

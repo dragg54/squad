@@ -11,6 +11,7 @@ import { useSelector } from "react-redux"
 import Goal from "../goals/components/Goal"
 import Pagination from "../../components/Pagination"
 import { BACKEND_SERVER_URL } from "../../Appconfig"
+import LoadingSpinner from "../../components/LoadingSpinner"
 
 const Member = () => {
   const { id } = useParams()
@@ -39,7 +40,9 @@ const Member = () => {
       keepPreviousData: false,
     }
   );
-  if (memberIsLoading) console.log("Loading...")
+  if(memberIsLoading){
+    return <LoadingSpinner isLoading={true}/>
+  }
   if (postIsLoading) return <>Post Loading ...</>
   return (
     <section className="w-full overflow-x-visible h-screen overflow-y-scroll p-4 md:p-8 pb-40 md:pb-48 md:ml-[20rem]">

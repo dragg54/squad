@@ -11,6 +11,7 @@ import Pagination from "../../components/Pagination"
 import MonthlyGoals from "./MonthlyGoals"
 import Goal from "./components/Goal"
 import { getMonthNames } from "../../utils/DateFormatter"
+import LoaidingSpinner from "../../components/LoadingSpinner"
 
 const Goals = () => {
     const [presentTab, setPresentTab] = useState("allGoals")
@@ -33,9 +34,6 @@ const Goals = () => {
         refetch()
         setIsUpdated(false)
     }, [isUpdated])
-    
-    if(isLoading){console.log("loading")}
-    if(isError)console.log("error")
     useEffect(() => {
         setPresentTab("allGoals")
         const goalMonthContainerState = allMonths.map((month) => ({
@@ -43,6 +41,11 @@ const Goals = () => {
         }))
         setOpenMonthGoalsContainer(goalMonthContainerState)
     }, [])
+    if(isLoading){
+        return <LoaidingSpinner {...{isLoading}}/>
+    }
+    if(isError)console.log("error")
+   
 
     return (
         <section className="w-full  h-screen overflow-y-scroll p-4 md:p-8 pb-40 md:pb-48 md:ml-[20rem] pb-20">  

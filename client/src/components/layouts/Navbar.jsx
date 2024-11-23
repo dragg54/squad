@@ -8,6 +8,7 @@ import { useMutation, useQuery } from "react-query";
 import { getNotificationSummary, readAllNotifications } from "../../services/notification";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchNotifications, readNotifications } from "../../redux/reducers/NotificationReducer";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = ({ setMenuContainerOpened, setOpenNotificationContainer, openNotificationContainer , openUserContainer, setOpenUserContainer}) => {
 
@@ -24,12 +25,12 @@ const Navbar = ({ setMenuContainerOpened, setOpenNotificationContainer, openNoti
   const readAllNotificationsMutation = useMutation(readAllNotifications, {
     onSuccess: () => {
       refetch()
-      dispatch(readNotifications())
     },
     onError: (err) => console.log(err.message)
   })
-
+ const navigate = useNavigate()
   const handleReadAllNotifications = () => {
+    dispatch(readNotifications())
     readAllNotificationsMutation.mutate({ status: 'READ' })
   }
   if (!isLoadingNotificationSummary && notificationSummaryData) {
@@ -39,7 +40,9 @@ const Navbar = ({ setMenuContainerOpened, setOpenNotificationContainer, openNoti
     return (
       <div className={`w-full fixed z-40 md:h-20   h-20 border-b shadow-md shadow-gray-300 `}>
         <div className="absolute md:px-7 items-center w-full  p-4 flex justify-between">
-          <p className="font-sourGummy !text-purple-900 font-semibold text-xl">MomenTom</p>
+          <p className="font-sourGummy !text-purple-900 font-semibold text-xl cursor-pointer" onClick={()=>{
+            navigate("/home")
+          }}>MomenTom</p>
           <div className="flex text-2xl gap-3 items-center relative cursor-pointer" onClick={(e) => {
             e.stopPropagation()
             setOpenNotificationContainer(!openNotificationContainer)

@@ -1,5 +1,5 @@
 import { activityPoints } from "../constants/ActivityPoints.js"
-import { notificationType } from "../constants/NotificationConstants.js"
+import { notificationSource, notificationType } from "../constants/NotificationConstants.js"
 import { BadRequestError } from "../errors/BadRequestError.js"
 import { DuplicateError } from "../errors/DuplicateError.js"
 import Comment from "../models/Comment.js"
@@ -21,25 +21,29 @@ export const createPost = async (req, res, trans) => {
     if (!existingSquad) {
         throw new BadRequestError("Squad must exist before user can be added")
     }
+
+    const newPost = await Post.create({
+        userId, squadId, title, description
+    }, { transaction: trans })
+
     const squadMembers = await getAllUsers(req)
 
     squadMembers.forEach(async (member) => {
         if (req.user.id != member.id) {
             const notificationRequest = {
-                userId: member.id,
+                recipientId: member.id,
+                senderId: req.user.id,
                 title: "Notification",
                 squadId,
                 message: `${req.user.userName} created a post`,
                 type: notificationType.INFO,
+                sourceId: newPost.id,
+                sourceName: notificationSource.POST,
             };
 
             await createNotification(notificationRequest, trans)
         }
     })
-
-    await Post.create({
-        userId, squadId, title, description
-    }, { transaction: trans })
 
     const addPointRequest = {
         userId,
@@ -91,10 +95,10 @@ export const getAllPosts = async (req, res) => {
 
     const postAndLikes = await Promise.all(
         paginatedData.data.map(async (post) => {
-            const postLikesCounts = await PostLike.count({ where: { postId: post.id } });
+            const postLikesCounts = await PostLike.count({ where: { postId: post.id, liked: true } });
             const postCommentCounts = await Comment.count({ where: { postId: post.id } })
             const likesUsers = await PostLike.findAll({
-                where: { postId: post.id }, include: {
+                where: { postId: post.id, liked: true }, include: {
                     model: User,
                     attributes: { exclude: ["createdBy", "createdAt", "password", "user"] }
                 }
@@ -132,21 +136,26 @@ export const likePost = async (req, res, trans) => {
     }
     const existingLike = await PostLike.findOne({ where: { postId: id, userId: req.user.id } })
     if (existingLike) {
-        await PostLike.destroy({
+        await PostLike.update({liked: existingLike.liked ? false : true},{
             where: { postId: id, userId: req.user.id }
         })
     }
     else if(!existingLike){
+        req.body.liked = true
         req.body.userId = req.user.id
         await PostLike.create(req.body, { transaction: trans })
         const notificationRequest = {
-            userId: post.userId,
+            recipientId: post.userId,
+            senderId: req.user.id,
             title: "Notification",
             squadId: req.user.squadId,
             message: `${req.user.userName} liked your post`,
-            type: notificationType.INFO
+            type: notificationType.INFO,
+            sourceId: post.id,
+            sourceName: notificationSource.POST
         }
-        await createNotification(notificationRequest, trans)
+
+        const newNotification = await createNotification(notificationRequest, trans)
     }
     const addPointRequest = {
         userId: post.userId,

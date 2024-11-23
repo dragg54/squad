@@ -10,7 +10,7 @@ import { MdOutlineSettings } from "react-icons/md";const Menu = ({menuContainerO
     <div className={`w-screen z-50 h-screen fixed bg-gray-50  ${menuContainerOpened == undefined? 'hidden ': menuContainerOpened ? 'block animate-slide-down  top-[0%]':'animate-slide-up block  -top-[150%]'}`}>
        <div className="w-full flex justify-center">
         <ul className="mt-10 gap-10 flex flex-col h-full  !text-gray-200">
-          <li className="menus" onClick={()=>setMenuContainerOpened(false)}><GoHome /><Link className="menus" to="/">Home</Link></li>
+          <li className="menus" onClick={()=>setMenuContainerOpened(false)}><GoHome /><Link className="menus" to="/home">Home</Link></li>
           <li className="menus" onClick={()=>setMenuContainerOpened(false)} ><MdForum /><Link className="menus" to="/forum">Forum</Link></li>
           <li className="menus" onClick={()=>setMenuContainerOpened(false)}><LuUsers /><Link className="menus" to="/member">Squad</Link></li>
           <li className="menus" onClick={()=>setMenuContainerOpened(false)}><LuGoal /><Link className="menus" to="/goals">Goals</Link></li>

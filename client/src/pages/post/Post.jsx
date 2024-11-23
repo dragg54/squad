@@ -4,6 +4,8 @@ import { useQuery } from 'react-query';
 import PostContainer from '../../components/post/PostContainer';
 import {  getComments } from '../../services/comment';
 import BackButton from '../../components/buttons/BackButton';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import CommentField from './CommentField';
 
 const Post = () => {
     const id = useParams().id
@@ -13,21 +15,23 @@ const Post = () => {
         ['comment', { postId: id}], getComments
     );
 
-    const { data } = useQuery(
+    const { data, isLoading: postLoading } = useQuery(
         ['post', { id }],
         ()=>getPost(id),
         // {
         //   keepPreviousData: true, 
         // }
     );
-   
-  
-    if(commentLoading)console.log("Loading...")
+   if(postLoading || commentLoading || !data){
+    return <LoadingSpinner />
+   }
+    
     return (
         <section className="w-full overflow-x-visible h-screen  overflow-y-scroll p-4 md:p-8 pb-40 md:pb-48 md:ml-[20rem]">
             <BackButton />
             <div className='w-full md:w-[50%] flex flex-col items-center gap-2'>
                 <PostContainer {...{ data, isParent: true }} />
+                <CommentField />
                 {
                     comments && comments.data && comments.data.map(
                         comment => (

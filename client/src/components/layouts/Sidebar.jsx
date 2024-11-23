@@ -16,7 +16,7 @@ const Sidebar = () => {
   return (
     <div className={`w-full  h-screen bg-gray-50 border-r ${matchFound && 'hidden'}`}>
       <ul className="gap-10 w-full flex flex-col  items-start ml-4 !text-gray-200 ">
-        <li className="menus mt-8" ><GoHome /><Link className="menus" to="/">Home</Link></li>
+        <li className="menus mt-8" ><GoHome /><Link className="menus" to="/home">Home</Link></li>
         <li className="menus"><MdForum /><Link className="menus" to="/forum">Forum</Link></li>
         <li className="menus"><LuUsers /><Link className="menus" to="/member">Squad</Link></li>
         <li className="menus"><LuGoal /><Link className="menus" to="/goals">Goals</Link></li>

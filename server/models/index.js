@@ -1,3 +1,5 @@
+import Notification from "./Notification.js";
+import NotificationSource from "./NotificationSource.js";
 import Post from "./Post.js";
 import Squad from "./Squad.js";
 import User from "./User.js";
@@ -10,11 +12,16 @@ UserGoalCategory.hasMany(UserGoal);
 User.belongsTo(Squad , {onDelete: "CASCADE"});
 Squad.hasMany(User);
 
+NotificationSource.belongsTo(Notification, { foreignKey: 'notificationId' });
+Notification.hasMany(NotificationSource, { foreignKey: 'notificationId', onDelete: 'CASCADE', });
+
+
 const models = {
     UserGoal,
     UserGoalCategory,
     Post,
-    Squad
+    Squad,
+    NotificationSource
 }
 
 export default models

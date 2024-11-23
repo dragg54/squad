@@ -4,23 +4,33 @@ import { notificationStatus } from '../constants/NotificationConstants.js';
 import { BadRequestError } from '../errors/BadRequestError.js';
 import db from '../configs/db.js';
 import User from '../models/User.js';
+import { Op } from 'sequelize';
+import NotificationSource from '../models/NotificationSource.js';
 const { sendNotification } = pkg;
 
 export const createNotification = async (req, trans) => {
   req.status = notificationStatus.UNREAD
-  await Notification.create(req, { transaction: trans })
+  const newNotification = await Notification.create(req, { transaction: trans })
+  await createNotificationSource({notificationId: newNotification.id, ...req})
 }
 
 export const getAllNotifications = async (req) => {
   const notifications = await Notification.findAll({
     where: {
       squadId: req.user.squadId,
-      userId: req.user.id,
+      recipientId: req.user.id,
+      senderId: {
+        [Op.ne]: req.user.id
+      }
     },
     include:[{
       model: User,
       attributes: ['profileAvatar']
-    }],
+    },
+    {
+      model: NotificationSource
+    }
+  ],
     order: [['createdAt', 'DESC']],
     raw: true,
   });
@@ -46,6 +56,9 @@ export const getAllNotifications = async (req) => {
 
 export async function getNotificationSummary(req) {
   const notifications = await Notification.findAll({
+        where: { recipientId: req.user.id, squadId: req.user.squadId, senderId: {
+          [Op.ne]: req.user.id
+        } },
     attributes: [
       [db.fn('COUNT', db.col('id')), 'total'],
       [
@@ -57,7 +70,6 @@ export async function getNotificationSummary(req) {
         'unreadCount'
       ]
     ],
-    where: { userId: req.user.id, squadId: req.user.squadId }
   });
 
   return notifications.map((notification) => ({
@@ -77,8 +89,12 @@ export const readAllNotifications = async (req) => {
     // id: req.params.id
 
   }
-  queryOPt['userId'] = req.user.id
+  queryOPt['recipientId'] = req.user.id
   await Notification.update({ status: notificationStatus.READ }, {
     where: queryOPt
   })
+}
+
+export const createNotificationSource = async(req) =>{
+    await NotificationSource.create(req)
 }

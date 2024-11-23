@@ -22,6 +22,7 @@ import Donation from './pages/donation/Donation'
 import CreateDonation from './pages/donation/CreateDonation'
 import Donate from './pages/donation/Donate'
 import UserAvatar from './pages/register/UserAvatar'
+import Momentom from './pages/momentom'
 import NotFound from './pages/notFound'
 // import Notification from './pages/notifications'
 
@@ -56,7 +57,7 @@ function App() {
         {/* Protected Routes */}
         <Route element={<Layout />}>
           <Route element={<ProtectedRoute />}>
-            <Route path="/" element={<Home />} />
+            <Route path="/home" element={<Home />} />
             <Route path="/forum" element={<Forum />} />
             <Route path="/member" element={<Squad />} />
             <Route path="/member/:id" element={<Member />} />
@@ -75,6 +76,7 @@ function App() {
         <Route path="/register/userAvatar" element={<UserAvatar />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/" element={<Momentom/>} />
 
         <Route element={<ProtectedRoute />}>
           <Route path="/*" element={<NotFound />} />

@@ -3,12 +3,13 @@ import InviteButton from "../../components/buttons/InviteButton"
 import ProfileCard from "./components/ProfileCard"
 import { useQuery } from "react-query"
 import { getAllUsers } from "../../services/user"
+import LoadingSpinner from "../../components/LoadingSpinner"
 
 const Squad = () => {
     const { data: users, isLoading } = useQuery('members', {
         queryFn: getAllUsers
     })
-    isLoading && <>Loading...</>
+    isLoading && <LoadingSpinner {...{isLoading}}/>
     return (
         <section className="w-full overflow-x-visible h-screen overflow-y-scroll p-4 md:p-8 pb-40 md:pb-48 md:ml-[20rem]">  
             <div className="md:w-[50%] pb-28">

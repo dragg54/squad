@@ -1,10 +1,10 @@
 import { getAllUsers } from "../services/UserService.js";
 import { users } from "./users.js";
 
-export function sendPostLikedNotificationToUser(userId, io) {
+export function sendPostLikedNotificationToUser(userId, io, senderId) {
    try{
     const recipientSocketId = users.get(userId);
-    if (recipientSocketId) {
+    if (recipientSocketId && userId != senderId) {
         io.to(recipientSocketId).emit('receiveNotification', "Message delivered");
     } else {
         console.log(`User ${userId} is not connected`);
