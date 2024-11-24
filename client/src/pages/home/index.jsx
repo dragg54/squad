@@ -6,7 +6,7 @@ import Quotes from "./Quotes"
 
 const Home = () => {
   return (
-    <section className="w-screen h-screen overflow-x-visible md:-ml-20 overflow-y-scroll pb-40">  
+    <section className="w-screen h-screen overflow-x-visible md:-ml-20 overflow-y-scroll pb-40">
       <div className="w-full md:w-2/5 mx-auto p-4">
         <QuoteBox />
         <ProgressChart />

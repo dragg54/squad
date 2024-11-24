@@ -19,7 +19,7 @@ const NotificationContainer = ({ openNotificationContainer }) => {
   const gotoSource = (sourceId, sourceName) => {
       navigate(`/${sourceName?.toLowerCase()}/${sourceId}`)
   }
-  if(notificationData.data < 1){
+  if(notificationData && notificationData.data < 1){
     return(
     <section className={`md:w-[300px]  flex justify-center flex-col items-center md:max-h-[400px] w-[200px] max-h-[300px] ${!openNotificationContainer && 'hidden'} rounded-md shadow-md shadow-gray-400  z-50 bg-white overflow-x-visible right-1 md:right-10 fixed top-20  overflow-y-scroll p-4 md:p-8 pb-10 md:pb-8 `}>
     <img src="/images/notification.jpg" className="h-28 mx-auto w-32"/>

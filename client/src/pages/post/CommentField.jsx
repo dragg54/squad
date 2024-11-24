@@ -21,12 +21,12 @@ const CommentField = ({ post, data, isChild, showCommentField, setShowCommentFie
     });
     const handleSubmit = () => {
         setResponse(false)
-        createCommentMutation.mutate({ content: comment, postId: post.id })
+        createCommentMutation.mutate({ content: comment, parentPostId: post ? post.id: data.id })
     }
 
     if (commentState != null && commentState[data?.id] || post)
         return (
-            <div className="w-full mt-2" onClick={() => setShowCommentField(true)}>
+            <div className="w-full mt-2" onClick={() => post && setShowCommentField(true)}>
                 {(commentState != null && commentState[data?.id]) || (post && showCommentField) ?
                     <div className="relative h-40">
                         <Input value={comment} onChange={(e) => setComment(e.target.value)} maxLength={220} type="text-area" style='h-full !border-gray-400 !w-full border !pb-24  !row-3 !column-3' />

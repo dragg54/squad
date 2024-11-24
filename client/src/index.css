@@ -16,16 +16,20 @@
   }
 
   .swiper {
-    width: 50%;
-    padding-top: 50px;
-    padding-bottom: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3px;
   }
   
   .swiper-slide {
     background-position: center;
     background-size: cover;
-    width: 300px;
-    height: 300px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 12px;
+    height: 100%;
   }
   
   .swiper-slide img {
@@ -37,6 +41,7 @@
 .swiper-button-prev {
     color: purple; 
     font-size: 1.5rem; 
+    display: none
 }
 
 .swiper-button-next:hover,
@@ -61,7 +66,7 @@
 
 
 .mySwiper{
-    @apply w-[200px]
+    @apply w-[100%] 
 }
 
 .error{
