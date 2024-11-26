@@ -5,7 +5,7 @@
 import { useDispatch, useSelector } from "react-redux"
 import AddButton from "../../components/buttons/AddButton"
 import Input from "../../components/inputs"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { useForm } from '@mantine/form';
 import { openPopup } from "../../redux/reducers/PopUpReducer"
 import { useMutation, useQuery } from "react-query";
@@ -33,6 +33,31 @@ const AddGoal = ({ setIsUpdated }) => {
         endDate: (globalModal.content?.props?.newDate?.endDate) || new Date()
     })
 
+    const inputRef = useRef(null)
+
+    useEffect(()=>{
+        inputRef?.current?.focus()
+    },[])
+      //button variables
+      const [buttonDisabled, setButtonDisabled] = useState(true)
+      const [response, setResponse] = useState(true)
+
+    const validationRules = {
+        textValidation: {
+            description: value => value.length > 0,
+            title: value => value.length > 0,
+        },
+        dateValidation: {
+            startDate: { isValid: (new Date().getDay() <= new Date(date.startDate).getDay()), message: "Invalid start date" },
+            endDate: {
+                isValid: ((new Date().getDay() <= new Date(date.endDate).getDay()
+                    && (new Date(date.startDate).getDay() <= new Date(date.endDate).getDay()))),
+                message: "Invalid end date"
+            },
+        }
+    };
+  
+
     const handleChangeDate = (e) => {
         // setDate({ ...date, [Object.keys(e)[0]]: [Object.values(e)[0]] })
     }
@@ -45,49 +70,38 @@ const AddGoal = ({ setIsUpdated }) => {
         setInput({ ...input, [e.target.name]: e.target.value })
     }
 
-    const validationRules = {
-        title: { required: true },
-        description: { required:true },
-        startDate: {isValid: (new Date().getDay() <= new Date(date.startDate).getDay()), message: "Invalid start date"},
-        endDate: {isValid: ((new Date() < new Date(date.endDate) && (date.startDate < date.endDate))), message: "Invalid end date"}, 
-    };
-
-
     const handleSaveGoal = (e) => {
         e.preventDefault()
-        const { errors, hasErrors } = validateForm(input, validationRules);
-        if (hasErrors) {
-            setError(errors);
-        }
-        else{
+        if(!buttonDisabled){
             const updatedInput = { ...input, ...date, userGoalCategoryId: globalModal.content?.props?.selectedId}
             dispatch(openModal({component: <AssignPartners {...{ setIsUpdated }} goalInputs={updatedInput} />}))
         }
     }
 
-
     return (
-        <div onClick={(e) => e.stopPropagation()} className='w-[90%] md:w-[30%] -mt-16 md:mt-0 relative mx-auto bg-white min-h-[550px] rounded-md shadow-md  p-5'>
-            <h1 className="text-xl font-semibold">Add Goals</h1>
+        <div onClick={(e) => e.stopPropagation()} className='w-[90%] md:w-[30%] -mt-16 md:mt-0 relative mx-auto bg-white min-h-auto rounded-md shadow-md  p-5'>
             <form onSubmit={handleSaveGoal} action="" className="mt-8 flex-col">
                 <div>
-                    <label htmlFor="title" className="">Goal</label>
                     <Input
                         hasError={error['title']?.length}
                         onChange={handleChange}
+                        ref={inputRef}
+                        type = 'text'
                         placeholder='Add Goal'
                         name='title'
                         value={input.title}
+                        style={'!border-b-1 border-none !text-xl !bg-purple-100'}
                     />
                 <span className='error'>{error["title"]}</span>
                 </div>
                 <div className="mt-3">
-                    <label htmlFor="description" className="mt-3">Description</label>
                     <Input
                         hasError={error['description']?.length}
                         onChange={handleChange}
+                        type='text-area'
                         placeholder='Description'
                         name='description'
+                        style='!border-none text-xl !bg-purple-100'
                         value={input.description}
                     />
                 <span className='error'>{error["description"]}</span>
@@ -134,7 +148,6 @@ const AddGoal = ({ setIsUpdated }) => {
                     </div>
                 </div>
                 <div className="mt-4 w-full ">
-                    <label htmlFor=""><p className="">Goal Category</p></label>
                     <Input
                         onChange={handleChange}
                         style='!text-sm' type='select'
@@ -150,7 +163,18 @@ const AddGoal = ({ setIsUpdated }) => {
                         }}
                     />
                 </div>
-                <Button type='submit' style='mt-6 !py-3 !rounded-full ml-auto' name="Create Goal" />
+                <Button
+                        disabled={buttonDisabled}
+                        type='submit'
+                        style='mt-6 !py-3 !rounded-full ml-auto'
+                        name="Create Goal"
+                        validationRules={validationRules}
+                        buttonDisabled={buttonDisabled}
+                        inputValues={{...input, ...date}}
+                        setButtonDisabled={setButtonDisabled}
+                        isApiRequestButton={true}
+                        response={response}
+                    />
                 </form>
         </div>
     )

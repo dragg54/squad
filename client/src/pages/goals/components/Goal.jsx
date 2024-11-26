@@ -16,7 +16,7 @@ const Goal = ({ goal, setIsUpdated }) => {
             <li className={`goal-box flex items-center shadow-sm !mb-5 text-base pl-4 !py-6 !border-b-4 shadow-md !rounded-2xl !border-l-8 ${goal.completed ?
                 'shadow-green-800  !border-[#107869]' :
                 'shadow-red-800  !border-[#ff2511]'}`}><span className={`ml-6 ${goal.completed ?
-                'text-[#107869]': 'text-[#ff2511]'} text-xl`}>{userGoalCategoryConstant.find(cat => cat.categoryName == goal?.userGoalCategory?.name)?.categoryIcon}</span>
+                'text-[#107869]': 'text-[#ff2511]'} text-xl`}>{userGoalCategoryConstant.find(cat => cat.categoryName == goal?.user_goal_category?.name)?.categoryIcon}</span>
                 <div className="ml-5">
                     <span className="">{goal.title}</span>
                     <p className="text-xs">{formatDate(goal.createdAt)}</p>

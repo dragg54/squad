@@ -1,9 +1,11 @@
+/* eslint-disable react/display-name */
 /* eslint-disable react/prop-types */
 
+import { forwardRef } from "react"
 import DateInput from "./DateInput"
 import SelectInput from "./SelectInput"
 
-const Input = ({ style,
+const Input = forwardRef(({ style,
   placeholder,
   maxLength,
   name,
@@ -18,7 +20,7 @@ const Input = ({ style,
   onClick,
   done,
   onSelect
-}) => {
+}, ref) => {
   if (!type || type == "text"
     || type == "password"
   ) {
@@ -27,6 +29,7 @@ const Input = ({ style,
         type={type || 'text'}
         value={value}
         name={name}
+        ref={ref}
         placeholder={placeholder}
         className={`${style} w-full border ${hasError && 'border-red-500'} rounded-md text-gray-500 outline-none p-3 mt-2`} />
 
@@ -84,6 +87,6 @@ const Input = ({ style,
                  date={value} data={data} 
                  done={done} />
   }
-}
+})
 
 export default Input

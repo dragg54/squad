@@ -17,7 +17,9 @@ export const createComment = async (req, res) => {
 export const getAllComments = async (req, res, next) => {
   try {
     const comments = await CommentService.getAllComments(req, res);
-    return res.status(200).json(comments);
+    return res.status(200).json({
+      data: comments
+    });
   } catch (error) {
     console.log(error)
     res.status(error.statusCode || 500).send({

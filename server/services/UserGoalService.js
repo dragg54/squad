@@ -15,7 +15,9 @@ import { addPoint, getUserPoints, updatePoint } from "./PointService.js";
 export const createUserGoal = async (req, transaction) => {
   const goalData = req.body
   const userGoal = await models.UserGoal.create(goalData, { transaction });
-  if (userGoal.startDate < new Date() || userGoal.endDate < new Date() || userGoal.endDate < userGoal.startDate) {
+  if ((new Date(userGoal.startDate).getDay() < new Date().getDay())
+    || (new Date(userGoal.endDate).getDay() < new Date().getDay()) || (new Date(userGoal.endDate).getDay() < new Date(userGoal.startDate).getDay))
+   {
     throw new BadRequestError("Invalid start date or end date.")
   }
   if (goalData.goalPartners && goalData.goalPartners.length > 0) {

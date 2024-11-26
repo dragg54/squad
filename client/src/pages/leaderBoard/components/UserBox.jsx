@@ -9,7 +9,7 @@ const UserBox = ({ isCurrentUser, userPointData, position}) => {
         <p className="text-xl !text-inherit font-semibold">
             #{position}
         </p>
-        <Image source={ BACKEND_SERVER_URL+"/avatars/"+ userPointData?.user?.profileAvatar} style=" h-16 w-16 rounded-full bg-yellow-500" />
+        <Image isUser={true} source={ BACKEND_SERVER_URL+"/avatars/"+ userPointData?.user?.profileAvatar} style=" h-16 w-16 rounded-full bg-yellow-500" />
         <div >
             <p className=" !text-inherit font-semibold">
                 {userPointData?.user?.userName}</p>

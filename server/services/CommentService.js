@@ -30,7 +30,7 @@ export const updateComment = async (req, res) => {
 }
 
 export const getAllComments = async (req, res) => {
-    const { userId, page, size, postId } = req.query;
+    const { userId, page, size, postId, parentId } = req.query;
     const { limit, offset } = getPagination(page, size);
 
     let queryOptions = {
@@ -45,33 +45,77 @@ export const getAllComments = async (req, res) => {
     if (userId) {
         queryOptions.where = { userId: userId };
     }
-    if(postId){
-        queryOptions.where = {postId}
+    if (postId) {
+        queryOptions.where = { postId }
     }
 
-    const CommentData = await Comment.findAndCountAll(queryOptions);
-    const paginatedData = getPagingData(CommentData, page, size);
+    const comments = await buildCommentTree(queryOptions.where.postId, parentId, null)
 
-    const CommentAndLikes = await Promise.all(
-        paginatedData.data.map(async (comment) => {
+    const commentsWithLikes = await getNestedCommentLikes(comments)
+    const parsedCommentData = await Promise.all(commentsWithLikes.map(async (comment) => {
+        return await JSON.parse(JSON.stringify(comment));
+    }));
+    return parsedCommentData
+}
+
+async function getNestedCommentLikes(comments) {
+    return await Promise.all(
+        comments.data.map(async (comment) => {
             const CommentLikesCounts = await CommentLike.count({ where: { commentId: comment.id } });
-            const likesUsers = await CommentLike.findAll({where:{commentId: comment.id}, include:{
-                model: User,
-                attributes: {exclude: ["createdBy", "createdAt", "password", "user"]}
-            }})
-            return { ...comment.toJSON(), likes: {
-                noOfLikes: CommentLikesCounts,
-                likesUsers: likesUsers
-            } }; // Convert Comment instance to JSON object
+            const likesUsers = await CommentLike.findAll({
+                where: { commentId: comment.id },
+                include: {
+                    model: User,
+                    as: 'user',
+                    attributes: { exclude: ["createdBy", "createdAt", "password", "user", "updatedAt", "updatedBy"] },
+                },
+            });
+
+            const childrenWithLikes = comment.toJSON().children
+                ? await getNestedCommentLikes(comment.toJSON().children) 
+                : []; 
+
+            const childrenWithLikesAndLikes = childrenWithLikes.map(async (child) => {
+                const CommentLikesCounts = await CommentLike.count({ where: { commentId: child.id } });
+                const likesUsers = await CommentLike.findAll({
+                    where: { commentId: child.id },
+                    include: {
+                        model: User,
+                        as: 'user',
+                        attributes: { exclude: ["createdBy", "createdAt", "password", "user", "updatedAt", "updatedBy"] },
+                    },
+                });
+
+                return {
+                    ...child, 
+                    likes: {
+                        noOfLikes: CommentLikesCounts,
+                        likesUsers: likesUsers.map((user) => user.toJSON()),
+                    },
+                };
+            });
+
+            const processedChildren = await Promise.all(childrenWithLikesAndLikes); 
+            return {
+                ...comment.toJSON(),
+                likes: {
+                    noOfLikes: CommentLikesCounts,
+                    likesUsers: likesUsers.map((user) => user.toJSON()), 
+                },
+                children: {
+                    total: comment.toJSON().children?.total || 0,
+                    data: processedChildren, 
+                },
+            };
         })
     );
-
-    return {...paginatedData, data: CommentAndLikes}
 }
+
+
 
 export const getComment = async (req, res) => {
     const { id } = req.params
-    return await Comment.findOne({
+    const comment = await Comment.findOne({
         where: {
             id
         },
@@ -83,6 +127,8 @@ export const getComment = async (req, res) => {
             model: Comment
         }
     })
+
+    return comment
 }
 
 export const likeComment = async (req, res) => {
@@ -101,8 +147,7 @@ export const likeComment = async (req, res) => {
     })
 }
 
-export const getCommentLikes = async (req, res) => {
-    const { id } = req.params
+export const getCommentLikes = async (id) => {
     const likes = await CommentLike.findAll({
         where: { CommentId: id }, include: {
             model: User,
@@ -118,3 +163,26 @@ export const deleteCommentLikes = async (req, res) => {
         where: { CommentId: id }
     })
 }
+
+async function buildCommentTree(postId, parentId = 0) {
+    try {
+        const { rows: comments, count: total } = await Comment.findAndCountAll({
+            where: { postId, parentId },
+            include: [
+                {
+                    model: User,
+                    attributes: ['firstName', 'lastName', 'userName', 'profileAvatar']
+                }
+            ]
+        });
+        for (const comment of comments) {
+            comment.dataValues.children = await buildCommentTree(postId, comment.id);
+        }
+
+        return { total, data: comments };
+    } catch (error) {
+        console.error('Error building comment tree:', error);
+        throw error;
+    }
+}
+

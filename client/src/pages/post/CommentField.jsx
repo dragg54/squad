@@ -53,7 +53,7 @@ const CommentField = ({ post, data, isChild, showCommentField, setShowCommentFie
                     :
                     <div onClick={() =>
                         setShowCommentField(true)
-                    } style={{ display: isChild && 'none' }} className='p-4 border w-full border-gray-300 rounded-full text-gray-400'>
+                    } style={{ display: isChild && 'none' }} className='p-4 border w-full border-gray-150 rounded-full text-gray-400'>
                         Add a comment
                     </div>
                 }

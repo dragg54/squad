@@ -1,15 +1,38 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-function useDisableButton(inputValues, validationRules) {
-    const [isDisabled, setIsDisabled] = useState(true);
+function useDisableButton(inputValues, validationRules, buttonDisabled, setButtonDisabled) {
     useEffect(() => {
-        const isValid = Object.keys(validationRules).every(field =>
-            validationRules[field](inputValues[field])
-        );
-        setIsDisabled(!isValid);
-    }, [inputValues]);
-    return isDisabled;
+        if(validationRules){
+        const disabled = validateInput(validationRules, inputValues)
+        setButtonDisabled(disabled)
+        }
+    }, [inputValues, validationRules, setButtonDisabled]);
+    return buttonDisabled;
 }
 
-export default useDisableButton
+function validateInput(validationRules, inputValues){
+    if (validationRules) {
+        const dateValidationRules = validationRules.dateValidation
+        const textValidationRules = validationRules.textValidation
+        console.log(textValidationRules)
+        if (dateValidationRules !== undefined) {
+            const isDateValid = Object.keys(dateValidationRules).every(
+                field => dateValidationRules[field]?.isValid
+            );
+            if(!isDateValid){
+                return true
+            }
+        }
+        if (textValidationRules) {
+            const isTextInputValid = Object.keys(textValidationRules).every(field =>
+                textValidationRules[field]?.(inputValues[field])
+            );
+            if(!isTextInputValid){
+                return true
+            }
+        }
+        return false
+    }
+}
+export default useDisableButton;

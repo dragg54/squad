@@ -8,6 +8,7 @@ import BackButton from '../../components/buttons/BackButton';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import CommentField from './CommentField';
 import { useEffect, useState } from 'react';
+import Comment from '../../components/post/Comment';
 
 const Post = () => {
     const id = useParams().id
@@ -35,8 +36,7 @@ const Post = () => {
     if (postLoading || commentLoading || !data) {
         return <LoadingSpinner />
     }
-
-
+    
     return (
         <section className="w-full overflow-x-visible h-screen  overflow-y-scroll p-4 md:p-8 pb-40 md:pb-48 md:ml-[20rem]">
             <BackButton />
@@ -44,13 +44,7 @@ const Post = () => {
                 <PostContainer {...{ data, isParent: true }} />
                 <CommentField {...{ post: data, showCommentField, setShowCommentField }} />
                 {
-                    comments && comments.data && comments.data.map(
-                        comment => (
-                            <div key={comment.id} className='w-full flex justify-end flex-col'>
-                                {<PostContainer {...{ isParent: false, data: comment, refetchComment, commentState, setCommentState }} />}
-                            </div>
-                        )
-                    )
+                    <Comment comments={comments}/>
                 }
             </div>
         </section>

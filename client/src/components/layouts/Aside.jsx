@@ -10,15 +10,15 @@ const Aside = () => {
                 <h1 className="font-bold text-xl w-full p-2 shadow-sm rounded-sm !text-gray-400">Latest Members</h1>
                 <ul className="mt-4 text-sm">
                     <li className="flex gap-2 items-center">
-                        <Image source="/avatars/av1.jpg" style="rounded-full h-14 w-14"/>
+                        <Image isUser={true} source="/avatars/av1.jpg" style="rounded-full h-14 w-14"/>
                         Kelvin Joe
                     </li>
                     <li className="flex gap-2 items-center">
-                        <Image  source="/avatars/av2.jpg" style="rounded-full h-14 w-14"/>
+                        <Image isUser={true}  source="/avatars/av2.jpg" style="rounded-full h-14 w-14"/>
                         Akeem Zola
                     </li>
                     <li className="flex gap-2 items-center">
-                        <Image source='/avatars/kenny.jpg' style="rounded-full h-14 w-14"/>
+                        <Image isUser={true} source='/avatars/kenny.jpg' style="rounded-full h-14 w-14"/>
                         Joseph Yobo
                     </li>
                 </ul>

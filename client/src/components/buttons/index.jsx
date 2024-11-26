@@ -1,14 +1,30 @@
 /* eslint-disable react/prop-types */
 
-const Button = ({name, icon, style, onClick, type, disabled}) => {
+import useDisableButton from "../../hooks/useDisabledButton";
+
+const Button = ({
+  name,
+  icon,
+  style,
+  onClick,
+  type,
+  inputValues,
+  validationRules,
+  buttonDisabled,
+  setButtonDisabled,
+  response,
+  isApiRequestButton
+}) => {
+  useDisableButton(inputValues, validationRules, buttonDisabled, setButtonDisabled);
+  const requestProcessingName = "Please Wait"
   return (
-    <button 
+    <button
       type={type || 'button'}
-      disabled={disabled == null || disabled ==false ? false: true}
-      onClick={onClick} 
-      className={`${style} ${disabled ? 'bg-[#b19ff9]': 'bg-[#9619b2]'}
+      disabled={(response == true && isApiRequestButton) || buttonDisabled == false ? false : false}
+      onClick={onClick}
+      className={`${style} ${buttonDisabled  ? 'bg-[#b19ff9]' : 'bg-[#9619b2]'}
       px-5 rounded-lg items-center py-2 flex justify-center text-sm gap-3 overflow-hidden font-semibold text-white`}>
-      {name} {icon}
+      {(response && isApiRequestButton) ? name : !response && isApiRequestButton ? requestProcessingName : name} {icon}
     </button>
   )
 }

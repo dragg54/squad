@@ -18,14 +18,14 @@ const NotificationContainer = ({ openNotificationContainer }) => {
   }
   if (notificationData && notificationData.data < 1) {
     return (
-      <section className={`md:w-[300px]  flex justify-center flex-col items-center md:max-h-[400px] w-[200px] max-h-[300px] ${!openNotificationContainer && 'hidden'} rounded-md shadow-md shadow-gray-400  z-50 bg-white overflow-x-visible right-1 md:right-10 fixed top-20  overflow-y-scroll p-4 md:p-8 pb-10 md:pb-8 `}>
+      <section className={`md:w-[300px] pb-3  flex justify-center flex-col items-center md:max-h-[400px] w-[200px] max-h-[300px] ${!openNotificationContainer && 'hidden'} rounded-md shadow-md shadow-gray-400  z-50 bg-white overflow-x-visible right-1 md:right-10 fixed top-20  overflow-y-scroll p-4 md:p-8 pb-10 md:pb-8 `}>
         <img src="/images/notification.jpg" className="h-28 mx-auto w-32" />
         <p className="mt-2 text-gray-500 font-semibold">No Notification Yet</p>
       </section>
     )
   }
   return (
-    <section className={`md:w-[300px] md:max-h-[400px] w-3/5 max-h-[300px] ${!openNotificationContainer && 'hidden'} rounded-md shadow-md shadow-gray-400  z-50 bg-white overflow-x-visible right-1 md:right-10 fixed top-20  overflow-y-scroll p-4 md:p-8 pb-10 md:pb-8 `}>
+    <section className={`md:w-[300px]  md:max-h-[400px] w-3/5 max-h-[300px] ${!openNotificationContainer && 'hidden'} rounded-md shadow-md shadow-gray-400  z-50 bg-white overflow-x-visible right-1 md:right-10 fixed top-20  overflow-y-scroll p-4 md:p-8 pb-10 md:pb-8 `}>
       {
         notificationSummaryIsLoading ?
           <div className="flex flex-col items-center justify-start pt-3 h-24 gap-4 w-full">
@@ -33,7 +33,7 @@ const NotificationContainer = ({ openNotificationContainer }) => {
             <LoadingSpinner isLoading={notificationSummaryIsLoading} style='!w-full !h-10 mt-20' />
           </div>
           :
-          <div className="w-full h-20">
+          <div className="w-full h-full ">
             <h1 className="text-xl font-semibold mb-3">Notifications</h1>
             <div className="w-full">
               {

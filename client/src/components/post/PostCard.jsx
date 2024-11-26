@@ -25,7 +25,7 @@ const PostCard = ({ post }) => {
         <div className='w-full cursor-pointer md:w-full bg-white overflow-x-visible rounded-md border  border-gray-200 shadow-lg shadow-gray-200 md:min-h-[200px] min-h-[200px] mb-3 p-4'>
             <Link className="w-full" to={"/post/" + post?.id}>
                 <div className="flex justify-start items-center gap-4">
-                    <Image source={BACKEND_SERVER_URL+"/avatars/"+ post?.user?.profileAvatar} style='h-16 w-16' />
+                    <Image isUser={true} source={BACKEND_SERVER_URL+"/avatars/"+ post?.user?.profileAvatar} style='h-16 w-16' />
                     <div>
                         <p className='font-semibold text-black'>{post && capitalizeHeader(post?.title)}</p>
                         <p className=''>By {post?.user.userName}</p>

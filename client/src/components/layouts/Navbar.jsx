@@ -56,7 +56,7 @@ const Navbar = ({ setMenuContainerOpened, setOpenNotificationContainer, openNoti
               setOpenUserContainer(!openUserContainer)
               setOpenNotificationContainer(false)
             }}>
-              <Image style="h-10 w-10" source={user.profileAvatar} />
+              <Image isUser={true} style="h-10 w-10" source={user.profileAvatar} />
             </div>
             <p className="cursor-pointer md:text-3xl"><IoNotificationsOutline className="cursor-pointer" /></p>
             < p className="cursor-pointer md:hidden" onClick={(e) => {

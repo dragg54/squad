@@ -7,7 +7,7 @@ const ProfileCard = ({user}) => {
   return (
     <div className='w-full cursor-pointer mb-5 h-32 p-4  rounded-md border shadow-md shadow-gray-500'>
         <div className="flex justify-start items-center gap-4">
-                <Image  source={BACKEND_SERVER_URL+"/avatars/"+ user.profileAvatar} style='h-12 w-[52px] md:h-16 md:w-[66px]' />
+                <Image isUser={true}  source={BACKEND_SERVER_URL+"/avatars/"+ user.profileAvatar} style='h-12 w-[52px] md:h-16 md:w-[66px]' />
                 <div>
                     <p className='font-semibold'>{user.firstName} {user.lastName}</p>
                     <p className=' text-xs mb-2'>@{user.userName}</p>

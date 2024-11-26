@@ -117,7 +117,7 @@ export const getAllPosts = async (req, res) => {
 
 export const getPost = async (req, res) => {
     const { id } = req.params
-    return await Post.findOne({
+    const post = await Post.findOne({
         where: {
             id
         },
@@ -126,6 +126,21 @@ export const getPost = async (req, res) => {
             attributes: { exclude: ["password", "createdAt", "updatedAt"] }
         },
     })
+
+    const postLikesCounts = await PostLike.count({ where: { postId: post.id, liked: true } });
+    const postCommentCounts = await Comment.count({ where: { postId: post.id } })
+    const likesUsers = await PostLike.findAll({
+        where: { postId: post.id, liked: true }, include: {
+            model: User,
+            attributes: { exclude: ["createdBy", "createdAt", "password", "user"] }
+        }
+    })
+    return {
+        ...post.toJSON(), likes: {
+            noOfLikes: postLikesCounts,
+            likesUsers: likesUsers,
+        }, comments: { noOfComments: postCommentCounts }
+    }; // Convert post instance to JSON object
 }
 
 export const likePost = async (req, res, trans) => {
@@ -136,11 +151,11 @@ export const likePost = async (req, res, trans) => {
     }
     const existingLike = await PostLike.findOne({ where: { postId: id, userId: req.user.id } })
     if (existingLike) {
-        await PostLike.update({liked: existingLike.liked ? false : true},{
+        await PostLike.update({ liked: existingLike.liked ? false : true }, {
             where: { postId: id, userId: req.user.id }
         })
     }
-    else if(!existingLike){
+    else if (!existingLike) {
         req.body.liked = true
         req.body.userId = req.user.id
         await PostLike.create(req.body, { transaction: trans })
@@ -156,14 +171,15 @@ export const likePost = async (req, res, trans) => {
         }
 
         const newNotification = await createNotification(notificationRequest, trans)
+        const addPointRequest = {
+            userId: post.userId,
+            squadId: req.user.squadId,
+            points: activityPoints.postLikedPoints
+        }
+    
+        await addPoint(addPointRequest, trans)
     }
-    const addPointRequest = {
-        userId: post.userId,
-        squadId: req.user.squadId,
-        points: activityPoints.postLikedPoints
-    }
-
-    await addPoint(addPointRequest, trans)
+   
 }
 
 export const getPostLikes = async (req, res) => {
