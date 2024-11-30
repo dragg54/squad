@@ -87,6 +87,9 @@ server.listen(8080, ()=>{
     console.log("Listening to port 8080")
 })
 
+const clientBaseURl = process.env.NODE_ENV ==  'Development' || !process.env.NODE_ENV ? 
+                    process.env.LOCAL_CLIENT_BASE_URL :
+                     process.env.PROD_CLIENT_NASE_URL
 const io = new Server(server, {
   cors: {
     origin: process.env.CLIENT_BASE_URL

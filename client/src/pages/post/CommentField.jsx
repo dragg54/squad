@@ -6,7 +6,17 @@ import { useMutation, useQueryClient } from "react-query"
 import { createComment } from "../../services/comment"
 import { useParams } from "react-router-dom"
 
-const CommentField = ({ post, data, isChild, commentParentId, parentId, showCommentField, setShowCommentField, commentState, toggleCommentBox }) => {
+const CommentField = ({
+    post,
+    data,
+    isChild,
+    commentParentId,
+    parentId,
+    showCommentField,
+    setShowCommentField,
+    commentState,
+    toggleCommentBox
+}) => {
     const [comment, setComment] = useState('')
     const [response, setResponse] = useState(true)
     const queryClient = useQueryClient()
@@ -14,7 +24,7 @@ const CommentField = ({ post, data, isChild, commentParentId, parentId, showComm
     const createCommentMutation = useMutation(createComment, {
         onSuccess: async () => {
             setResponse(true)
-            isChild ? toggleCommentBox(commentParentId): setShowCommentField(false)
+            isChild ? toggleCommentBox(commentParentId) : setShowCommentField(false)
             await queryClient.invalidateQueries(['comment']);
         },
         onError: (err) => {
@@ -23,13 +33,13 @@ const CommentField = ({ post, data, isChild, commentParentId, parentId, showComm
     });
     const handleSubmit = () => {
         setResponse(false)
-        createCommentMutation.mutate({ content: comment, parentId: commentParentId ,  postId: isChild ? id :parentId })
+        createCommentMutation.mutate({ content: comment, parentId: commentParentId, postId: isChild ? id : parentId })
     }
 
     if ((commentState != null && commentState[data?.id] || post) || isChild)
         return (
             <div className="w-full mt-2" onClick={() => post && setShowCommentField(true)}>
-                {(commentState != null && commentState[data?.id]) || (post && showCommentField) || isChild?
+                {(commentState != null && commentState[data?.id]) || (post && showCommentField) || isChild ?
                     <div className="relative h-40">
                         <Input value={comment} onChange={(e) => setComment(e.target.value)} maxLength={220} type="text-area" style='h-full !border-gray-400 !w-full border !pb-24  !row-3 !column-3' />
                         <div className="absolute !rounded-full bottom-2 right-1 flex gap-1 items-center">
