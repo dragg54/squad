@@ -21,11 +21,11 @@ export const getPoints = async(req) =>{
     })
 }
 
-export const addPoint = async(req) =>{
+export const addPoint = async(req, trans) =>{
     await Point.increment('points', {
         by: req.points, 
         where: {
           userId: req.userId,
         },
-      });
+      }, {transaction: trans});
 }

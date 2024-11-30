@@ -1,3 +1,4 @@
+import db from '../configs/db.js';
 import { BadRequestError } from '../errors/BadRequestError.js';
 import * as CommentService from '../services/CommentService.js'
 
@@ -69,11 +70,15 @@ export const deleteComment = async (req, res, next) => {
 
 
 export const likeComment = async (req, res) =>{
+  const trans = await db.transaction()
   try{
-    await CommentService.likeComment(req, res)
+    await CommentService.likeComment(req, res, trans)
+    trans.commit()
     res.json({message: "Comment liked"})
   }
   catch (error) {
+    console.log(error)
+    trans.rollback()
     res.status(error.statusCode || 500).send({
       message: error.message || "Internal Server Error"
     })

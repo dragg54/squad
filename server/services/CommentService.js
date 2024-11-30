@@ -1,18 +1,22 @@
+import { activityPoints } from "../constants/ActivityPoints.js"
+import { notificationSource, notificationType } from "../constants/NotificationConstants.js"
 import { BadRequestError } from "../errors/BadRequestError.js"
 import { DuplicateError } from "../errors/DuplicateError.js"
+import { NotFoundError } from "../errors/NotFoundError.js"
 import Comment from "../models/Comment.js"
 import CommentLike from "../models/CommentLike.js"
 import User from "../models/User.js"
 import { getPagination, getPagingData } from "../utils/pagination.js"
+import { createNotification } from "./NotificationService.js"
+import { addPoint } from "./PointService.js"
 
 export const createComment = async (req, res) => {
-    const { content, postId } = req.body
+    const { content, postId, parentId } = req.body
     const userId = req.user.id
     await Comment.create({
-        userId, content, postId
+        userId, content, postId, parentId
     })
 }
-
 export const updateComment = async (req, res) => {
     const { content } = req.body
     const userId = req.user.id
@@ -113,7 +117,7 @@ async function getNestedCommentLikes(comments) {
 
 
 
-export const getComment = async (req, res) => {
+export const getComment = async (req) => {
     const { id } = req.params
     const comment = await Comment.findOne({
         where: {
@@ -124,27 +128,51 @@ export const getComment = async (req, res) => {
             attributes: { exclude: ["password", "createdAt", "updatedAt"] }
         },
         include: {
-            model: Comment
+            model: Comment,
+            as: 'children',
+            attributes: {exclude: ['createdAt', 'updatedAt']}
         }
     })
 
     return comment
 }
 
-export const likeComment = async (req, res) => {
+export const likeComment = async (req, res, trans) => {
     const { id } = req.params
-    const Comment = getComment(req, res)
-    if (!Comment) {
+    const comment = await getComment(req)
+    if (!comment) {
         throw new NotFoundError(`Comment not found ${id}`)
     }
-    const existingLike = await CommentLike.findOne({ CommentId: id, userId: req.user.id })
+    const existingLike = await CommentLike.findOne({ where: { commentId: id, userId: req.user.id }, as: 'comment' })
     if (existingLike) {
-        return
+        await CommentLike.update({ liked: existingLike.liked ? false : true }, {
+            where: { commentId: id, userId: req.user.id }
+        })
     }
-    await CommentLike.create({
-        userId: req.user.id,
-        CommentId: id
-    })
+    else if (!existingLike) {
+        req.body.liked = true
+        req.body.userId = req.user.id
+        const commentLike = await CommentLike.create(req.body, { transaction: trans })
+        const notificationRequest = {
+            recipientId: comment.userId,
+            senderId: req.user.id,
+            title: "Notification",
+            squadId: req.user.squadId,
+            message: `${req.user.userName} liked your comment`,
+            type: notificationType.INFO,
+            sourceId: comment.id,
+            sourceName: notificationSource.POST
+        }
+
+        const createNotifications = await createNotification(notificationRequest, trans)
+        const addPointRequest = {
+            userId: comment.userId,
+            squadId: req.user.squadId,
+            points: activityPoints.postLikedPoints
+        }
+    
+        await addPoint(addPointRequest, trans)
+    }
 }
 
 export const getCommentLikes = async (id) => {
@@ -164,7 +192,7 @@ export const deleteCommentLikes = async (req, res) => {
     })
 }
 
-async function buildCommentTree(postId, parentId = 0) {
+async function buildCommentTree(postId, parentId = null) {
     try {
         const { rows: comments, count: total } = await Comment.findAndCountAll({
             where: { postId, parentId },

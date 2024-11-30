@@ -54,7 +54,7 @@ export const updateComment = async (formData) => {
 
 export const likeComment = async(formData)=>{
   try {
-    const response = await axiosInstance.Comment(`${BACKEND_SERVER_URL}/${BACKEND_SERVER_VERSION}/Comments/${formData.commentId}/likes`, formData)
+    const response = await axiosInstance.post(`${BACKEND_SERVER_URL}/${BACKEND_SERVER_VERSION}/Comments/${formData.commentId}/likes`, formData)
     return response
   }
   catch (error) {

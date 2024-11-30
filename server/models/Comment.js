@@ -22,7 +22,7 @@ const Comment = db.define('comment', {
       model: 'comments',
       key: 'id',
     },
-    allowNull: false,
+    allowNull: true,
   },
   userId: {
     type: DataTypes.INTEGER,
@@ -41,6 +41,7 @@ Post.hasMany(Comment, {
   foreignKey: 'postId',
   onDelete: 'CASCADE',
 });
+
 Comment.belongsTo(Post, {
   foreignKey: 'postId',
 });

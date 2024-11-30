@@ -19,6 +19,9 @@ const CommentLike = db.define('comment_like', {
       model: Comment,
       key: 'id',
     },
+  },
+  liked:{
+    type: DataTypes.TINYINT
   }
 });
 
