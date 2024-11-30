@@ -1,13 +1,15 @@
+import { useNavigate } from "react-router-dom"
 import AddButton from "../../components/buttons/AddButton"
 
 const Goal = () => {
+  const navigate = useNavigate()
   return (
     <section>
         <div className='mt-4 w-full rounded-md p-4'>
         <div className="w-full mb-3">
           <div className="flex justify-between items-center">
           <h2 className='text-[1.1rem] md:text-xl font-semibold'>Goals for this month</h2>
-          <AddButton name='Add Goal' style='!bg-white !text-gray-800 !rounded-full !border border-gray-700 items-center'/>
+          <AddButton onClick={()=>navigate("/goals")} name='Add Goal' style='!bg-white !text-gray-800 !rounded-full !border border-gray-700 items-center'/>
           </div>
             </div>
              <div className="w-full">
