@@ -34,7 +34,7 @@ const Post = () => {
     }, [comments, commentLoading])
     
     if (postLoading || commentLoading || !data) {
-        return <LoadingSpinner />
+        return <LoadingSpinner  {...{isLoading: postLoading || commentLoading}}/>
     }
     return (
         <section className="w-full overflow-x-visible h-screen  overflow-y-scroll p-4 md:p-8 pb-40 md:pb-48 md:ml-[20rem]">
