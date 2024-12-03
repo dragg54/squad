@@ -5,7 +5,7 @@ import { LuUsers } from "react-icons/lu";
 import { LuGoal } from "react-icons/lu";
 import { FaClipboard } from "react-icons/fa";
 import { MdOutlinePayment } from "react-icons/md";
-import { MdOutlineSettings } from "react-icons/md";
+import { BsShop } from "react-icons/bs";
 
 
 const Sidebar = () => {
@@ -22,7 +22,7 @@ const Sidebar = () => {
         <li className="menus"><LuGoal /><Link className="menus" to="/goals">Goals</Link></li>
         <li className="menus"><FaClipboard /><Link className="menus" to="/leaderboard">Leaderboard</Link></li>
         <li className="menus" ><MdOutlinePayment /><Link className="menus" to="/donation">Donation</Link></li>
-        <li className="menus"><MdOutlineSettings />Settings</li>
+        <li className="menus"><BsShop />{"Tom's"} Shop</li>
       </ul>
     </div>
   )
