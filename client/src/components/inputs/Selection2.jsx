@@ -4,7 +4,7 @@ import Input from '.'
 import { CiSearch } from "react-icons/ci";
 import { closeSelectionModal, selectOption } from '../../redux/reducers/Selection2Reducer';
 
-const Selection2 = ({name}) => {
+const Selection2 = () => {
     const selection = useSelector(state => state.selection2)
     const dispatch = useDispatch()
     return (
@@ -21,13 +21,13 @@ const Selection2 = ({name}) => {
             <ul className='mt-3 font-normal gap-1  flex flex-col'>
                 
                 {
-                    selection?.content?.map((content, index) =>(
+                    selection?.content?.filter(cont => cont.name == selection.name).map((content, index) =>(
                         <li onClick={(e)=>{
                             e.stopPropagation()
                             dispatch(selectOption(content))
                             dispatch(closeSelectionModal())
                         }} key={index} className={` hover:bg-purple-200 py-1 px-4 ${selection?.selected.label == content.label && 'bg-purple-200'}`}>
-                        <p className=''>{(content.name == selection.name) && content.label}</p>
+                        <p className=''>{content.label}</p>
                     </li>
                     ))
                 }
