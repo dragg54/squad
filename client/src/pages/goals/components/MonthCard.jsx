@@ -9,7 +9,7 @@ const MonthCard = ({ month, openMonthGoalsContainer, setOpenMonthGoalsContainer 
     setOpenMonthGoalsContainer(newContainerState)
   }
   return (
-    <div className='w-full  justify-between items-center font-bold text-xl border-2 h-28 p-6 flex rounded-md shadow-md shadow-gray-500'>
+    <div className='w-full cursor-pointer hover:shadow-sm justify-between items-center font-bold text-xl border-2 h-28 p-6 flex rounded-md shadow-md shadow-gray-500'>
       {month}
       {openMonthGoalsContainer.find(st => st[month]) ? <FaChevronUp
         onClick={() => toggleCardContainerModal()}

@@ -19,7 +19,7 @@ const Goal = ({ goal, setIsUpdated }) => {
                 'text-[#107869]': 'text-[#ff2511]'} text-xl`}>{userGoalCategoryConstant.find(cat => cat.categoryName == goal?.user_goal_category?.name)?.categoryIcon}</span>
                 <div className="ml-5">
                     <span className="">{goal.title}</span>
-                    <p className="text-xs">{formatDate(goal.createdAt)}</p>
+                    <p className="text-xs">{formatDate(goal.startDate)}</p>
                 </div>
             </li>
         </ul>

@@ -92,7 +92,7 @@ const clientBaseURl = process.env.NODE_ENV ==  'Development' || !process.env.NOD
                      process.env.PROD_CLIENT_NASE_URL
 const io = new Server(server, {
   cors: {
-    origin: process.env.CLIENT_BASE_URL
+    origin:clientBaseURl
   }
 })
 

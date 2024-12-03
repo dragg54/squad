@@ -15,7 +15,7 @@ const Deadline = ({ goal, setDate, date, setIsUpdated }) => {
     const handleDateChange = (newDate) => {
         const formattedDate = format(newDate, 'yyyy-MM-dd');
         setDate(formattedDate);
-        setLocalDate(formattedDate);
+        setLocalDate(formattedDate);    
     }
     return (
         <div onClick={(e) => e.stopPropagation()} className='w-[400px] shadow-md shadow-gray-400 rounded-md mx-auto bg-white flex-col p-6'>

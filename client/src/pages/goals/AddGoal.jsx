@@ -22,17 +22,20 @@ import Button from "../../components/buttons";
 const AddGoal = ({ setIsUpdated }) => {
     const dispatch = useDispatch()
     const handleErrorResponse = useHandleErrorResponse()
-    const globalModal = useSelector(state => state.globalModal)
     const [error, setError] =useState({})
-    const [input, setInput] = useState({
-        title: globalModal.content?.props?.input?.title || "",
-        description: globalModal.content?.props?.input?.description || ""
-    })
+    
+
+    //For date modal
+    const globalModal = useSelector(state => state.globalModal)
     const [date, setDate] = useState({
         startDate: (globalModal.content?.props?.newDate?.startDate) || new Date(),
         endDate: (globalModal.content?.props?.newDate?.endDate) || new Date()
     })
 
+    const [input, setInput] = useState({
+        title: globalModal.content?.props?.input?.title || "",
+        description: globalModal.content?.props?.input?.description || ""
+    })
     const inputRef = useRef(null)
 
     useEffect(()=>{

@@ -11,6 +11,7 @@ import { notificationSource, notificationType } from "../constants/NotificationC
 import { activityPoints } from "../constants/ActivityPoints.js";
 import Point from "../models/Point.js";
 import { addPoint, getUserPoints, updatePoint } from "./PointService.js";
+import { Op } from "sequelize";
 
 export const createUserGoal = async (req, transaction) => {
   const goalData = req.body
@@ -23,7 +24,6 @@ export const createUserGoal = async (req, transaction) => {
   if (goalData.goalPartners && goalData.goalPartners.length > 0) {
     goalData.goalPartners.forEach(async (partner) => {
       partner.goalId = userGoal.id
-
       const notificationRequest = {
         senderId: req.user.id,
         recipientId: partner.userId,
@@ -53,7 +53,15 @@ export const createUserGoalPartner = async (goalPartners, transaction) => {
 }
 
 export const getAllUserGoals = async (req) => {
-  const { page, size, groupBy, partnerId, userId } = req.query;
+  const {
+    page,
+    size,
+    groupBy,
+    partnerId,
+    userId,
+    categoryId,
+    month
+  } = req.query;
   const { limit, offset } = getPagination(page, size);
 
   const queryOpts = {
@@ -71,11 +79,24 @@ export const getAllUserGoals = async (req) => {
     queryOpts["userId"] = Number(userId)
   }
 
+  if(categoryId){
+      queryOpts["usergoalcategoryId"] = categoryId
+  }
+
+  if(month){
+    queryOpts["startDate"] = {
+      [Op.between]: [
+        new Date(Number(new Date().getFullYear()), month - 1, 1), 
+        new Date(Number(new Date().getFullYear()), month, 0, 23, 59, 59, 999),
+      ]
+    }
+  }
+
   if (groupBy == "month") {
     const goalsGroupedByMonth = await models.UserGoal.findAll({
       where: queryOpts,
       attributes: [
-        [db.fn('DATE_FORMAT', db.col('user_goal.createdAt'), '%m'), 'month'],
+        [db.fn('DATE_FORMAT', db.col('user_goal.startDate'), '%m'), 'month'],
         'title', 'description', 'completed'
       ],
       include: [
@@ -92,7 +113,7 @@ export const getAllUserGoals = async (req) => {
   if (groupBy === "year") {
     const goalsGroupedByYear = await models.UserGoal.findAll({
       attributes: [
-        [db.fn('DATE_FORMAT', db.col('UserGoal.createdAt'), '%Y'), 'year'],
+        [db.fn('DATE_FORMAT', db.col('UserGoal.startDate'), '%Y'), 'year'],
         'title', 'description', 'completed'
       ],
       include: [
@@ -150,7 +171,7 @@ export const updateUserGoal = async (req, res, trans) => {
   if (goalPartners && goalPartners.length > 0) {
     const partners = goalPartners.map(part => ({ userId: part.user.id }))
     await GoalPartner.destroy({ where: { goalId: id }, transaction: trans });
-    await GoalPartner.bulkCreate(partners.map(partner => ({ userId: partner.userId })), { transaction: trans });
+    await GoalPartner.bulkCreate(partners.map(partner => ({ userId: partner.userId, goalId: id})), { transaction: trans });
   }
 
   // updateGoalPoint(existingGoal, req.body, trans)

@@ -7,11 +7,12 @@ import { persistReducer, persistStore } from 'redux-persist';
 import userReducer from './reducers/UserReducer';
 import  authReducer  from './reducers/AuthReducer';
 import  notificationReducer  from './reducers/NotificationReducer';
+import selection2Reducer from './reducers/Selection2Reducer'
 
 const persistConfig = {
     key: "root",
     storage,
-    blacklist: [ 'globalModal', 'popup']
+    blacklist: [ 'globalModal', 'popup', 'selection2']
   
   }
 
@@ -21,6 +22,7 @@ export const rootReducer = combineReducers({
     user: userReducer,
     auth: authReducer,
     notification: notificationReducer,
+    selection2: selection2Reducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

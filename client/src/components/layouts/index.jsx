@@ -9,15 +9,19 @@ import Aside from './Aside'
 import NotificationContainer from '../../pages/notifications'
 import { Outlet } from 'react-router-dom'
 import CurrentUser from '../CurrentUser'
+import { useDispatch } from 'react-redux'
+import { closeSelectionModal } from '../../redux/reducers/Selection2Reducer'
 
 const Layout = () => {
   const [menuContainerOpened, setMenuContainerOpened] = useState(undefined)
   const [openNotificationContainer, setOpenNotificationContainer] = useState(false)
   const [openUserContainer, setOpenUserContainer] = useState(false)
+  const dispatch = useDispatch()
   return (
     <div className='w-full relative md:overflow-visible' onClick={()=>{
       setOpenNotificationContainer(false)
       setOpenUserContainer(false)
+      dispatch(closeSelectionModal())
     }}>
       <GlobalModal />
       <PopUp />
