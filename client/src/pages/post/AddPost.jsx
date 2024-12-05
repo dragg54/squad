@@ -71,7 +71,7 @@ const AddPost = ({ page, size }) => {
         setInputValues({ ...inputValues, [e.target.name]: e.target.value })
     }
     return (
-        <div onClick={(e) => e.stopPropagation()} className='w-5/6 -mt-10 md:w-2/6 rounded-md shadow-md shadow-gray-300 pt-6 p-5 md:h-auto h-auto bg-white mx-auto'>
+        <div onClick={(e) => e.stopPropagation()} className='w-5/6 -mt:mt-10 md:-mt-10 md:w-2/6 rounded-md shadow-md shadow-gray-300 pt-6 p-5 md:h-auto h-auto bg-white mx-auto'>
             <h1 className='w-full text-2xl font-semibold'>
                 Create Post
             </h1>

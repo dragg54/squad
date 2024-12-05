@@ -1,0 +1,142 @@
+[
+    {
+        "id": 1,
+        "categoryId": 1,
+        "itemName": "Dark Mode",
+        "description": "Provides the dark theme experience",
+        "price": 2000
+    },
+    {
+        "id": 2,
+        "categoryId": 1,
+        "itemName": "Custom Themes",
+        "description": "Unlock the ability to create and apply custom color themes",
+        "price": 15000
+    },
+    {
+        "id": 3,
+        "categoryId": 1,
+        "itemName": "Exclusive Stickers",
+        "description": "Gain access to premium stickers to use in messages or posts",
+        "price": 5000
+    },
+    {
+        "id": 4,
+        "categoryId": 1,
+        "itemName": "Profile Badge",
+        "description": "Earn a special badge to display on your profile",
+        "price": 8000
+    },
+    {
+        "id": 5,
+        "categoryId": 1,
+        "itemName": "Ad-Free Experience",
+        "description": "Remove all ads for a cleaner and faster experience",
+        "price": 20000
+    },
+    {
+        "id": 3,
+        "categoryId": 2,
+        "itemName": "Golden Trophy Icon",
+        "description": "A rare collectible trophy icon to showcase your achievements",
+        "price": 20000
+    },
+    {
+        "id": 12,
+        "categoryId": 2,
+        "itemName": "Limited Edition Badge",
+        "description": "A unique badge that only a few can own, marking special milestones",
+        "price": 15000
+    },
+    {
+        "id": 13,
+        "categoryId": 2,
+        "itemName": "Mystic Artifact",
+        "description": "An animated collectible that symbolizes wisdom and power",
+        "price": 30000
+    },
+    {
+        "id": 14,
+        "categoryId": 2,
+        "itemName": "Retro Pixel Avatar",
+        "description": "A vintage-style avatar collectible for nostalgia lovers",
+        "price": 12000
+    },
+    {
+        "id": 15,
+        "categoryId": 2,
+        "itemName": "Seasonal Collectible Frame",
+        "description": "A decorative frame for your profile, available only for a limited time",
+        "price": 18000
+    },
+    {
+        "id": 16,
+        "categoryId": 3,
+        "itemName": "Meal Ticket",
+        "description": "Redeem for a meal at a participating restaurant",
+        "price": 20000
+    },
+    {
+        "id": 17,
+        "categoryId": 3,
+        "itemName": "Movie Ticket",
+        "description": "Redeem for a movie of your choice at participating theaters",
+        "price": 15000
+    },
+    {
+        "id": 18,
+        "categoryId": 3,
+        "itemName": "Concert Ticket",
+        "description": "Access to a live concert of your favorite artist or band",
+        "price": 50000
+    },
+    {
+        "id": 19,
+        "categoryId": 3,
+        "itemName": "Amusement Park Pass",
+        "description": "Enjoy a full day at a partnered amusement park",
+        "price": 40000
+    },
+    {
+        "id": 20,
+        "categoryId": 3,
+        "itemName": "Spa Day Voucher",
+        "description": "Relax with a luxurious spa experience",
+        "price": 35000
+    },
+    {
+        "id": 26,
+        "categoryId": 4,
+        "itemName": "Finance Tracker App",
+        "description": "Track your expenses and income with advanced analytics and insights",
+        "price": 25000
+    },
+    {
+        "id": 27,
+        "categoryId": 4,
+        "itemName": "Fitness Tracker App",
+        "description": "Monitor your workouts, set goals, and analyze your fitness progress",
+        "price": 20000
+    },
+    {
+        "id": 28,
+        "categoryId": 4,
+        "itemName": "Budget Planner App",
+        "description": "Plan your monthly budget with custom categories and saving tips",
+        "price": 18000
+    },
+    {
+        "id": 29,
+        "categoryId": 4,
+        "itemName": "Notepad App",
+        "description": "Organize your thoughts and notes with premium notepad features",
+        "price": 12000
+    },
+    {
+        "id": 30,
+        "categoryId": 4,
+        "itemName": "Calendar App",
+        "description": "Stay organized with advanced scheduling and reminder functionalities",
+        "price": 15000
+    }
+]

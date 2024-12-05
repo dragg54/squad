@@ -24,6 +24,7 @@ import Donate from './pages/donation/Donate'
 import UserAvatar from './pages/register/UserAvatar'
 import Momentom from './pages/momentom'
 import NotFound from './pages/notFound'
+import Shop from './pages/shop'
 // import Notification from './pages/notifications'
 
 
@@ -66,6 +67,7 @@ function App() {
             <Route path="/invitation" element={<Invitation />} />
             <Route path="/leaderboard" element={<LeaderBoard />} />
             <Route path="/donation" element={<Donations />} />
+            <Route path="/shop" element={<Shop />} />
             <Route path="/donation/:id" element={<Donation />} />
             <Route path="/donation/create" element={<CreateDonation />} />
             <Route path="/donation/:id/donate" element={<Donate />} />

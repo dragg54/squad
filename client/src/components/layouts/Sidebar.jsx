@@ -22,7 +22,7 @@ const Sidebar = () => {
         <li className="menus"><LuGoal /><Link className="menus" to="/goals">Goals</Link></li>
         <li className="menus"><FaClipboard /><Link className="menus" to="/leaderboard">Leaderboard</Link></li>
         <li className="menus" ><MdOutlinePayment /><Link className="menus" to="/donation">Donation</Link></li>
-        <li className="menus"><BsShop />{"Tom's"} Shop</li>
+        <li className="menus"><BsShop /><Link className="menus" to="/shop">{"Tom's"} Shop</Link></li>
       </ul>
     </div>
   )

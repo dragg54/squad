@@ -25,7 +25,7 @@ const LeaderBoard = () => {
             {/* <div className="w-40 h-80 bg-purple-500">
 
         </div> */}
-            <UserBox {...{ isCurrentUser: true, userPointData: data && data.find(pointData => pointData.userId == user.id), position: data && data.findIndex(pointData => pointData.userId == user.id) + 1 }} />
+            <UserBox {...{ isCurrentUser: true, userPointData: data && data.length && data.find(pointData => pointData.userId == user.id), position: data && data.length && data.findIndex(pointData => pointData.userId == user.id) + 1 }} />
             <div className="w-full flex h-100 mt-12 md:ml-10 items-end justify-center md:justify-start">
                 <div className="flex flex-col w-60 items-center relative">
                     <Image source={data && data.length > 0 && BACKEND_SERVER_URL + "/avatars/" + data[1]?.user?.profileAvatar} style="mb-4 h-20 w-20 rounded-full bg-yellow-500" />
