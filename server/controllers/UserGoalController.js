@@ -48,6 +48,7 @@ export const updateUserGoal = async (req, res, next) => {
   const transaction = await db.transaction();
   try {
     await userGoalService.updateUserGoal(req, res, transaction);
+    transaction.commit()
     res.json("Goal updated")
   } catch (error) {
     console.log(error.message)

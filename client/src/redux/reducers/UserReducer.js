@@ -10,7 +10,8 @@ export const userSlice = createSlice({
     email: null,
     firstName: null,
     lastName: null,
-    isLoggedIn: false
+    isLoggedIn: false,
+    isAdmin: null
   },
   reducers: {
     fetchUser: (state, action) => {
@@ -22,6 +23,7 @@ export const userSlice = createSlice({
             firstName,
             lastName,
             profileAvatar,
+            isAdmin
         } = action.payload.userDetails
 
       state.id = id
@@ -31,6 +33,7 @@ export const userSlice = createSlice({
       state.firstName = firstName
       state.lastName = lastName
       state.isLoggedIn = true,
+      state.isAdmin = isAdmin
       state.profileAvatar = BACKEND_SERVER_URL+"/avatars/"+profileAvatar
     },
     clearUser: (state) =>{

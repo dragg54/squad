@@ -12,6 +12,7 @@ import { activityPoints } from "../constants/ActivityPoints.js";
 import Point from "../models/Point.js";
 import { addPoint, getUserPoints, updatePoint } from "./PointService.js";
 import { Op } from "sequelize";
+import { UserGoalCategory } from "../models/UserGoalCategory.js";
 
 export const createUserGoal = async (req, transaction) => {
   const goalData = req.body
@@ -21,8 +22,17 @@ export const createUserGoal = async (req, transaction) => {
    {
     throw new BadRequestError("Invalid start date or end date.")
   }
+  const isGroupGoal = await UserGoalCategory.findByPk(req.body.categoryId) == "Group"
+  if(isGroupGoal && !goalData.goalPartners.length){
+    throw new BadRequestError("Invalid goal: Group goals must have at least a partner")
+  }
   if (goalData.goalPartners && goalData.goalPartners.length > 0) {
+    if(isGroupGoal){
+      userGoal.groupGoal = userGoal.id
+    }
     goalData.goalPartners.forEach(async (partner) => {
+      goalData.userId = partner.userId
+      goalData.groupGoalId = userGoal.id
       partner.goalId = userGoal.id
       const notificationRequest = {
         senderId: req.user.id,
@@ -156,8 +166,9 @@ export const getUserGoalById = async (id) => {
 export const updateUserGoal = async (req, res, trans) => {
   const { id } = req.params;
   const { title, description, completed, startDate, endDate, goalPartners, userGoalCategoryId } = req.body;
-  const existingGoal = await getUserGoalById(id)
-  if (new Date(startDate) < new Date() || new Date(endDate) < new Date() || new Date(endDate) < startDate) {
+  if (new Date(startDate).getDay() < new Date().getDay()
+     || new Date(endDate).getDay < new Date().getDay() 
+    || new Date(endDate).getDay() < new Date(startDate).getDay()) {
     throw new BadRequestError("Invalid start date or end date.")
   }
   const [updated] = await models.UserGoal.update(
@@ -168,15 +179,34 @@ export const updateUserGoal = async (req, res, trans) => {
     throw new NotFoundError("Goal not found")
   }
 
+  const existingGoal = await UserGoalCategory.findByPk(req.body.userGoalCategoryId)
+  const isGroupGoal = existingGoal?.name == "Group"
+  if(isGroupGoal && !goalPartners.length){
+    throw new BadRequestError("Invalid goal: Group goals must have at least a partner")
+  }
   if (goalPartners && goalPartners.length > 0) {
     const partners = goalPartners.map(part => ({ userId: part.user.id }))
     await GoalPartner.destroy({ where: { goalId: id }, transaction: trans });
     await GoalPartner.bulkCreate(partners.map(partner => ({ userId: partner.userId, goalId: id})), { transaction: trans });
+    partners.map(async(partner)=>{
+      await UserGoal.update({ title, description, completed, startDate, endDate, userGoalCategoryId },
+        {where:{userId: partner.userId, groupGoalId: id}})
+
+        const notificationRequest = {
+          senderId: req.user.id,
+          recipientId: partner.userId,
+          squadId: req.user.squadId,
+          title: "NOTIFICATION",
+          message: `${req.user.userName} updated a group goal`,
+          type: notificationType.INFO,
+          sourceId: id,
+          sourceName: notificationSource.GOAL
+        }
+
+        await createNotification(notificationRequest)
+    })
   }
-
   // updateGoalPoint(existingGoal, req.body, trans)
-
-  await trans.commit();
 };
 
 export const deleteUserGoal = async (id) => {

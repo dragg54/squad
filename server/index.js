@@ -84,7 +84,7 @@ app.use("/api/v1/avatars", avatarRoute)
 app.use("/api/v1/donationPayments", donationPaymentRoute)
 
 server.listen(8080, ()=>{
-    console.log("Listening to port 8080")
+    console.log(`Listening to port 8080: Environment is ${process.env.NODE_ENV}`)
 })
 
 const clientBaseURl = process.env.NODE_ENV ==  'Development' || !process.env.NODE_ENV ? 

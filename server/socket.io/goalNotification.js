@@ -1,3 +1,4 @@
+import { getAllUsers } from "../services/UserService.js";
 import { users } from "./users.js";
 
 export async function sendGoalCreatedNotification(userId, squadId, io){

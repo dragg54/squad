@@ -196,6 +196,6 @@ export const getPostLikes = async (req, res) => {
 export const deletePostLikes = async (req, res) => {
     const { id } = req.params
     await PostLike.destroy({
-        where: { postId: id }
+        where: { postId: id } 
     })
 }

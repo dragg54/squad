@@ -21,6 +21,10 @@ const UserGoal = db.define('user_goal', {
       key: 'id',
     },
   },
+  groupGoalId:{
+    type: DataTypes.INTEGER,
+    allowNull: true
+  },
   title: {
     type: DataTypes.STRING,
     allowNull: false,

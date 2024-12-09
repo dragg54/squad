@@ -19,6 +19,7 @@ const Input = forwardRef(({ style,
   id,
   onClick,
   done,
+  readonly,
   onSelect
 }, ref) => {
   if (!type || type == "text"
@@ -30,6 +31,7 @@ const Input = forwardRef(({ style,
         value={value}
         name={name}
         ref={ref}
+        readOnly={readonly}
         placeholder={placeholder}
         className={`${style} w-full border ${hasError && 'border-red-500'} rounded-md text-gray-500 outline-none p-3 mt-2`} />
 
@@ -50,6 +52,7 @@ const Input = forwardRef(({ style,
     return (
       <input
         checked={checked}
+        disabled={readonly}
         name={name}
         onChange={onChange}
         value={value}
@@ -70,6 +73,7 @@ const Input = forwardRef(({ style,
         className={`w-full text-gray-500 ${hasError && 'border-red-500'} outline-none p-4 rounded-md resize-none ${style}`}
         name={name}
         placeholder={placeholder}
+        readOnly={readonly}
         value={value}
         rows={3}
         cols={3}
@@ -82,6 +86,7 @@ const Input = forwardRef(({ style,
   else if (type == "date") {
     return <DateInput 
                 id={id}
+                readOnly = {readonly}
                  onDateChange={onClick} 
                  name={name} style={style} 
                  date={value} data={data} 

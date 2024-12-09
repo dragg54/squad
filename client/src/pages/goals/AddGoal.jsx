@@ -65,9 +65,14 @@ const AddGoal = ({ setIsUpdated }) => {
         // setDate({ ...date, [Object.keys(e)[0]]: [Object.values(e)[0]] })
     }
 
-    const { data: userGoalCategories, isLoading: userGoalCategoryLoading, isError: userGoalCategoryError, refetch } = useQuery("categories", {
-        queryFn: getAllGoalCategories
-    })
+    const {
+        data: userGoalCategories,
+        isLoading: userGoalCategoryLoading,
+        isError: userGoalCategoryError,
+        refetch
+    } = useQuery(['categories', { showGroupGoal: false }],
+        getAllGoalCategories
+    )
 
     const handleChange = (e) => {
         setInput({ ...input, [e.target.name]: e.target.value })

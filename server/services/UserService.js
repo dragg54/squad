@@ -13,6 +13,7 @@ import { activityPoints } from '../constants/ActivityPoints.js';
 import { addPoint, updatePoint } from './PointService.js';
 import { getAllFiles } from '../utils/getAllFiles.js';
 import path from 'path'
+import { createUserRole } from './UserRoleService.js';
 
 export const createUser = async (req, trans) => {
     const existingSquad = await getSquadById(req.body.squadId)
@@ -37,21 +38,31 @@ export const createUser = async (req, trans) => {
     req.body.password = hashedPassword
     req.body.bio = "A man with integrity"
     const newUser = await User.create(req.body, {transaction: trans})
+
     await addPoint({userId: req.body.invitedBy, squadId: req.body.squadId, points: activityPoints.invitationPoints}, {transaction: trans})
 
+    const createUserRoleRequest = {
+        userId: newUser.id
+    }
+
+    await createUserRole(createUserRoleRequest, trans)
     // await addPoint({userId: newUser.id, squadId: req.body.squadId, points: activityPoints.registrationPoints}, {transaction: trans})
 
 };
 
 export const getAllUsers = async (req) => {
-    return await User.findAll({ attributes: ["id", "firstName", "lastName", "email", "userName", "squadId", "profileAvatar"], 
+    return await User.findAll({ attributes: ["id", "firstName", "lastName", "email", "userName", "squadId", "profileAvatar", "isAdmin"], 
         where: {squadId: req.user.squadId}
     });
 };
 
 export const getUserById = async (id) => {
     return await User.findByPk(id, {
-        attributes: ["id", "firstName", "lastName", "email", "userName", "squadId", "profileAvatar"]
+        attributes: ["id", "firstName", "lastName", "email", "userName", "squadId", "profileAvatar", "isAdmin"],
+        include:{
+            model: Point,
+            attributes: ['points']
+        },
     });
 };
 
@@ -103,6 +114,7 @@ export const loginUser = async (userData) => {
             userName: existingUser.userName,
             firstName: existingUser.firstName,
             lastName: existingUser.lastName,
+            isAdmin: existingUser.isAdmin,
             profileAvatar: existingUser.profileAvatar
         }
     }

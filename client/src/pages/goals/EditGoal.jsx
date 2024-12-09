@@ -22,6 +22,8 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
     const [buttonDisabled, setButtonDisabled] = useState(true)
     const [error, setError] = useState({})
 
+    const user = useSelector(state => state.user)
+
     //for date modal
     const globalModal = useSelector(state => state.globalModal)
     const [date, setDate] = useState({
@@ -89,11 +91,12 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
     }
     const submitForm = (e) => {
         e.preventDefault()
+       if((goal?.user_goal_category.name == "Group" && user.isAdmin) || (goal.user_goal_category.name !="Group")){
         const updatedValues = {
             ...inputValues, startDate: date.startDate, endDate: date.endDate,
             userGoalCategoryId: localSelectedCategory ? localSelectedCategory.id : selectedCategory.id
         }
-        updateGoalMutation.mutate(updatedValues)
+        updateGoalMutation.mutate(updatedValues)       }
     }
     const handlePartnerSelectChange = (pat) => {
         let filteredPartners = []
@@ -122,11 +125,11 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
         return (
             <form onSubmit={submitForm} onClick={(e) => e.stopPropagation()} className='w-[350px] md:w-[400px] mx-auto h-auto pb-8 p-3 px-5 bg-white border rounded-md -mt-12 md:mt-0 shadow-gray-300'>
                 <div className="w-full border-b border-gray-300 pb-2">
-                    <Input name='title' style='font-extrabold !-ml-3 w-full pb-2 border-none text-xl mt-3 !text-gray-700' value={inputValues.title} onChange={(e) => handleInputValueChange(e)} />
+                    <Input readonly={!user.isAdmin && goal.user_goal_category.name=="Group"}  name='title' style='font-extrabold !-ml-3 w-full pb-2 border-none text-xl mt-3 !text-gray-700' value={inputValues.title} onChange={(e) => handleInputValueChange(e)} />
                 </div>
-                <Input onChange={(e) => handleInputValueChange(e)} name='description' type="text-area" style="!h-10 !p-0 !-mt-2 !border-none text-gray-500 !outline-none" value={inputValues.description} />
+                <Input readonly={!user.isAdmin && goal.user_goal_category.name=="Group"} onChange={(e) => handleInputValueChange(e)} name='description' type="text-area" style="!h-10 !p-0 !-mt-2 !border-none text-gray-500 !outline-none" value={inputValues.description} />
                 <div className="mt-3 flex justify-between w-full">
-                    <div className="cursor-pointer w-1/2" onClick={() => dispatch(openModal({ component: <GoalCategory {...{ goal, inputValues, selectedCategory, setSelectedCategory, setIsUpdated }} /> }))}>
+                    <div className="cursor-pointer w-1/2" onClick={() =>((user.isAdmin && goal.user_goal_category.name == "Group") || goal.user_goal_category.name != "Group")  && dispatch(openModal({ component: <GoalCategory {...{ goal, inputValues, selectedCategory, setSelectedCategory, setIsUpdated }} /> }))}>
                         <p className="font-semibold cursor-pointer">Category</p>
                         <p className="text-sm mt-1 text-gray-500 inline-flex gap-1 items-center">{localSelectedCategory?.name || selectedCategory?.name} </p>
                     </div>
@@ -141,8 +144,8 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
                             style={`!text-sm !text-gray-500 ${error['startDate']?.length && '!border !border-red-500'}`}
                             id="startDate"
                             value={date?.startDate}
+                            readonly={!user.isAdmin && goal.user_goal_category.name=="Group"}
                             done={(prop) => {
-                                console.log(prop)
                                 dispatch(openModal({
                                     component: <EditGoal />,
                                     props: {
@@ -163,6 +166,7 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
                             style={`!text-sm !text-gray-500 ${error['endDate']?.length && '!border !border-red-500'}`}
                             id="endDate"
                             value={date?.endDate}
+                            readonly={!user.isAdmin && goal.user_goal_category.name=="Group"}
                             done={(prop) => {
                                 dispatch(openModal({
                                     component: <EditGoal />,
@@ -179,7 +183,9 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
                 </div>
                 <div className="mt-3">
                     <label htmlFor="" className="inline-flex items-center">
-                        <Input value={inputValues.completed} onChange={(e) => handleInputValueChange(e)} name="completed" type="checkbox" checked={inputValues.completed} className="w-6 h-6 rounded-md bg-green-500" />
+                        <Input readonly={!user.isAdmin && goal.user_goal_category.name=="Group"} value={inputValues.completed} onChange={(e) => {
+                            {((user.isAdmin && goal.user_goal_category.name == "Group") || goal.user_goal_category.name != "Group")  && handleInputValueChange(e)
+                        }}} name="completed" type="checkbox" checked={inputValues.completed} className="w-6 h-6 rounded-md bg-green-500" />
                         Completed
                     </label>
                 </div>
@@ -193,7 +199,7 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
                                     <Image isUser={true} source={BACKEND_SERVER_URL + "/avatars/" + partner?.profileAvatar} style='h-10 w-10 mr-2' />
                                     {partner.userName}</div>
                                     <div>
-                                        <input onChange={() => handlePartnerSelectChange(partner)} checked={inputValues?.goalPartners?.some(pat => pat.user.id == partner.id)} name='goalPartners' type="checkbox" className="w-6 h-6" />
+                                        {((user.isAdmin && goal.user_goal_category.name == "Group") || goal.user_goal_category.name != "Group")  && <input onChange={() => handlePartnerSelectChange(partner)} checked={inputValues?.goalPartners?.some(pat => pat.user.id == partner.id)} name='goalPartners' type="checkbox" className="w-6 h-6" />}
                                     </div>
                                 </li>
 
@@ -202,7 +208,7 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
                     </ul>
                 </div>
                 <div className="w-full mt-8">
-                    <Button type='submit' style="w-full !p-4" name='Save Changes' icon={<MdOutlineSaveAlt style={{ fontSize: "20px", font: "700px" }} />} />
+                    <Button buttonDisabled={!user.isAdmin && goal.user_goal_category.name == "Group" } type='submit' style="w-full !p-4" name='Save Changes' icon={<MdOutlineSaveAlt style={{ fontSize: "20px", font: "700px" }} />} />
                 </div>
             </form>
         )

@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 const Selection = () => {
     const globalModal = useSelector(state => state.globalModal)
     const { done, value } = globalModal.content.props
-    const [ selected, setSelected ] = useState(value[0].name)
+    const [ selected, setSelected ] = useState(value && value[0]?.name)
     return (
         <div className='bg-white w-[96%] md:w-[400px] -mt-18  h-[600px] p-6 shadow-md' onClick={(e)=> e.stopPropagation()}>
             <h1 className='text-xl font-bold w-full py-2 border-b border-gray-300 inline-flex justify-between items-center'>

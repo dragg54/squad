@@ -12,7 +12,7 @@ import { GiThreeFriends } from "react-icons/gi";
 import { GiHolySymbol } from "react-icons/gi";
 import { BiHealth } from "react-icons/bi";
 import { BsFillHousesFill } from "react-icons/bs";
-
+import { GrGroup } from "react-icons/gr";
 
 
 export const userGoalCategoryConstant = [
@@ -72,5 +72,9 @@ export const userGoalCategoryConstant = [
     {
         categoryName: "Health",
         categoryIcon: <BiHealth />
+    },
+    {
+        categoryName: "Group",
+        categoryIcon: <GrGroup />
     },
 ]

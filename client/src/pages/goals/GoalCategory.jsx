@@ -9,9 +9,9 @@ import EditGoal from "./EditGoal"
 import { useEffect, useState } from "react"
 
 const GoalCategory = ({goal, selectedCategory, setSelectedCategory, setIsUpdated}) => {
-    const { data: userGoalCategories } = useQuery("categories", {
-        queryFn: getAllGoalCategories
-    })
+    const { data: userGoalCategories } = useQuery(['categories', {showGroupGoal: false}],
+        getAllGoalCategories
+     )
     const [localSelectedCategory, setLocalSelectedCategory] = useState(selectedCategory);
     const dispatch = useDispatch()
     const handleSelectGoalCategory = (category) =>{
@@ -22,7 +22,6 @@ const GoalCategory = ({goal, selectedCategory, setSelectedCategory, setIsUpdated
         setLocalSelectedCategory(selectedCategory);
       }, [selectedCategory]);
 
-      console.log(localSelectedCategory)
     return (
         <div onClick={(e) => e.stopPropagation()} className='w-[350px] md:w-[400px] mx-auto h-[600px] p-6 py-3 -mt-3 bg-white border rounded-md shadow-gray-300'>
             <h1 className="mt-3 font-extrabold text-xl pb-2 w-full border-b border-gray-300 inline-flex justify-between items-center"><span>Goal Categories </span>

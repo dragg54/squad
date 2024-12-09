@@ -26,7 +26,7 @@ const Point = db.define('point', {
 });
 
 Point.belongsTo(User, { foreignKey: 'userId' });
-User.hasMany(Point, { foreignKey: 'userId',  onDelete: 'CASCADE', });
+User.hasOne(Point, { foreignKey: 'userId',  onDelete: 'CASCADE', });
 
 db.sync()
   .then(() => {

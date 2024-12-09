@@ -39,9 +39,9 @@ const Goals = () => {
         //   keepPreviousData: true, 
         // }
     );
-    const { data: categoryData, isLoading: categoryLoading } = useQuery({
-        queryFn: getAllGoalCategories
-    })
+    const { data: categoryData, isLoading: categoryLoading } = useQuery(['goalCategories', {showGroupGoal: true}],
+       getAllGoalCategories
+    )
     const [isUpdated, setIsUpdated] = useState(false)
     useEffect(() => {
         refetch()
