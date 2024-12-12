@@ -9,8 +9,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useMutation, useQuery } from 'react-query'
 import { closeModal } from '../../redux/reducers/GlobalModalReducer'
 import { socket } from '../../utils/Socket'
-import useDisableButton from '../../hooks/useDisabledButton'
-import Error from '../../components/Error/index'
 
 const AddPost = ({ page, size }) => {
     const [inputValues, setInputValues] = useState({
@@ -89,7 +87,6 @@ const AddPost = ({ page, size }) => {
                     type='text-area'
                     placeholder='Post' />
                 <div className='mt-2'>
-                    <Error {...{ isRequestError }} />
                 </div>
                 <div className='w-full flex justify-end'>
                     <Button

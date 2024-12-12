@@ -25,6 +25,7 @@ import { sendPostCreatedNotification, sendPostLikedNotificationToUser } from './
 import { sendGoalCreatedNotification } from './socket.io/goalNotification.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { scheduleJob } from './services/scheduler/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -82,6 +83,9 @@ app.use("/api/v1/donations", donationRoute)
 app.use("/api/v1/payments", paymentRoute)
 app.use("/api/v1/avatars", avatarRoute)
 app.use("/api/v1/donationPayments", donationPaymentRoute)
+
+//schedule job
+scheduleJob()
 
 server.listen(8080, ()=>{
     console.log(`Listening to port 8080: Environment is ${process.env.NODE_ENV}`)

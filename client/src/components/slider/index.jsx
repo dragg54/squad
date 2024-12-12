@@ -38,14 +38,14 @@ const UserAvatar = ({
             onSlideChange={handleSlideChange}
             pagination={shouldPaginate && { clickable: false }}
             className="mySwiper"
-            style={{ width: width || '400px', height, display: 'flex', alignItems: 'center'}}
+            style={{ width: width || '400px', height: height || '350px', display: 'flex', alignItems: 'center'}}
         >
             {imgs?.map((image, index) => (
                 <SwiperSlide key={index} style={{ visibility: activeIndex === index ? 'visible' : 'hidden', height: 'full' }}>
                     {isImage ? <img
                         src={image}
                         alt={`Slide ${index + 1}`}
-                        style={{ width: '300px', height: '300px', }}
+                        style={{ width: '300px', height: '300px'}}
                     /> : <div className='h-full flex items-center justify-center'>
                         {image}
                     </div>}

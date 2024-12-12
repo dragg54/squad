@@ -10,6 +10,7 @@ import { getPosts } from "../../services/post"
 import Pagination from "../../components/Pagination"
 import PostCard from "../../components/post/PostCard"
 import LoadingSpinner from "../../components/LoadingSpinner"
+import ResponseError from "../../components/ResponseError"
 
 // eslint-disable-next-line react/prop-types
 const Forum = ({ newPosts }) => {
@@ -17,7 +18,7 @@ const Forum = ({ newPosts }) => {
   const [groupBy, setGroupBy] = useState("")
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(5);
-  const { data, isLoading } = useQuery(
+  const { data, isError, refetch, isLoading } = useQuery(
     ['posts', { page, size, groupBy }],
     getPosts,
     // {
@@ -26,7 +27,11 @@ const Forum = ({ newPosts }) => {
   );
   if(isLoading){
     return <LoadingSpinner {...{isLoading}}/>
-}  return (
+} 
+if(isError){
+  dispatch(openModal({component: <ResponseError refetch={refetch}/>}))
+}
+return (
     <section className="w-full overflow-x-visible h-screen overflow-y-scroll p-4 md:p-8 pb-40 md:pb-48 md:ml-[20rem]">
       <div className="flex w-full md:w-[50%] justify-between items-center mb-8">
         <div className="">

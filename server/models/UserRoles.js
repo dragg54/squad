@@ -7,6 +7,7 @@ const UserRole = db.define('user_role', {
   userId: {
     type: DataTypes.INTEGER,
     allowNull: false,
+    defaultValue: 0,
     references: {
       model: User,
       key: 'id',
@@ -19,6 +20,7 @@ const UserRole = db.define('user_role', {
       model: Role,
       key: 'id',
     },
+    defaultValue: 1
   }
 });
 

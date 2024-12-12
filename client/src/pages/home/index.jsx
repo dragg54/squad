@@ -1,6 +1,6 @@
 import ProgressChart from "./components/ProgressChart"
 import QuoteBox from "./components/QuoteBox"
-import Goal from "./Goal"
+import NewGoal from "./NewGoal"
 import News from "./News"
 import Quotes from "./Quotes"
 
@@ -10,7 +10,7 @@ const Home = () => {
       <div className="w-full md:w-2/5 mx-auto p-4">
         <QuoteBox />
         <ProgressChart />
-        <Goal />
+        <NewGoal />
         <div className="mt-4">
           <img src="../../images/planning.png" alt="" />
         </div>

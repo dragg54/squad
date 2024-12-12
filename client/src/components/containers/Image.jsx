@@ -11,7 +11,7 @@ const Image = ({ source, style, isUser, userId }) => {
         e.stopPropagation()
         navigate(`/member/${userId}`)
       }
-    }} className={`rounded-full ${isUser && 'cursor-pointer'} flex justify-center ${!source && isUser && 'bg-gray-200'} items-center text-gray-300 text-sm overflow-hidden border border-gray-300 object-contain ${style}`}>
+    }} className={`${isUser && 'cursor-pointer rounded-full'} flex justify-center ${!source && isUser && 'bg-gray-200'} items-center text-gray-300 text-sm overflow-hidden border border-gray-300 object-contain ${style}`}>
       {(isUser && (!source?.split('/avatars/')[1] || !source?.split('/avatars/')[1] == undefined)) ? <FaUser className="w-full h-full mt-3" /> :
         (isUser && !source?.split('/avatars/')[1]) ? <FaRegImage className="w-full h-full mt-3" /> : <img className='full' src={source} alt='Img' />}
     </div>

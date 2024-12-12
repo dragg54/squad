@@ -22,7 +22,7 @@ const Button = ({
       type={type || 'button'}
       disabled={(response == true && isApiRequestButton) || buttonDisabled == false ? false : false}
       onClick={onClick}
-      className={`${style} ${buttonDisabled  ? 'bg-[#b19ff9]' : 'bg-[#9619b2]'}
+      className={`${style} ${buttonDisabled  ? '!bg-[#b19ff9] !cursor-default' : 'bg-[#9619b2] hover:bg-purple-400'}
       px-5 rounded-lg items-center py-2 flex justify-center text-sm gap-3 overflow-hidden font-semibold text-white`}>
       {(response && isApiRequestButton) ? name : !response && isApiRequestButton ? requestProcessingName : name} {icon}
     </button>

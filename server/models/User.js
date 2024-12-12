@@ -2,6 +2,11 @@ import { DataTypes } from 'sequelize';
 import db from '../configs/db.js'
 
 const User = db.define('user', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true, // Ensures ID is auto-generated
+  },
   firstName: {
     type: DataTypes.STRING,
   },
@@ -13,6 +18,13 @@ const User = db.define('user', {
   },
   userName: {
     type: DataTypes.STRING,
+  },
+  isFirst:{
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  },
+  birthday:{
+    type: DataTypes.STRING
   },
   bio:{
     type: DataTypes.STRING,

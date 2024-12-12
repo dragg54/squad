@@ -14,6 +14,7 @@ import { addPoint, updatePoint } from './PointService.js';
 import { getAllFiles } from '../utils/getAllFiles.js';
 import path from 'path'
 import { createUserRole } from './UserRoleService.js';
+import { request } from 'http';
 
 export const createUser = async (req, trans) => {
     const existingSquad = await getSquadById(req.body.squadId)
@@ -35,30 +36,32 @@ export const createUser = async (req, trans) => {
     }
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
+    request.body.isFirst = true
     req.body.password = hashedPassword
-    req.body.bio = "A man with integrity"
     const newUser = await User.create(req.body, {transaction: trans})
 
-    await addPoint({userId: req.body.invitedBy, squadId: req.body.squadId, points: activityPoints.invitationPoints}, {transaction: trans})
-
+    await addPoint({userId: Number(req.body.invitedBy), 
+        squadId: req.body.squadId, points: activityPoints.invitationPoints}, {transaction: trans})
     const createUserRoleRequest = {
         userId: newUser.id
     }
 
     await createUserRole(createUserRoleRequest, trans)
-    // await addPoint({userId: newUser.id, squadId: req.body.squadId, points: activityPoints.registrationPoints}, {transaction: trans})
-
 };
 
 export const getAllUsers = async (req) => {
-    return await User.findAll({ attributes: ["id", "firstName", "lastName", "email", "userName", "squadId", "profileAvatar", "isAdmin"], 
-        where: {squadId: req.user.squadId}
+    const { limit, order } = req.query
+    return await User.findAll({ attributes: ["id", "firstName", "lastName", "email",
+        "userName", "squadId", "profileAvatar", "isAdmin", "bio", "birthday"],
+        where: {squadId: req.user.squadId},
+        order: [['createdAt', order || 'DESC']],
+        limit: limit && +limit
     });
 };
 
 export const getUserById = async (id) => {
     return await User.findByPk(id, {
-        attributes: ["id", "firstName", "lastName", "email", "userName", "squadId", "profileAvatar", "isAdmin"],
+        attributes: ["id", "firstName", "lastName", "email", "userName", "squadId", "profileAvatar", "isAdmin", "bio", "birthday"],
         include:{
             model: Point,
             attributes: ['points']
@@ -87,7 +90,7 @@ export const deleteUser = async (id) => {
     return false;
 };
 
-export const loginUser = async (userData) => {
+export const loginUser = async (userData, trans) => {
     const existingUser = await User.findOne({
         where: {
             email: userData.email
@@ -100,6 +103,15 @@ export const loginUser = async (userData) => {
     )
     if (!existingUser) {
         throw new NotFoundError(`User does not exist`)
+    }
+    if (existingUser.isFirst) {
+        const addPointRequest = {
+            userId: Number(existingUser.id),
+            squadId: existingUser.squadId,
+            points: activityPoints.registrationPoints
+        }
+        await addPoint(addPointRequest, { transaction: trans })
+        await User.update({isFirst: false},{where: {id: existingUser.id}, transaction: trans})
     }
     const isPasswordValid = await bcrypt.compare(userData.password, existingUser.password);
     if (!isPasswordValid) {

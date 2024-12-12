@@ -25,6 +25,7 @@ import UserAvatar from './pages/register/UserAvatar'
 import Momentom from './pages/momentom'
 import NotFound from './pages/notFound'
 import Shop from './pages/shop'
+import Bio from './pages/register/Bio'
 // import Notification from './pages/notifications'
 
 
@@ -75,6 +76,7 @@ function App() {
         </Route>
 
         <Route path="/intro" element={<Intro />} />
+        <Route path="/register/bio" element={<Bio />}/>
         <Route path="/register/userAvatar" element={<UserAvatar />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

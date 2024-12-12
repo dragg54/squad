@@ -7,7 +7,7 @@ import { getUserById } from "../../services/user"
 import { useState } from "react"
 import { getPosts } from "../../services/post"
 import { getUserGoals } from "../../services/goal"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import Goal from "../goals/components/Goal"
 import Pagination from "../../components/Pagination"
 import { BACKEND_SERVER_URL } from "../../Appconfig"
@@ -16,6 +16,9 @@ import { BiSolidCoinStack } from "react-icons/bi";
 import Button from "../../components/buttons"
 import { CgGift } from "react-icons/cg"
 import BackButton from '../../components/buttons/BackButton'
+import { LuCalendarDays } from "react-icons/lu";
+import ResponseError from "../../components/ResponseError"
+import { openModal } from "../../redux/reducers/GlobalModalReducer"
 
 const Member = () => {
   const { id } = useParams()
@@ -28,7 +31,7 @@ const Member = () => {
   const user = useSelector(state => state.user)
 
   const [currentTab, setCurrentTab] = useState(1)
-  const { data: member, isLoading: memberIsLoading } = useQuery(['member', id], () => getUserById(id))
+  const { data: member, isLoading: memberIsLoading, refetch:memberRefetch, isError:memberIsError } = useQuery(['member', id], () => getUserById(id))
   const { data: userGoals, isLoading: userGoalsIsLoading, isError: userGoalsIsError, refetch } = useQuery(
     ['memberGoals', { page: goalPage, size: goalSize, groupBy, partnerId: user.id, userId: id }],
     getUserGoals,
@@ -44,10 +47,16 @@ const Member = () => {
       keepPreviousData: false,
     }
   );
+  const dispatch = useDispatch()
   if (memberIsLoading) {
-    return <LoadingSpinner isLoading={true} />
+    return <LoadingSpinner isLoading={memberIsLoading} />
   }
-  if (postIsLoading) return <>Post Loading ...</>
+  if(memberIsError){
+    dispatch(openModal({component: <ResponseError refetch={refetch}/>}))
+  }
+  if(userGoalsIsError){
+    dispatch(openModal({component: <ResponseError refetch={refetch}/>}))
+  }
   return (
     <section className="w-full overflow-x-visible h-screen overflow-y-scroll p-4 md:p-8 pb-40 md:pb-48 md:ml-[20rem]">
       <div className="my-3">
@@ -61,7 +70,8 @@ const Member = () => {
             <Image isUser={true} userId={member.id} source={BACKEND_SERVER_URL + "/avatars/" + member.profileAvatar} style={'h-24 w-24 z-10 bg-white'} />
             <p className="mt-3 font-semibold">{member.firstName} {member.LastName}</p>
             <p className="mt-1 text-sm">@{member.userName}</p>
-            <p className="text-gray-500 mt-1 md:text-base text-sm">A fun guy who loves to make people around me happy</p>
+            <p className="text-gray-500 mt-1 md:text-base text-sm">{member.bio}</p>
+            <p className=" mt-1 md:text-base text-sm flex gap-1 items-center text-gray-700"><LuCalendarDays /> Birthday {member.birthday}</p>
             <p className="mt-3 font-bold md:text-xl text-base inline-flex items-center"><BiSolidCoinStack /> {member?.point?.points || 0} GP</p>
           </div>
           <div>

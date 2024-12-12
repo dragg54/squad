@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-useless-catch */
 import { BACKEND_SERVER_URL, BACKEND_SERVER_VERSION } from "../Appconfig"
 import AuthConnect from './index.js';
@@ -23,9 +24,15 @@ export const createUser = async (formData) =>{
     }
   }
 
-  export const getAllUsers = async () =>{
+  export const getAllUsers = async ({queryKey}=null) =>{
+      const [_key, {limit, order}] = queryKey
     try{
-        const response = await axiosInstance.get(`${BACKEND_SERVER_URL}/${BACKEND_SERVER_VERSION}/users`)
+        const response = await axiosInstance.get(`${BACKEND_SERVER_URL}/${BACKEND_SERVER_VERSION}/users`, {
+          params:{
+            limit,
+            order
+          }
+        })
         return response.data
     }
     catch(error){

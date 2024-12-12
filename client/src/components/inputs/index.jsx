@@ -13,6 +13,7 @@ const Input = forwardRef(({ style,
   isSelected,
   type,
   onChange,
+  inputMode,
   checked,
   value,
   data,
@@ -26,10 +27,12 @@ const Input = forwardRef(({ style,
     || type == "password"
   ) {
     return (
-      <input onChange={onChange || function () { return null }}
+      <input onChange={onChange || null}
         type={type || 'text'}
         value={value}
         name={name}
+        maxLength={maxLength}
+        inputMode={inputMode}
         ref={ref}
         readOnly={readonly}
         placeholder={placeholder}

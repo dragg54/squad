@@ -15,7 +15,6 @@ function validateInput(validationRules, inputValues){
     if (validationRules) {
         const dateValidationRules = validationRules.dateValidation
         const textValidationRules = validationRules.textValidation
-        console.log(textValidationRules)
         if (dateValidationRules !== undefined) {
             const isDateValid = Object.keys(dateValidationRules).every(
                 field => dateValidationRules[field]?.isValid

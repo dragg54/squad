@@ -8,7 +8,8 @@ export const updatePoint = async(req, trans) =>{
  }
 
 export const getUserPoints = async(id) =>{
-    return await Point.findByPk(id)
+    const point = await Point.findOne({where:{userId: id}})
+    return point
 }
 
 export const getPoints = async(req) =>{
@@ -22,6 +23,14 @@ export const getPoints = async(req) =>{
 }
 
 export const addPoint = async(req, trans) =>{
+    let existingPoint = null;
+    if(req && req.userId){
+       existingPoint = await getUserPoints(req.userId)
+    }
+    if(!existingPoint){
+        await Point.create(req)
+        return
+    }
     await Point.increment('points', {
         by: req.points, 
         where: {

@@ -16,6 +16,8 @@ import { RiArrowDropDownLine } from "react-icons/ri";
 import Selection2 from "../../components/inputs/Selection2"
 import { openSelectionModal } from "../../redux/reducers/Selection2Reducer"
 import { getAllGoalCategories } from "../../services/goalCategory"
+import Image from "../../components/containers/Image"
+import ResponseError from "../../components/ResponseError"
 
 const Goals = () => {
     const [presentTab, setPresentTab] = useState("allGoals")
@@ -57,7 +59,9 @@ const Goals = () => {
     if (isLoading) {
         return <LoaidingSpinner {...{ isLoading }} />
     }
-    if (isError) console.log("error")
+    if (isError){
+        dispatch(openModal({component: <ResponseError refetch={refetch}/>}))
+    }
     if (categoryLoading) {
         console.log("Loading")
     }
@@ -130,11 +134,19 @@ const Goals = () => {
                     {presentTab == "monthlyGoals" ? <MonthlyGoals {...{ allMonths, openMonthGoalsContainer, setOpenMonthGoalsContainer, data, presentTab }} /> :
                         <div>
                             <div className="w-full">
-                                <ul className="w-full mt-2">
-                                    {data && data.data?.length > 0 && data.data.map(goal => (
-                                        <Goal key={goal.id} {...{ goal, setIsUpdated }} />
-                                    ))}
-                                </ul>
+                                {
+                                     (!data || !data.data  || !data.data.length) && page == 1 ? 
+                                     <div className="w-full flex flex-col items-center justify-center">
+                                        <p className="font-semibold text-3xl text-gray-400 mt-10 mb-4">No goal yet</p>
+                                    <Image source={'/images/Empty.jpg'} style={'!border-none !h-[250px] !w-[250px]'}/>
+                                     </div>:
+                                     <ul className="w-full mt-2">
+                                     {data && data.data?.length > 0 && data.data.map(goal => (
+                                         <Goal key={goal.id} {...{ goal, setIsUpdated }} />
+                                     ))}
+                                 </ul>
+                                }
+                               
                             </div>
                             <Pagination
                                 currentPage={page}

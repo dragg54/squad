@@ -4,12 +4,23 @@ import ProfileCard from "./components/ProfileCard"
 import { useQuery } from "react-query"
 import { getAllUsers } from "../../services/user"
 import LoadingSpinner from "../../components/LoadingSpinner"
+import ResponseError from "../../components/ResponseError"
+import { useDispatch } from "react-redux"
+import { openModal } from "../../redux/reducers/GlobalModalReducer"
 
 const Squad = () => {
-    const { data: users, isLoading } = useQuery('members', {
-        queryFn: getAllUsers
+    const { data: users, isError, refetch, isLoading } = useQuery(['squadMembers', {limit: null, order: 'ASC'}], 
+        getAllUsers,
+    {
+        keepPreviousData: true
     })
-    isLoading && <LoadingSpinner {...{isLoading}}/>
+    const dispatch = useDispatch()
+   if(isLoading){
+    return <LoadingSpinner isLoading={isLoading}/>
+   }
+    if(isError){
+        dispatch(openModal({component: <ResponseError refetch={refetch}/>}))
+    }
     return (
         <section className="w-full overflow-x-visible h-screen overflow-y-scroll p-4 md:p-8 pb-40 md:pb-48 md:ml-[20rem]">  
             <div className="md:w-[50%] pb-28">

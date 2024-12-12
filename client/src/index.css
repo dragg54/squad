@@ -70,5 +70,5 @@
 }
 
 .error{
-  @apply text-xs text-gray-600
+  @apply text-xs text-gray-600 text-red-600
 }

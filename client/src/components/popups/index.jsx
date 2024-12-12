@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react-hooks/exhaustive-deps */
 
 import { useDispatch, useSelector } from "react-redux";
@@ -8,7 +9,7 @@ import { responseStatus } from "../../constants/ResponseStatus";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 
-const PopUp = ({ autoCloseDuration = 3000 }) => {
+const PopUp = ({ autoCloseDuration = 3000, style }) => {
   const popup = useSelector(state => state.popup);
   const dispatch = useDispatch();
 
@@ -25,7 +26,7 @@ const PopUp = ({ autoCloseDuration = 3000 }) => {
   if (!popup.isOpen) return null;
 
   return (
-    <div className="p-2 z-50 fixed bg-white text-sm border border-gray-200 right-2 shadow shadow-gray-300 mt-1">
+    <div  className={`${style} p-2 z-50 fixed bg-white text-sm border border-gray-200 right-2 shadow shadow-gray-300 mt-1`}>
       <p className={popup?.content?.status === responseStatus.error ? 'text-red-500 inline-flex gap-8 items-center' : ''}>
         {popup?.content?.message}
         {popup?.content?.status == responseStatus.success && <FontAwesomeIcon icon={faCircleCheck} style={{color: "green", fontSize: "17px", marginLeft:"5px", marginTop:"2px"}}/>}
