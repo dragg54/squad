@@ -13,12 +13,13 @@ import Point from "../models/Point.js";
 import { addPoint, getUserPoints, updatePoint } from "./PointService.js";
 import { Op } from "sequelize";
 import { UserGoalCategory } from "../models/UserGoalCategory.js";
+import { isPast } from "../utils/date.js";
 
 export const createUserGoal = async (req, transaction) => {
   const goalData = req.body
   const userGoal = await models.UserGoal.create(goalData, { transaction });
-  if ((new Date(userGoal.startDate).getDay() < new Date().getDay())
-    || (new Date(userGoal.endDate).getDay() < new Date().getDay()) || (new Date(userGoal.endDate).getDay() < new Date(userGoal.startDate).getDay))
+  if (isPast(null,userGoal.startDate)
+    || isPast(userGoal.startDate, userGoal.endDate) || isPast(userGoal.startDate, userGoal.endDate))
    {
     throw new BadRequestError("Invalid start date or end date.")
   }

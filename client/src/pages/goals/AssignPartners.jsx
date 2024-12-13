@@ -15,7 +15,7 @@ const AssignPartners = ({ goalInputs }) => {
     const dispatch = useDispatch()
     const user = useSelector(state => state.user)
     const [selectedItems, setSelectedItems] = useState([])
-    const { data: userData, error, isLoading: usersIsLoading, isError: usersIsError } = useQuery(['users'], getAllUsers);
+    const { data: userData, error, isLoading: usersIsLoading, isError: usersIsError } = useQuery(['users', {}], getAllUsers);
     const queryClient = useQueryClient()
     const createUserGoalMutation = useMutation(createUserGoal, {
         onSuccess: () => {

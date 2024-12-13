@@ -57,5 +57,4 @@ export const isPast = (startDate = new Date(), endDate) => {
   else {
    return true
   }
-
 }
