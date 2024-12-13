@@ -36,6 +36,10 @@ const UserGoal = db.define('user_goal', {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
   },
+  isExpired:{
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  },
   startDate: {
     type: DataTypes.DATE
   },

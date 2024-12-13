@@ -25,7 +25,7 @@ import { sendPostCreatedNotification, sendPostLikedNotificationToUser } from './
 import { sendGoalCreatedNotification } from './socket.io/goalNotification.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { scheduleJob } from './services/scheduler/index.js';
+import { scheduleJob } from './services/schedulers/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

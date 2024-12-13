@@ -16,7 +16,7 @@ import { closeModal, openModal } from "../../redux/reducers/GlobalModalReducer";
 import { getAllGoalCategories } from "../../services/goalCategory";
 import DateInput from "../../components/inputs/DateInput";
 import { validateForm } from "../../utils/ValidateInput";
-import { formatDate2 } from "../../utils/DateFormatter";
+import { formatDate2, isPast } from "../../utils/DateFormatter";
 import Button from "../../components/buttons";
 
 const AddGoal = ({ setIsUpdated }) => {
@@ -44,19 +44,19 @@ const AddGoal = ({ setIsUpdated }) => {
       //button variables
       const [buttonDisabled, setButtonDisabled] = useState(true)
       const [response, setResponse] = useState(true)
-
     const validationRules = {
         textValidation: {
             description: value => value.length > 0,
             title: value => value.length > 0,
         },
         dateValidation: {
-            startDate: { isValid: (new Date().getDay() <= new Date(date.startDate).getDay()), message: "Invalid start date" },
+            startDate: { 
+                isValid: !isPast(null, date.startDate), 
+                message: "Invalid start date" },
             endDate: {
-                isValid: ((new Date().getDay() <= new Date(date.endDate).getDay()
-                    && (new Date(date.startDate).getDay() <= new Date(date.endDate).getDay()))),
+                isValid: !isPast(null, date.endDate) && !isPast(null, date.endDate),
                 message: "Invalid end date"
-            },
+            }, 
         }
     };
   
