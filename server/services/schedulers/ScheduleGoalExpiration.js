@@ -25,10 +25,11 @@ export async function scheduleGoalExpiration(io) {
                 endDate: {
                     [Op.lte]: formattedNow,
                 },
-                completed: false
+                completed: false,
+                isExpired: false
             }
         });
-        
+
         if (expiredGoals && expiredGoals.length) {
             await addPoint()
             await Promise.all(expiredGoals?.map(async (userGoal) => {
