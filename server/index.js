@@ -84,22 +84,23 @@ app.use("/api/v1/payments", paymentRoute)
 app.use("/api/v1/avatars", avatarRoute)
 app.use("/api/v1/donationPayments", donationPaymentRoute)
 
-//schedule job
-scheduleJob()
-
-server.listen(8080, ()=>{
-    console.log(`Listening to port 8080: Environment is ${process.env.NODE_ENV}`)
-})
-
 const clientBaseURl = process.env.NODE_ENV ==  'Development' || !process.env.NODE_ENV ? 
                     process.env.LOCAL_CLIENT_BASE_URL :
                      process.env.PROD_CLIENT_NASE_URL
+
+
 const io = new Server(server, {
   cors: {
     origin:clientBaseURl
   }
 })
 
+//schedule job
+scheduleJob(io)
+
+server.listen(8080, ()=>{
+    console.log(`Listening to port 8080: Environment is ${process.env.NODE_ENV}`)
+})
 
 io.on('connection', (socket) => {
   socket.on('register', (userId) => {

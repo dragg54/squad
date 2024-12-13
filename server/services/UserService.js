@@ -50,12 +50,25 @@ export const createUser = async (req, trans) => {
 };
 
 export const getAllUsers = async (req) => {
-    const { limit, order } = req.query
+    const queryOpts = {
+        where: {squadId: req.user.squadId},
+        order: [['createdAt', 'DESC']],
+    }
+    if(req.query){
+        const { limit, order } = req.query
+        if(limit){
+            queryOpts['limit'] = limit
+        }
+        if(order){
+            queryOpts['order']=[['createdAt', 'DESC']]
+        }
+    }
     return await User.findAll({ attributes: ["id", "firstName", "lastName", "email",
         "userName", "squadId", "profileAvatar", "isAdmin", "bio", "birthday"],
-        where: {squadId: req.user.squadId},
-        order: [['createdAt', order || 'DESC']],
-        limit: limit && +limit
+        ...queryOpts
+        // where: {squadId: req.user.squadId},
+        // order: [['createdAt', order || 'DESC']],
+        // limit: limit && +limit
     });
 };
 
