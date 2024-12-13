@@ -41,7 +41,7 @@ const Post = () => {
             <BackButton />
             <div className='w-full md:w-[50%] flex flex-col items-center gap-2'>
                 <PostContainer {...{ data, isParent: true }} />
-                <CommentField {...{ post: data, commentState, showCommentField, setShowCommentField, parentId: 58}} />
+                <CommentField {...{ post: data, commentState, showCommentField, setShowCommentField, parentId: id}} />
                 {
                     <Comment comments={comments}/>
                 }
