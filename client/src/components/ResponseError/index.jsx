@@ -10,7 +10,7 @@ const ResponseError = ({message, refetch}) => {
   const dispatch = useDispatch()
   const errorMessage = "Sorry, your request couldn't be complete."
   return (
-    <div className={`w-[300px] shadow-sm shadow-gray-300  h-[230px] border-gray-300 flex flex-col items-center justify-center border bg-white p-3 text-sm rounded-sm `}>
+    <div className={`w-[300px] md:mt-0 mt-14  shadow-sm shadow-gray-300  h-[230px] border-gray-300 flex flex-col items-center justify-center border bg-white p-3 text-sm rounded-sm `}>
       <BiSolidError className="text-red-500 text-3xl mb-3"/>
       <p className="font-sembold text-xl mb-2">Something went wrong</p>
       <p className="text-gray-400">{message || errorMessage}</p>
