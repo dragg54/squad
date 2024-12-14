@@ -3,11 +3,17 @@ import { FaUser } from "react-icons/fa";
 import { FaRegImage } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
-const Image = ({ source, style, isUser, userId }) => {
+const Image = ({
+  source,
+  style,
+  isUser,
+  hasNavigated,
+  userId
+}) => {
   const navigate = useNavigate()
   return (
     <div onClick={(e) => {
-      if (isUser) {
+      if (isUser && !hasNavigated) {
         e.stopPropagation()
         navigate(`/member/${userId}`)
       }
