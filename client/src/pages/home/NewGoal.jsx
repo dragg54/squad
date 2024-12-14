@@ -29,7 +29,7 @@ const NewGoal = () => {
             </div>
              <div className="w-full">
                 {
-                  dataIsLoading ? <LoadingSpinner/>:
+                  dataIsLoading ? <LoadingSpinner isLoading={dataIsLoading} style={'!h-20 !mb-4'}/>:
                   <ul className="w-full">
                   {
                     goalData && goalData.data && goalData.data.map((goal)=>(

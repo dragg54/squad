@@ -30,7 +30,7 @@ const Aside = () => {
         <div className='hidden md:flex right-1 -z-50 absolute flex-col w-[300px]  h-screen shadow-l shadow-md shadow-gray-400 justify-start p-8 px-5'>
             <div>
                 <h1 className="font-bold text-xl w-full p-2 shadow-sm rounded-sm !text-gray-400">Latest Members</h1>
-                {isLoading ? <LoadingSpinner /> :
+                {isLoading ? <LoadingSpinner style={'!h-40 !mb-4'} isLoading={isLoading}/> :
                 <ul className="mt-4 text-sm">
                    {
                     members && members.map((user)=>(
@@ -46,7 +46,7 @@ const Aside = () => {
             <div className="text-sm flex-col gap-3">
                 <h1 className="font-bold text-xl w-full  shadow-sm rounded-sm pb-2 text-[#189ab4]">Trending Posts</h1>
                 {
-                    postIsLoading ? <LoadingSpinner /> : <ul className="mt-4 flex flex-col gap-2">
+                    postIsLoading ? <LoadingSpinner style={'!h-40'} isLoading={postIsLoading}/> : <ul className="mt-4 flex flex-col gap-2">
                     {
                         latestPosts && latestPosts.data && latestPosts.data.map((post)=>(
                             <li className="flex items-start justify-center flex-col" key={post.id}>

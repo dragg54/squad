@@ -23,8 +23,13 @@ export const selection2Slice = createSlice({
       state.content = [];
     },
     selectOption: (state, action) =>{
-      if(!state.selected.some(selected => action.payload.name == selected.name))
+      if(!state.selected.some(selected => action.payload.name == selected.name)){
       state.selected.push(action.payload)
+      }
+      else{
+        const currentSelectedState = state.selected.filter(st => st.name != action.payload.name)
+        state.selected= [...currentSelectedState, action.payload]
+      }
     }
   },
 });

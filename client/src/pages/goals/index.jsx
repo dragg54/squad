@@ -89,7 +89,7 @@ const Goals = () => {
                             })),
                             name: 'category'
                         }))
-                    }} className="mt-6 cursor-pointer flex justify-center text-sm py-1 items-center gap-1 px-2 bg-gray-100 w-[100px] relative">
+                    }} className="mt-6 cursor-pointer flex justify-center text-sm py-1 items-center gap-1 px-2 bg-gray-100 w-auto relative">
                         <p>{selection.selected.find(sel => sel.name == "category")?.label || "Category"}</p>
                         <p><RiArrowDropDownLine className="text-xl" /></p>
                         <Selection2 name={selectionName} />
@@ -106,7 +106,7 @@ const Goals = () => {
                             name: 'month'
                         }))
                     }}
-                        className="mt-6 cursor-pointer flex justify-center text-sm py-1 items-center gap-1 px-2 bg-gray-100 w-[100px] relative">
+                        className="mt-6 cursor-pointer flex justify-center text-sm py-1 items-center gap-1 px-2 bg-gray-100 w-auto relative">
                         <p>{selection.selected.find(sel => sel.name == "month")?.label || "Month"}</p>
                         <p><RiArrowDropDownLine className="text-xl" /></p>
 
