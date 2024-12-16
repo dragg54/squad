@@ -2,6 +2,7 @@ import Input from '../../components/inputs/index'
 import Button from '../../components/buttons'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useState } from 'react'
+import Logo from '../../components/logo'
 
 
 const Register = () => {
@@ -63,8 +64,10 @@ const Register = () => {
     return (
         <section className='flex items-center flex-col md:mt-10 mt-10'>
             <div className="w-full p-6 md:w-1/3 flex items-center flex-col">
-                <p className='text-5xl mb-2 font-bold text-purple-800 font-sourGummy'>MomenTom</p>
-                <h1 className="font-semibold text-2xl mt-5 md:text-4xl">Register</h1>
+            <div className='flex gap-1'>
+            <div className='w-12 h-12'><Logo /></div>
+            <p className='text-5xl mb-2 font-bold text-purple-800 font-sourGummy'>MomenTom</p>
+            </div>                <h1 className="font-semibold text-2xl mt-5 md:text-4xl">Register</h1>
                 <p className="text-gray-500 text-sm md:text-xl">Create an account</p>
                 <form onSubmit={handleSubmit} action="" className="mt-5">
                     <Input value={input.firstName} onChange={handleChange} name='firstName' placeholder='First Name' style='' />

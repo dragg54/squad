@@ -12,6 +12,7 @@ import { CiMail } from "react-icons/ci";
 import { CiLock } from "react-icons/ci";
 import { capitalizeFirstChar } from '../../utils/CapitalizeFirstChar'
 import PopUp from '../../components/popups'
+import Logo from '../../components/logo'
 
 const Login = () => {
     const navigate = useNavigate()
@@ -73,7 +74,10 @@ const Login = () => {
         <section className='md:flex items-center md:flex-col md:mt-32 mt-28 relative'>
             <PopUp style={'!top-1'}/>
             <div className="w-full flex flex-col items-center p-6 relative md:w-1/3  h-screen ">
-                <p className='text-5xl mb-2 font-bold text-purple-800 font-sourGummy'>MomenTom</p>
+            <div className='flex gap-1'>
+            <div className='w-12 h-12'><Logo /></div>
+            <p className='text-5xl mb-2 font-bold text-purple-800 font-sourGummy'>MomenTom</p>
+            </div>
                 <h1 className="font-semibold text-4xl mt-5 md:text-4xl">Login</h1>
                 <p className="text-gray-500 text-sm md:text-xl">Sign in to your account</p>
                 <form onSubmit={handleSubmit} action="" className="mt-5  mx-center w-full h-3/5 relative flex md:items-start flex-col items-center">
