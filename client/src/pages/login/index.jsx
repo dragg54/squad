@@ -74,8 +74,8 @@ const Login = () => {
         <section className='md:flex items-center md:flex-col md:mt-32 mt-28 relative'>
             <PopUp style={'!top-1'}/>
             <div className="w-full flex flex-col items-center p-6 relative md:w-1/3  h-screen ">
-            <div className='flex gap-1'>
-            <div className='w-12 h-12'><Logo /></div>
+            <div className='flex flex-col gap-1 items-center'>
+            <div className='w-20 h-20'><Logo /></div>
             <p className='text-5xl mb-2 font-bold text-purple-800 font-sourGummy'>MomenTom</p>
             </div>
                 <h1 className="font-semibold text-4xl mt-5 md:text-4xl">Login</h1>

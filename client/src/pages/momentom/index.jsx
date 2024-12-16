@@ -12,7 +12,7 @@ const Momentom = () => {
                 <Logo />
             </div>
             <div>
-            <p className="font-sourGummy !text-purple-900 font-semibold text-6xl">MomenTom</p>
+            {/* <p className="font-sourGummy !text-purple-900 font-semibold text-6xl">MomenTom</p> */}
             </div>
         </div>
     )
