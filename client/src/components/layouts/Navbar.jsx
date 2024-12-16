@@ -40,9 +40,11 @@ const Navbar = ({ setMenuContainerOpened, setOpenNotificationContainer, openNoti
     return (
       <div className={`w-full fixed z-40 md:h-20   h-20 border-b shadow-md shadow-gray-300 `}>
         <div className="absolute md:px-7 items-center w-full  p-4 flex justify-between">
-          <p className="font-sourGummy !text-purple-900 font-semibold text-xl cursor-pointer" onClick={() => {
+          {/*  */}
+          <img src="/logo/logo.jpg" alt="" className="h-full w-[40px]"/>
+          <p className="font-sourGummy !text-purple-900 font-semibold mr-auto ml-2 text-xl cursor-pointer" onClick={() => {
             navigate("/home")
-          }}>MomenTom</p>
+          }}>Momentom</p>
           <div className="flex text-2xl gap-3 items-center relative cursor-pointer" onClick={(e) => {
             e.stopPropagation()
             setOpenNotificationContainer(!openNotificationContainer)
