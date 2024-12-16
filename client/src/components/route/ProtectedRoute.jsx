@@ -2,7 +2,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import { Navigate, Outlet } from "react-router-dom"
 import useAuthCheck from "../../hooks/useAuthCheck"
-import Cookies from 'js-cookie'; 
 import {jwtDecode} from 'jwt-decode';
 import { clearUser } from "../../redux/reducers/UserReducer";
 import { clearToken } from "../../redux/reducers/AuthReducer";
@@ -20,7 +19,6 @@ const ProtectedRoute = () => {
 }
 
 const handleLogout = (dispatch) => {
-    Cookies.remove('token')
     dispatch(clearUser())
     dispatch(clearToken())
     return <Navigate to="/login" />
