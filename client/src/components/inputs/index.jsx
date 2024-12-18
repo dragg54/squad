@@ -66,7 +66,7 @@ const Input = forwardRef(({ style,
   else if (type == "select") {
     return (
       <SelectInput
-        {...{ value, data, placeholder, name, onSelect, done, isSelected }}
+        {...{ value, style, data, placeholder, name, onSelect, done, isSelected }}
       />
     )
   }

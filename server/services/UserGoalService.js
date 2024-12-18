@@ -13,13 +13,13 @@ import Point from "../models/Point.js";
 import { addPoint, getUserPoints, updatePoint } from "./PointService.js";
 import { Op } from "sequelize";
 import { UserGoalCategory } from "../models/UserGoalCategory.js";
-import { isPast } from "../utils/date.js";
+import { isPast, isPastMonth, isPastYear } from "../utils/date.js";
+import { goalFrequency } from "../constants/GoalFrequency.js";
 
 export const createUserGoal = async (req, transaction) => {
   const goalData = req.body
   const userGoal = await models.UserGoal.create(goalData, { transaction });
-  if (isPast(null,userGoal.startDate)
-    || isPast(userGoal.startDate, userGoal.endDate) || isPast(userGoal.startDate, userGoal.endDate))
+  if (isInvalidGoalData(goalData))
    {
     throw new BadRequestError("Invalid start date or end date.")
   }
@@ -104,6 +104,11 @@ export const getAllUserGoals = async (req) => {
   }
 
   if (groupBy == "month") {
+    const currentYear = new Date().getFullYear();
+    queryOpts['startDate'] = {
+      [Op.gte]: new Date(`${currentYear}-01-01`),
+      [Op.lt]: new Date(`${currentYear + 1}-01-01`),
+    }
     const goalsGroupedByMonth = await models.UserGoal.findAll({
       where: queryOpts,
       attributes: [
@@ -124,7 +129,7 @@ export const getAllUserGoals = async (req) => {
   if (groupBy === "year") {
     const goalsGroupedByYear = await models.UserGoal.findAll({
       attributes: [
-        [db.fn('DATE_FORMAT', db.col('UserGoal.startDate'), '%Y'), 'year'],
+        [db.fn('DATE_FORMAT', db.col('user_goal.startDate'), '%Y'), 'year'],
         'title', 'description', 'completed'
       ],
       include: [
@@ -259,5 +264,23 @@ async function updateGoalPoint(goal, updatedGoal, trans) {
   }
   else if (!goal.completed && updatedGoal.completed) {
     await updatePoint({ points: userPoints + activityPoints.goalCompletionPoints }, { transaction: trans })
+  }
+}
+
+function isInvalidGoalData(goalData){
+  if(!Object.keys(goalFrequency).some(frequency => frequency != goalData.frequency)){
+    return true
+  }
+  switch(goalData.frequency){
+    case goalFrequency.custom:
+      return isPast(null, goalData.startDate)
+        || isPast(goalData.startDate, goalData.endDate) || isPast(goalData.startDate, goalData.endDate)
+    case goalFrequency.daily:
+      return isPast(null, goalData.startDate)
+        || isPast(goalData.startDate, goalData.endDate) || isPast(goalData.startDate, goalData.endDate)
+    case goalFrequency.monthly:
+      return isPastMonth(goalData.startDate, goalData.endDate)
+    case goalFrequency.yearly:
+      return isPastYear(goalData.startDate, goalData.endDate)
   }
 }

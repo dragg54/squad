@@ -7,7 +7,8 @@ export const goalSchema = Joi.object({
     endDate: Joi.date().required(),
     goalPartners: Joi.array(),
     userGoalCategoryId: Joi.number(),
-    completed: Joi.boolean()
+    completed: Joi.boolean(),
+    frequency: Joi.string()
   });
 
 export const updateGoalSchema = Joi.object({

@@ -18,6 +18,7 @@ import { openSelectionModal } from "../../redux/reducers/Selection2Reducer"
 import { getAllGoalCategories } from "../../services/goalCategory"
 import Image from "../../components/containers/Image"
 import ResponseError from "../../components/ResponseError"
+import YearlyGoals from "./YearlyGoals"
 
 const Goals = () => {
     const [presentTab, setPresentTab] = useState("allGoals")
@@ -41,8 +42,8 @@ const Goals = () => {
         //   keepPreviousData: true, 
         // }
     );
-    const { data: categoryData, isLoading: categoryLoading } = useQuery(['goalCategories', {showGroupGoal: true}],
-       getAllGoalCategories
+    const { data: categoryData, isLoading: categoryLoading } = useQuery(['goalCategories', { showGroupGoal: true }],
+        getAllGoalCategories
     )
     const [isUpdated, setIsUpdated] = useState(false)
     useEffect(() => {
@@ -59,8 +60,8 @@ const Goals = () => {
     if (isLoading) {
         return <LoaidingSpinner {...{ isLoading }} />
     }
-    if (isError){
-        dispatch(openModal({component: <ResponseError refetch={refetch}/>}))
+    if (isError) {
+        dispatch(openModal({ component: <ResponseError refetch={refetch} /> }))
     }
     if (categoryLoading) {
         console.log("Loading")
@@ -77,41 +78,32 @@ const Goals = () => {
                         <AddGoalsButton onClick={() => dispatch(openModal({ component: <AddGoal {...{ setIsUpdated }} /> }))} />
                     </div>
                 </div>
-                <div className="flex items-center gap-3 font-semibold">
-                    <div onClick={(e) => {
-                        e.stopPropagation()
-                        setSelectionName('category')
-                        dispatch(openSelectionModal({
-                            content: categoryData.data.map(category => ({
-                                value: category.id,
-                                label: category.name,
-                                name: 'category'
-                            })),
+               <div className="flex items-center gap-2 ">
+               <div className="flex items-center gap-3 h-4 font-semibold relative">
+                    <Selection2
+                        height={'300px'}
+                        fieldName={'Category'}
+                        setSelectionName={setSelectionName}
+                        content={categoryData?.data.map(category => ({
+                            value: category.id,
+                            label: category.name,
                             name: 'category'
-                        }))
-                    }} className="mt-6 cursor-pointer flex justify-center text-sm py-1 items-center gap-1 px-2 bg-gray-100 w-auto relative">
-                        <p>{selection.selected.find(sel => sel.name == "category")?.label || "Category"}</p>
-                        <p><RiArrowDropDownLine className="text-xl" /></p>
-                        <Selection2 name={selectionName} />
-                    </div>
-                    <div onClick={(e) => {
-                        e.stopPropagation()
-                        setSelectionName('month')
-                        dispatch(openSelectionModal({
-                            content: getMonthNames().map((month, index) => ({
-                                value: index + 1,
-                                label: month,
-                                name: 'month'
-                            })),
-                            name: 'month'
-                        }))
-                    }}
-                        className="mt-6 cursor-pointer flex justify-center text-sm py-1 items-center gap-1 px-2 bg-gray-100 w-auto relative">
-                        <p>{selection.selected.find(sel => sel.name == "month")?.label || "Month"}</p>
-                        <p><RiArrowDropDownLine className="text-xl" /></p>
-
-                    </div>
+                        }))}
+                        name={"category"} />
                 </div>
+                <div className="flex items-center gap-3 font-semibold relative">
+                   <Selection2
+                   height={'300px'}
+                   fieldName={'Month'}
+                   setSelectionName={setSelectionName}
+                   content={getMonthNames().map((month, index) => ({
+                    value: index + 1,
+                    label: month,
+                    name: 'month'
+                   }))}
+                   name={"month"} />
+                   </div>
+               </div>
                 <div className="w-full mt-12 mb-5 ">
                     <div className="mb-3 flex gap-5">
                         <p onClick={() => {
@@ -126,27 +118,30 @@ const Goals = () => {
                             className={`mb-3  cursor-pointer  font-semibold ${presentTab == "monthlyGoals" && 'border-b-4 border-[#FF2511]'}`}>Monthly Goals</p>
                         <p onClick={() => {
                             setPresentTab("yearlyGoals")
-                            setGroupBy("month")
+                            setGroupBy("year")
                         }
                         }
                             className={`mb-3 font-semibold  cursor-pointer ${presentTab == "yearlyGoals" && 'border-b-4 border-[#FF2511]'}`}>Yearly Goals</p>
                     </div>
                     {presentTab == "monthlyGoals" ? <MonthlyGoals {...{ allMonths, openMonthGoalsContainer, setOpenMonthGoalsContainer, data, presentTab }} /> :
+                     
+                        presentTab == "yearlyGoals"  ? <YearlyGoals data={data}/>
+                        :
                         <div>
                             <div className="w-full">
                                 {
-                                     (!data || !data.data  || !data.data.length) && page == 1 ? 
-                                     <div className="w-full flex flex-col items-center justify-center">
-                                        <p className="font-semibold text-3xl text-gray-400 mt-10 mb-4">No goal yet</p>
-                                    <Image source={'/images/Empty.jpg'} style={'!border-none !h-[250px] !w-[250px]'}/>
-                                     </div>:
-                                     <ul className="w-full mt-2">
-                                     {data && data.data?.length > 0 && data.data.map(goal => (
-                                         <Goal key={goal.id} {...{ goal, setIsUpdated }} />
-                                     ))}
-                                 </ul>
+                                    (!data || !data.data || !data.data.length) && page == 1 ?
+                                        <div className="w-full flex flex-col items-center justify-center">
+                                            <p className="font-semibold text-3xl text-gray-400 mt-10 mb-4">No goal yet</p>
+                                            <Image source={'/images/Empty.jpg'} style={'!border-none !h-[250px] !w-[250px]'} />
+                                        </div> :
+                                        <ul className="w-full mt-2">
+                                            {data && data.data?.length > 0 && data.data.map(goal => (
+                                                <Goal key={goal.id} {...{ goal, setIsUpdated }} />
+                                            ))}
+                                        </ul>
                                 }
-                               
+
                             </div>
                             <Pagination
                                 currentPage={page}
@@ -154,7 +149,7 @@ const Goals = () => {
                                 onPageChange={setPage}
                             />
                         </div>
-                    }
+                    }                   
                 </div>
             </div>
         </section>

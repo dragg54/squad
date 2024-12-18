@@ -32,6 +32,10 @@ const UserGoal = db.define('user_goal', {
   description: {
     type: DataTypes.TEXT,
   },
+  frequency:{
+    type: DataTypes.ENUM('custom', 'daily', 'monthly', 'yearly'),
+    defaultValue: 'daily'
+  },
   completed: {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
