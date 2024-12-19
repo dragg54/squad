@@ -19,6 +19,7 @@ const Input = forwardRef(({ style,
   value,
   data,
   id,
+  color,
   onClick,
   done,
   readonly,
@@ -57,7 +58,8 @@ const Input = forwardRef(({ style,
       <Checkbox
         name={name}
         value={value}
-        color="purple"
+        color={color || 'purple'}
+        className={style + ` bg-gray-300`}
         checked={checked}
         onChange={onChange}
         id="ripple-on"

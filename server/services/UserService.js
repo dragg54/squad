@@ -36,9 +36,8 @@ export const createUser = async (req, trans) => {
     }
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
-    request.body.isFirst = true
     req.body.password = hashedPassword
-    const newUser = await User.create(req.body, {transaction: trans})
+    const newUser = await User.create({...req.body, isFirst: true}, {transaction: trans})
 
     await addPoint({userId: Number(req.body.invitedBy), 
         squadId: req.body.squadId, points: activityPoints.invitationPoints}, {transaction: trans})

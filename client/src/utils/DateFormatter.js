@@ -58,3 +58,7 @@ export const isPast = (startDate = new Date(), endDate) => {
    return true
   }
 }
+
+export const getMonthName2 = (date) =>{
+  return format(date, "MMM")
+}

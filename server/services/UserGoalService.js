@@ -109,12 +109,11 @@ export const getAllUserGoals = async (req) => {
       [Op.gte]: new Date(`${currentYear}-01-01`),
       [Op.lt]: new Date(`${currentYear + 1}-01-01`),
     }
-    queryOpts['userId'] = req.user.id
     const goalsGroupedByMonth = await models.UserGoal.findAll({
       where: queryOpts,
       attributes: [
         [db.fn('DATE_FORMAT', db.col('user_goal.startDate'), '%m'), 'month'],
-        'title', 'description', 'completed'
+        'title', 'description','startDate', 'endDate', 'completed', 'frequency'
       ],
       include: [
         { model: models.UserGoalCategory, attributes: ['id', 'name'] },
@@ -132,7 +131,7 @@ export const getAllUserGoals = async (req) => {
       where: {userId: req.user.id},
       attributes: [
         [db.fn('DATE_FORMAT', db.col('user_goal.startDate'), '%Y'), 'year'],
-        'title', 'description', 'completed'
+        'title', 'description', 'completed', 'startDate', 'endDate', 'frequency'
       ],
       include: [
         { model: models.UserGoalCategory, attributes: ['id', 'name'] },
