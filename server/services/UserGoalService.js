@@ -11,7 +11,7 @@ import { notificationSource, notificationType } from "../constants/NotificationC
 import { activityPoints } from "../constants/ActivityPoints.js";
 import Point from "../models/Point.js";
 import { addPoint, getUserPoints, updatePoint } from "./PointService.js";
-import { Op } from "sequelize";
+import { Op, where } from "sequelize";
 import { UserGoalCategory } from "../models/UserGoalCategory.js";
 import { isPast, isPastMonth, isPastYear } from "../utils/date.js";
 import { goalFrequency } from "../constants/GoalFrequency.js";
@@ -109,6 +109,7 @@ export const getAllUserGoals = async (req) => {
       [Op.gte]: new Date(`${currentYear}-01-01`),
       [Op.lt]: new Date(`${currentYear + 1}-01-01`),
     }
+    queryOpts['userId'] = req.user.id
     const goalsGroupedByMonth = await models.UserGoal.findAll({
       where: queryOpts,
       attributes: [
@@ -128,6 +129,7 @@ export const getAllUserGoals = async (req) => {
 
   if (groupBy === "year") {
     const goalsGroupedByYear = await models.UserGoal.findAll({
+      where: {userId: req.user.id},
       attributes: [
         [db.fn('DATE_FORMAT', db.col('user_goal.startDate'), '%Y'), 'year'],
         'title', 'description', 'completed'
@@ -139,7 +141,7 @@ export const getAllUserGoals = async (req) => {
           include: { model: User, attributes: { exclude: ["userId", "password", "createdAt", "updatedAt"] }, as: "user" }
         }
       ],
-      where: partnerQryOpts,
+      // where: partnerQryOpts,
       order: [[db.literal('year'), 'ASC']],
     });
 
