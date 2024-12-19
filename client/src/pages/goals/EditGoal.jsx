@@ -158,7 +158,7 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
                     </div>
 
                 </div>
-                <div className="flex mt-3 w-4/5 justify-between items-center">
+                <div className="flex mt-3 md:w-4/5 w-[90%] justify-between items-center">
                 <div className="-ml-2">
                     <label htmlFor="" className="inline-flex items-center">
                         <Input readonly={!user.isAdmin && goal.user_goal_category.name=="Group"} value={inputValues.completed} onChange={(e) => {
