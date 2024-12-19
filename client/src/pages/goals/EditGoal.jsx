@@ -145,7 +145,7 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
     }
     if (goal?.id || globalModal.content?.props?.input) {
         return (
-            <form onSubmit={submitForm} onClick={(e) => e.stopPropagation()} className='w-[350px] md:w-[400px] mx-auto h-auto pb-8 p-3 px-5 bg-white rounded-md -mt-12 md:mt-0 '>
+            <form onSubmit={submitForm} onClick={(e) => e.stopPropagation()} className='w-[350px] pt-6 md:w-[400px] mx-auto h-auto pb-8 p-3 px-5 bg-white rounded-md -mt-20 md:mt-0 '>
                 <div className="w-full pb-2">
                     <Input readonly={!user.isAdmin && goal.user_goal_category.name=="Group"}  name='title' style='font-extrabold !bg-purple-100  w-full pb-2 border-none text-xl mt-3 !text-gray-700' value={inputValues.title} onChange={(e) => handleInputValueChange(e)} />
                 </div>
