@@ -33,7 +33,7 @@ export const getMonthName = (monthIndex) => {
 //Formats date string to Month and Year
 export const formatDate = (dateString) => {
   if (dateString) {
-    return format(new Date(dateString), "do MMMM, yyyy");
+    return format(new Date(dateString), "do MMM, yyyy");
   }
 }
 

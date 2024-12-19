@@ -23,6 +23,9 @@ import { BiCalendar } from "react-icons/bi";
 import { getYears } from "./components/Years";
 import { processEndDate } from "./utils/processEndDate";
 import { getMonth, getYear } from "date-fns";
+import { FaChartLine } from "react-icons/fa";
+import { CgDetailsMore } from "react-icons/cg";
+
 
 const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
     const dispatch = useDispatch()
@@ -149,16 +152,19 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
                 <div className="w-full pb-2">
                     <Input readonly={!user.isAdmin && goal.user_goal_category.name=="Group"}  name='title' style='font-extrabold !p-0  w-full border-none text-xl !text-gray-700' value={inputValues.title} onChange={(e) => handleInputValueChange(e)} />
                 </div>
+               <div className="flex gap-1 items-start">
+               <CgDetailsMore className="text-gray-400 text-xl"/>
                 <Input readonly={!user.isAdmin && goal.user_goal_category.name=="Group"} onChange={(e) => handleInputValueChange(e)} 
                 name='description' type="text-area" style="!h-10  !p-0 !border-none  !outline-none" value={inputValues.description} />
+               </div>
                 <div className=" flex justify-between w-full">
                     <div className="cursor-pointer w-1/2" onClick={() =>((user.isAdmin && goal.user_goal_category.name == "Group") || goal.user_goal_category.name != "Group")  && dispatch(openModal({ component: <GoalCategory {...{ goal, inputValues, selectedCategory, setSelectedCategory, setIsUpdated }} /> }))}>
                         <p className="font-semibold cursor-pointer">Category</p>
-                        <p className="text-lg  text-gray-500 inline-flex gap-1 items-center">{localSelectedCategory?.name || selectedCategory?.name} </p>
+                        <p className="text-lg  text-gray-500 inline-flex gap-1 items-center whitespace-nowrap">{localSelectedCategory?.name || selectedCategory?.name} </p>
                     </div>
 
                 </div>
-                <div className="flex mt-3 md:w-4/5 w-[90%] justify-between items-center">
+                <div className="flex mt-3 md:w-5/6 w-full justify-between items-center">
                 <div className="-ml-2">
                     <label htmlFor="" className="inline-flex items-center">
                         <Input readonly={!user.isAdmin && goal.user_goal_category.name=="Group"} value={inputValues.completed} onChange={(e) => {
@@ -167,7 +173,8 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
                         Completed
                     </label>
                 </div>
-                <div>
+                <div className="inline-flex items-center">
+                <FaChartLine className="mr-1 text-gray-400"/>
                    <p className="">Frequency: <span className="bg-gray-200 rounded-md p-1 text-sm font-semibold"> {capitalizeHeader(inputValues.frequency)}</span></p>
                 </div>
                 </div>
