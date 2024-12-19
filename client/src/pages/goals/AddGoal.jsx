@@ -24,6 +24,7 @@ import { RiArrowDropDownLine } from "react-icons/ri";
 import Selection2 from "../../components/inputs/Selection2";
 import { getYears } from "./components/Years";
 import { BiCalendar } from "react-icons/bi";
+import { processEndDate } from "./utils/processEndDate";
 
 const AddGoal = ({ setIsUpdated }) => {
     const dispatch = useDispatch()
@@ -51,7 +52,7 @@ const AddGoal = ({ setIsUpdated }) => {
     useEffect(() => {
         const frequency = selection.selected.find(sel => sel.name == "frequency")
         if (frequency) {
-            processEndDate(frequency)
+            processEndDate(frequency, date, selection, setDate)
         }
     }, [selection])
 
@@ -118,36 +119,6 @@ const AddGoal = ({ setIsUpdated }) => {
         // setDate({ ...date, [Object.keys(e)[0]]: [Object.values(e)[0]] })
     }
 
-    //Add goals according to frequency
-    function processEndDate(frequency) {
-        const year = new Date().getFullYear()
-        let calendarValue
-        switch (frequency.value) {
-            case goalFrequency.daily:
-                date.endDate = date.startDate
-                return
-            case goalFrequency.monthly:
-                calendarValue = selection.selected.find(sel => sel.name == "monthNames")?.label
-                if (calendarValue) {
-                    var monthIndex = getMonthIndex(calendarValue)
-                    setDate({
-                        startDate: new Date(year, monthIndex - 1, 1),
-                        endDate: new Date(year, monthIndex, 0)
-                    })
-                }
-                return
-            case goalFrequency.yearly:
-                calendarValue = selection.selected.find(sel => sel.name == "years")?.label
-                setDate({
-                    startDate:  new Date(+calendarValue, 0, 1),
-                    endDate: new Date(+calendarValue , 11, 31, 10)
-                })
-                return
-            default:
-                return
-        }
-    }
-
     const {
         data: userGoalCategories,
         isLoading: userGoalCategoryLoading,
@@ -202,7 +173,7 @@ const AddGoal = ({ setIsUpdated }) => {
                     <Selection2
                        name='frequency'
                        setSelectionName={setSelectionName}
-                       style={'!bg-white'}
+                       style={'!bg-white !border-gray-500 !border-2'}
                        height={'150px'}
                        content={[ {
                         name: 'frequency',

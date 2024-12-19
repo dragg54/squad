@@ -15,14 +15,24 @@ import {  updateUserGoal } from "../../services/goal";
 import { openPopup } from "../../redux/reducers/PopUpReducer";
 import Image from '../../components/containers/Image'
 import { BACKEND_SERVER_URL } from "../../Appconfig";
+import { capitalizeHeader } from "../../utils/CapitalizeHeader";
+import { goalFrequency } from "../../constants/GoalFrequency";
+import Selection2 from "../../components/inputs/Selection2";
+import { getMonthName, getMonthNames } from "../../utils/DateFormatter";
+import { BiCalendar } from "react-icons/bi";
+import { getYears } from "./components/Years";
+import { processEndDate } from "./utils/processEndDate";
+import { getMonth, getYear } from "date-fns";
 
 const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
     const dispatch = useDispatch()
     const { data: userData } = useQuery(['users'], getAllUsers);
     const [buttonDisabled, setButtonDisabled] = useState(true)
     const [error, setError] = useState({})
-
+    const [selectionName, setSelectionName ] = useState('')
     const user = useSelector(state => state.user)
+    const selection = useSelector(state => state.selection2)
+    const [selectionHasChanged, setSelectionHasChanged] = useState(false)
 
     //for date modal
     const globalModal = useSelector(state => state.globalModal)
@@ -39,7 +49,6 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
             queryClient.invalidateQueries('goals')
         },
         onError: (err) => {
-            console.log(err.response.status)
             dispatch(openPopup({ status: 'error', message: err.response.data.message || err.response.data.error || "Request Failed" }))
             // handleErrorResponse(err.response.status)
         }
@@ -51,7 +60,8 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
         endDate: goal?.endDate,
         goalPartners: goal?.goalPartners,
         startDate: goal?.startDate,
-        completed: goal?.completed
+        completed: goal?.completed,
+        frequency: goal?.frequency
     })
 
     //For validation
@@ -77,10 +87,21 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
             description: goal?.description || globalModal.content?.props?.input?.description,
             endDate: goal?.endDate,
             startDate: goal?.startDate,
+            frequency: goal?.frequency,
             goalPartners: goal?.goal_partners || globalModal.content?.props?.input?.goalPartners || [],
             completed: goal?.completed || globalModal.content?.props?.input?.completed
         })
     }, [goal])
+
+    useEffect(() => {
+           if(selectionHasChanged){
+            processEndDate(inputValues.frequency, date, selection, setDate)
+           }
+           else{
+            setSelectionHasChanged(true)
+           }
+    }, [selection])
+
     const handleInputValueChange = (e) => {
         if (e.target.name == "completed") {
             setInputValues({ ...inputValues, "completed": e.target.checked })
@@ -92,6 +113,7 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
     const submitForm = (e) => {
         e.preventDefault()
        if((goal?.user_goal_category.name == "Group" && user.isAdmin) || (goal.user_goal_category.name !="Group")){
+        console.log(inputValues)
         const updatedValues = {
             ...inputValues, startDate: date.startDate, endDate: date.endDate,
             userGoalCategoryId: localSelectedCategory ? localSelectedCategory.id : selectedCategory.id
@@ -123,11 +145,12 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
     }
     if (goal?.id || globalModal.content?.props?.input) {
         return (
-            <form onSubmit={submitForm} onClick={(e) => e.stopPropagation()} className='w-[350px] md:w-[400px] mx-auto h-auto pb-8 p-3 px-5 bg-white border rounded-md -mt-12 md:mt-0 shadow-gray-300'>
-                <div className="w-full border-b border-gray-300 pb-2">
-                    <Input readonly={!user.isAdmin && goal.user_goal_category.name=="Group"}  name='title' style='font-extrabold !-ml-3 w-full pb-2 border-none text-xl mt-3 !text-gray-700' value={inputValues.title} onChange={(e) => handleInputValueChange(e)} />
+            <form onSubmit={submitForm} onClick={(e) => e.stopPropagation()} className='w-[350px] md:w-[400px] mx-auto h-auto pb-8 p-3 px-5 bg-white rounded-md -mt-12 md:mt-0 '>
+                <div className="w-full pb-2">
+                    <Input readonly={!user.isAdmin && goal.user_goal_category.name=="Group"}  name='title' style='font-extrabold !bg-purple-100  w-full pb-2 border-none text-xl mt-3 !text-gray-700' value={inputValues.title} onChange={(e) => handleInputValueChange(e)} />
                 </div>
-                <Input readonly={!user.isAdmin && goal.user_goal_category.name=="Group"} onChange={(e) => handleInputValueChange(e)} name='description' type="text-area" style="!h-10 !p-0 !-mt-2 !border-none text-gray-500 !outline-none" value={inputValues.description} />
+                <Input readonly={!user.isAdmin && goal.user_goal_category.name=="Group"} onChange={(e) => handleInputValueChange(e)} 
+                name='description' type="text-area" style="!h-10 !p-2 !-mt-2 !border-none !bg-purple-100 !mt-4 text-gray-500 !outline-none" value={inputValues.description} />
                 <div className="mt-3 flex justify-between w-full">
                     <div className="cursor-pointer w-1/2" onClick={() =>((user.isAdmin && goal.user_goal_category.name == "Group") || goal.user_goal_category.name != "Group")  && dispatch(openModal({ component: <GoalCategory {...{ goal, inputValues, selectedCategory, setSelectedCategory, setIsUpdated }} /> }))}>
                         <p className="font-semibold cursor-pointer">Category</p>
@@ -135,7 +158,56 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
                     </div>
 
                 </div>
-                <div className="w-full flex justify-between mt-2">
+                <div className="flex mt-3 w-4/5 justify-between items-center">
+                <div className="-ml-2">
+                    <label htmlFor="" className="inline-flex items-center">
+                        <Input readonly={!user.isAdmin && goal.user_goal_category.name=="Group"} value={inputValues.completed} onChange={(e) => {
+                            {((user.isAdmin && goal.user_goal_category.name == "Group") || goal.user_goal_category.name != "Group")  && handleInputValueChange(e)
+                        }}} name="completed" type="checkbox" checked={inputValues.completed} className="w-6 h-6 rounded-md bg-green-500" />
+                        Completed
+                    </label>
+                </div>
+                <div>
+                   <p className="">Frequency: <span className="bg-gray-200 rounded-md p-1 text-sm font-semibold"> {capitalizeHeader(inputValues.frequency)}</span></p>
+                </div>
+                </div>
+                <div className="w-full flex justify-between -mt-5">
+                    {
+                        inputValues.frequency == goalFrequency.monthly ?
+                        <div className="relative w-full">
+                                <Selection2
+                                   height={'200px'}
+                                   name={'monthNamesUpdate'}
+                                   style={'!border-gray-500 !border-2 !w-full'}
+                                   setSelectionName={setSelectionName}
+                                   selected={getMonthName(getMonth(goal?.startDate))}
+                                   content={getMonthNames().map((month, index) =>({
+                                    value: index,
+                                    label: month,
+                                    name: 'monthNamesUpdate'
+                                }))}
+                                   icon={ <BiCalendar className="text-base" />}
+                                   fieldName={'Select Month'}
+                                  {...{ showSearch: false }} 
+                                  />
+                        </div>: inputValues.frequency == goalFrequency.yearly ?
+                         <div className="relative w-full">
+                         <Selection2
+                             style={'!border-gray-500 !w-full !border-2'}
+                             height={'200px'}
+                             name={'years'}
+                             content={getYears(5).map((month, index) => ({
+                                 value: index,
+                                 label: month,
+                                 name: 'years'
+                             }))}
+                             selected = {getYear(goal?.startDate)}
+                             setSelectionName={setSelectionName}
+                             fieldName={'Select Year'}
+                             icon={<BiCalendar className="text-base" />}
+                             {...{ showSearch: false }} />
+                     </div>:
+                     <div className="w-full flex items-center justify-between mt-2">
                     <div className="w-[48%]">
                         <label htmlFor="start_date"><p className="">From</p></label>
                         <Input
@@ -181,13 +253,7 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
                         />
                     </div>
                 </div>
-                <div className="mt-3">
-                    <label htmlFor="" className="inline-flex items-center">
-                        <Input readonly={!user.isAdmin && goal.user_goal_category.name=="Group"} value={inputValues.completed} onChange={(e) => {
-                            {((user.isAdmin && goal.user_goal_category.name == "Group") || goal.user_goal_category.name != "Group")  && handleInputValueChange(e)
-                        }}} name="completed" type="checkbox" checked={inputValues.completed} className="w-6 h-6 rounded-md bg-green-500" />
-                        Completed
-                    </label>
+                 }
                 </div>
                 <div className="w-full h-36 border border-gray-700 mt-3 p-3 bg-gray-50">
                     <h4 className="font-semibold text-gray-600 pb-2 w-full border-b border-gray-300 mb-2 inline-flex items-center gap-3">Assigned Partners <span ><FaUsers className="h-6 w-6 text-gray-400" /></span></h4>
@@ -207,8 +273,11 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
                         }
                     </ul>
                 </div>
+                
                 <div className="w-full mt-8">
-                    <Button buttonDisabled={!user.isAdmin && goal.user_goal_category.name == "Group" } type='submit' style="w-full !p-4" name='Save Changes' icon={<MdOutlineSaveAlt style={{ fontSize: "20px", font: "700px" }} />} />
+                    <Button buttonDisabled={!user.isAdmin && goal.user_goal_category.name == "Group" } 
+                    type='submit' style="w-full !p-4 !bg-white border !border-purple-700 !text-purple-700"
+                     name='Save Changes' icon={<MdOutlineSaveAlt style={{ fontSize: "20px", font: "700px" }} />} />
                 </div>
             </form>
         )

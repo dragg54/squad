@@ -4,6 +4,7 @@
 import { forwardRef } from "react"
 import DateInput from "./DateInput"
 import SelectInput from "./SelectInput"
+import { Checkbox } from "@material-tailwind/react"
 
 const Input = forwardRef(({ style,
   placeholder,
@@ -53,14 +54,15 @@ const Input = forwardRef(({ style,
   }
   else if (type == "checkbox") {
     return (
-      <input
-        checked={checked}
-        disabled={readonly}
+      <Checkbox
         name={name}
-        onChange={onChange}
         value={value}
-        className="mr-2 w-4 h-4"
-        type="checkbox" />
+        color="purple"
+        checked={checked}
+        onChange={onChange}
+        id="ripple-on"
+        ripple={true}
+          />
     )
   }
   else if (type == "select") {
@@ -70,6 +72,7 @@ const Input = forwardRef(({ style,
       />
     )
   }
+ 
   else if (type == 'text-area') {
     return (
       <textarea

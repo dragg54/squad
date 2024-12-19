@@ -24,7 +24,7 @@ const UserAvatar = () => {
     }
     const createUserMutation = useMutation(createUser, {
         onSuccess: () => {
-            navigate("/login")
+            navigate("/intro")
             dispatch(openPopup({ message: "User successfully created", status: responseStatus.success }))
         },
     });
