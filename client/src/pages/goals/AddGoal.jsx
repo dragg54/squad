@@ -142,7 +142,7 @@ const AddGoal = ({ setIsUpdated }) => {
     }
 
     return (
-        <div onClick={(e) => e.stopPropagation()} className='w-[90%] md:w-[30%]  md:mt-0 relative mx-auto bg-white min-h-auto rounded-md shadow-md  p-5'>
+        <div onClick={(e) => e.stopPropagation()} className='w-[90%] md:w-[30%]  md:mt-0 -mt-8 relative mx-auto bg-white min-h-auto rounded-md shadow-md  p-5'>
             <form onSubmit={handleSaveGoal} action="" className="mt-8 flex-col">
                 <div>
                     <Input
