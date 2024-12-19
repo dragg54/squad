@@ -153,7 +153,7 @@ const AddGoal = ({ setIsUpdated }) => {
                         placeholder='Add Goal'
                         name='title'
                         value={input.title}
-                        style={'!border-b-1 border-none !text-xl !bg-purple-100'}
+                        style={'!border-b-1 border-none !text-xl !bg-purple-100 !text-gray-700'}
                     />
                     <span className='error'>{error["title"]}</span>
                 </div>
@@ -164,7 +164,7 @@ const AddGoal = ({ setIsUpdated }) => {
                         type='text-area'
                         placeholder='Description'
                         name='description'
-                        style='!border-none text-xl !bg-purple-100'
+                        style='!border-none text-xl !bg-purple-100 !text-gray-700'
                         value={input.description}
                     />
                     <span className='error'>{error["description"]}</span>

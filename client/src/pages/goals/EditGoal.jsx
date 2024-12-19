@@ -147,14 +147,14 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
         return (
             <form onSubmit={submitForm} onClick={(e) => e.stopPropagation()} className='w-[350px] pt-6 md:w-[400px] mx-auto h-auto pb-8 p-3 px-5 bg-white rounded-md -mt-20 md:mt-0 '>
                 <div className="w-full pb-2">
-                    <Input readonly={!user.isAdmin && goal.user_goal_category.name=="Group"}  name='title' style='font-extrabold !bg-purple-100  w-full pb-2 border-none text-xl mt-3 !text-gray-700' value={inputValues.title} onChange={(e) => handleInputValueChange(e)} />
+                    <Input readonly={!user.isAdmin && goal.user_goal_category.name=="Group"}  name='title' style='font-extrabold !p-0  w-full border-none text-xl !text-gray-700' value={inputValues.title} onChange={(e) => handleInputValueChange(e)} />
                 </div>
                 <Input readonly={!user.isAdmin && goal.user_goal_category.name=="Group"} onChange={(e) => handleInputValueChange(e)} 
-                name='description' type="text-area" style="!h-10 !p-2 !-mt-2 !border-none !bg-purple-100 !mt-4 text-gray-500 !outline-none" value={inputValues.description} />
-                <div className="mt-3 flex justify-between w-full">
+                name='description' type="text-area" style="!h-10  !p-0 !border-none  !outline-none" value={inputValues.description} />
+                <div className=" flex justify-between w-full">
                     <div className="cursor-pointer w-1/2" onClick={() =>((user.isAdmin && goal.user_goal_category.name == "Group") || goal.user_goal_category.name != "Group")  && dispatch(openModal({ component: <GoalCategory {...{ goal, inputValues, selectedCategory, setSelectedCategory, setIsUpdated }} /> }))}>
                         <p className="font-semibold cursor-pointer">Category</p>
-                        <p className="text-sm mt-1 text-gray-500 inline-flex gap-1 items-center">{localSelectedCategory?.name || selectedCategory?.name} </p>
+                        <p className="text-lg  text-gray-500 inline-flex gap-1 items-center">{localSelectedCategory?.name || selectedCategory?.name} </p>
                     </div>
 
                 </div>
