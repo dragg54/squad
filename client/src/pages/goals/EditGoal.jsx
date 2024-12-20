@@ -29,7 +29,7 @@ import { CgDetailsMore } from "react-icons/cg";
 
 const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
     const dispatch = useDispatch()
-    const { data: userData } = useQuery(['users'], getAllUsers);
+    const { data: userData, isLoading: usersIsLoading, isError: usersIsError } = useQuery(['users', {}], getAllUsers);
     const [buttonDisabled, setButtonDisabled] = useState(true)
     const [error, setError] = useState({})
     const [selectionName, setSelectionName ] = useState('')
@@ -165,12 +165,12 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
 
                 </div>
                 <div className="flex mt-3 md:w-5/6 w-full justify-between items-center">
-                <div className="-ml-2">
-                    <label htmlFor="" className="inline-flex items-center">
+                <div className="-ml-2 -mr-2">
+                    <label htmlFor="" className="inline-flex items-center ">
                         <Input readonly={!user.isAdmin && goal.user_goal_category.name=="Group"} value={inputValues.completed} onChange={(e) => {
                             {((user.isAdmin && goal.user_goal_category.name == "Group") || goal.user_goal_category.name != "Group")  && handleInputValueChange(e)
-                        }}} name="completed" type="checkbox" checked={inputValues.completed} className="w-6 h-6 rounded-md bg-green-500" />
-                        Completed
+                        }}} name="completed" type="checkbox" checked={inputValues.completed} style="w-5 h-5 checked:bg-green-700" />
+                        <p className="-ml-2">Completed</p>
                     </label>
                 </div>
                 <div className="inline-flex items-center">
@@ -262,7 +262,7 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
                 </div>
                  }
                 </div>
-                <div className="w-full h-36 border border-gray-700 mt-3 p-3 bg-gray-50">
+                <div className="w-full h-36 border border-gray-300 mt-3 p-3">
                     <h4 className="font-semibold text-gray-600 pb-2 w-full border-b border-gray-300 mb-2 inline-flex items-center gap-3">Assigned Partners <span ><FaUsers className="h-6 w-6 text-gray-400" /></span></h4>
                     <ul className="h-20 overflow-scroll">
                         {

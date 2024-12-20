@@ -2,16 +2,19 @@
 import { format, eachMonthOfInterval, setMonth, parse, startOfToday, isAfter } from 'date-fns';
 
 //compares date
-export const isPast = (startDate = new Date(), endDate) => {
+export const isPast = (startDate, endDate) => {
+  if(!startDate){
+    startDate = new Date()
+  }
   const dateToCheck = new Date(endDate);
   const today = startOfToday();
 
-  if ((!startDate && isAfter(dateToCheck, today))
-    || (startDate && isAfter(dateToCheck, new Date(startDate)))) {
-    return false
+  if ((isAfter(today, startDate))
+    || (isAfter(startDate, dateToCheck))) {
+    return true
   }
   else {
-    return true
+    return false
   }
 }
 

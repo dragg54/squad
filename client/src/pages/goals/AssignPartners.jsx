@@ -53,13 +53,13 @@ const AssignPartners = ({ goalInputs }) => {
             <p className='mt-8 font-semibold'>Members</p>
             <form onSubmit={handleSaveUserGoal} action="" className="h-60 md:h-64 overflow-y-scroll mt-4 flex-col items-start">
                 {userData && userData.length > 0 && userData.map(partner => (
-                    user.id != partner.id && <div className="flex justify-start mb-4 items-center" key={partner.id}>
+                    user.id != partner.id && <div className="flex justify-start items-center -mb-2" key={partner.id}>
                         <Input
                             checked={isChecked(partner.id)}
                             type="checkbox"
                             value={partner.id}
                             onChange={handleChange}
-                            style={"!w-12 mb-4 !m-0 text-2xl !h-6 !w-6 !mr-3"} />
+                            className={"mb- 1 !m-0 text-2xl !h-6 !w-6 "} />
                         <label htmlFor="">{partner.userName}</label>
                     </div>
                 ))}

@@ -52,8 +52,6 @@ export const getAllNotifications = async (req) => {
   return result;
 }
 
-
-
 export async function getNotificationSummary(req) {
   const notifications = await Notification.findAll({
         where: { recipientId: req.user.id, squadId: req.user.squadId, senderId: {

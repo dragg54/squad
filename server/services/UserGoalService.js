@@ -18,7 +18,7 @@ import { goalFrequency } from "../constants/GoalFrequency.js";
 
 export const createUserGoal = async (req, transaction) => {
   const goalData = req.body
-  const userGoal = await models.UserGoal.create(goalData, { transaction });
+  const userGoal = await models.UserGoal.create({...goalData, userId: req.user.id}, { transaction });
   if (isInvalidGoalData(goalData))
    {
     throw new BadRequestError("Invalid start date or end date.")
@@ -274,10 +274,10 @@ function isInvalidGoalData(goalData){
   switch(goalData.frequency){
     case goalFrequency.custom:
       return isPast(null, goalData.startDate)
-        || isPast(goalData.startDate, goalData.endDate) || isPast(goalData.startDate, goalData.endDate)
+        || isPast(goalData.startDate, goalData.endDate)
     case goalFrequency.daily:
       return isPast(null, goalData.startDate)
-        || isPast(goalData.startDate, goalData.endDate) || isPast(goalData.startDate, goalData.endDate)
+        || isPast(goalData.startDate, goalData.endDate)
     case goalFrequency.monthly:
       return isPastMonth(goalData.startDate, goalData.endDate)
     case goalFrequency.yearly:

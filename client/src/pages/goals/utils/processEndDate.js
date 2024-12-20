@@ -5,9 +5,13 @@ import { getMonthIndex } from "../../../utils/DateFormatter"
     export function processEndDate(frequency, date, selection, setDate) {
         const year = new Date().getFullYear()
         let calendarValue
-        switch (frequency) {
+        switch (frequency.value) {
             case goalFrequency.daily:
-                date.endDate = date.startDate
+                var newEndDate = date.startDate
+                 newEndDate.setHours(11, 59, 59, 999)
+                setDate({...date,
+                    endDate: newEndDate
+                })
                 return
             case goalFrequency.monthly:
                 calendarValue = selection.selected.find(sel => sel.name == "monthNames")?.label

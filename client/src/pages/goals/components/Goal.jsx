@@ -7,7 +7,7 @@ import { openModal } from "../../../redux/reducers/GlobalModalReducer"
 import EditGoal from "../EditGoal"
 import { formatDate, getMonthName2 } from "../../../utils/DateFormatter"
 import Input from "../../../components/inputs"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { goalFrequency } from "../../../constants/GoalFrequency"
 import { getYear } from "date-fns"
 
@@ -15,6 +15,10 @@ const Goal = ({ goal, setIsUpdated }) => {
     const user = useSelector(state => state.user)
     const dispatch = useDispatch()
     const [completed, setCompleted] = useState(goal.completed)
+
+    useEffect(()=>{
+        setCompleted(goal.completed)
+    }, [goal])
     return (
         <ul className="w-full rounded-md -mb-3" onClick={()=>user.id == goal.userId && dispatch(openModal({component:<EditGoal {...{goal, setIsUpdated}}/>}))}>
             {/* <p className="!text-gray-500 text-sm">20 June, 2023</p> */}
