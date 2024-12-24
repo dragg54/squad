@@ -2,8 +2,11 @@ import User from "../models/User.js";
 import jwt from 'jsonwebtoken'
 
 export const authMiddleware = async (req, res, next) => {
-  const token = req.cookies.token;
-
+  let token = req.cookies.token;
+  if(!token){
+    token = authHeader && authHeader.split(' ')[1];
+    const authHeader = req.headers['authorization'];
+  }
   if (!token) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
