@@ -9,7 +9,7 @@ import { clearToken } from "../../redux/reducers/AuthReducer";
 
 
 const ProtectedRoute = () => {
-    useAuthCheck()
+    // useAuthCheck()
     const user = useSelector(state => state.user)
     const authToken = useSelector(state => state.auth).token
     const dispatch = useDispatch()
