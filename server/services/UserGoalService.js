@@ -109,6 +109,7 @@ export const getAllUserGoals = async (req) => {
       [Op.gte]: new Date(`${currentYear}-01-01`),
       [Op.lt]: new Date(`${currentYear + 1}-01-01`),
     }
+    queryOpts['frequency'] = goalFrequency.monthly
     const goalsGroupedByMonth = await models.UserGoal.findAll({
       where: queryOpts,
       attributes: [
@@ -128,7 +129,7 @@ export const getAllUserGoals = async (req) => {
 
   if (groupBy === "year") {
     const goalsGroupedByYear = await models.UserGoal.findAll({
-      where: {userId: req.user.id},
+      where: {userId: req.user.id, frequency: goalFrequency.yearly},
       attributes: [
         [db.fn('DATE_FORMAT', db.col('user_goal.startDate'), '%Y'), 'year'],
         'title', 'description', 'completed', 'startDate', 'endDate', 'frequency'
@@ -249,6 +250,16 @@ function groupData(data, groupBy) {
   }, {});
 
   return groupedGoals;
+}
+
+export const updateGoalStatus = async(req) =>{
+  const existingGoal = await getUserGoalById(req.params.id)
+  if(!existingGoal){
+    throw new NotFoundError("user goal not found")
+  }
+  await UserGoal.update({completed: req.body.completed}, {where:{
+    id: req.params.id
+  }})
 }
 
 async function updateGoalPoint(goal, updatedGoal, trans) {

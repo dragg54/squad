@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import {createUserGoal, getAllUserGoals, getUserGoalById, updateUserGoal, deleteUserGoal, getUserGoalsByMonth} from '../controllers/UserGoalController.js';
+import {createUserGoal, getAllUserGoals, getUserGoalById, updateUserGoal, deleteUserGoal, getUserGoalsByMonth, updateUserGoalStatus} from '../controllers/UserGoalController.js';
 import { authMiddleware } from '../middlewares/authMiddleWare.js';
 import { validateRequest } from '../middlewares/validatorMiddleWare.js';
 import { goalSchema, updateGoalSchema } from '../schemas/goalSchema.js';
@@ -12,5 +12,6 @@ router.get('/:id', authMiddleware, getUserGoalById);
 router.get('/', authMiddleware, getUserGoalsByMonth);
 router.put('/:id', authMiddleware, validateRequest(updateGoalSchema), updateUserGoal);
 router.delete('/:id', authMiddleware, deleteUserGoal);
+router.patch('/:id/status', authMiddleware, updateUserGoalStatus)
 
 export default router;

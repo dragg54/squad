@@ -20,11 +20,12 @@ export const isPast = (startDate, endDate) => {
 
 export const isPastMonth = (startDate, endDate) => {
   const startMonth = new Date(startDate).getMonth()
-  const currentMonth = new Date().getMonth()
-
+  const currentMonth = new Date().setMonth(new Date().getMonth() + 1)
+  console.log(currentMonth)
+  console.log(startMonth)
   const endMonth = new Date(endDate).getMonth()
 
-  return startMonth < currentMonth || endMonth < currentMonth
+  return startMonth < new Date(currentMonth).getMonth() || endMonth < new Date(currentMonth).getMonth()
 }
 
 export const isPastYear = (startDate, endDate) =>{

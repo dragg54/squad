@@ -85,3 +85,14 @@ export const getUserGoalsByMonth = async (req, res, next) => {
      })
   }
 };
+
+export const updateUserGoalStatus = async(req, res) =>{
+  try {
+    await userGoalService.updateGoalStatus(req);
+    return res.json({message: "User goal status updated"})
+  } catch (error) {
+     res.status(error.statusCode || 500).send({
+        message: error.message || "Internal Server Error"
+     })
+  }
+}

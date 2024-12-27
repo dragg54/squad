@@ -18,8 +18,8 @@ import { getMonthIndex } from "../../../utils/DateFormatter"
                 if (calendarValue) {
                     var monthIndex = getMonthIndex(calendarValue)
                     setDate({
-                        startDate: new Date(year, monthIndex - 1, 1),
-                        endDate: new Date(year, monthIndex, 0)
+                        startDate: new Date(year, monthIndex, 1),
+                        endDate: new Date(year, monthIndex, 1)
                     })
                 }
                 return

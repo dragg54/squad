@@ -65,7 +65,7 @@ const AddGoal = ({ setIsUpdated }) => {
         }
         const currentDate = new Date()
         const startMonth = new Date(date.startDate).getMonth()
-        const currentMonth = new Date().getMonth()
+        let currentMonth = new Date().getMonth()
         const endMonth = new Date(date.endDate).getMonth()
 
         const startYear = new Date(date.startDate).getFullYear()
@@ -83,8 +83,9 @@ const AddGoal = ({ setIsUpdated }) => {
                 return dateValidations
 
             case goalFrequency.monthly:
-                 dateValidations.startDate = startMonth >= currentMonth
-                 dateValidations.endDate = endMonth >= currentMonth
+                currentMonth = new Date().setMonth(new Date().getMonth() + 1)
+                 dateValidations.startDate = startMonth >= new Date(currentMonth).getMonth()
+                 dateValidations.endDate = endMonth >= new Date(currentMonth).getMonth()
                  return dateValidations
             
             case goalFrequency.yearly:

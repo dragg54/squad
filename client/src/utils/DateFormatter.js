@@ -60,5 +60,6 @@ export const isPast = (startDate = new Date(), endDate) => {
 }
 
 export const getMonthName2 = (date) =>{
-  return format(date, "MMM")
+  const formattedDate = new Date(date).setMonth(new Date(date).getMonth() -1)
+  return format(new Date(formattedDate), "MMM")
 }

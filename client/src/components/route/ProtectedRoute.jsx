@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useDispatch, useSelector } from "react-redux"
 import { Navigate, Outlet } from "react-router-dom"
-import useAuthCheck from "../../hooks/useAuthCheck"
+// import useAuthCheck from "../../hooks/useAuthCheck"
 import {jwtDecode} from 'jwt-decode';
 import { clearUser } from "../../redux/reducers/UserReducer";
 import { clearToken } from "../../redux/reducers/AuthReducer";

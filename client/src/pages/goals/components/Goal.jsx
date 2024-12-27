@@ -10,11 +10,26 @@ import Input from "../../../components/inputs"
 import { useEffect, useState } from "react"
 import { goalFrequency } from "../../../constants/GoalFrequency"
 import { getYear } from "date-fns"
+import { useMutation } from "react-query"
+import { updateUserGoalStatus } from "../../../services/goal"
 
 const Goal = ({ goal, setIsUpdated }) => {
     const user = useSelector(state => state.user)
     const dispatch = useDispatch()
     const [completed, setCompleted] = useState(goal.completed)
+
+    const updateGoalStatusMutation = useMutation(updateUserGoalStatus,{
+        onSuccess:(res)=> console.log(res),
+        onError:(err) => console.log(err)
+    })
+
+    const handleUpdateUserGoalStatus = () =>{
+        setCompleted(!completed)
+        updateGoalStatusMutation.mutate({
+            completed: !completed,
+            id: goal.id
+        })
+    }
 
     useEffect(()=>{
         setCompleted(goal.completed)
@@ -38,7 +53,9 @@ const Goal = ({ goal, setIsUpdated }) => {
                 }</p>
                 </div>
                 <div className="ml-auto flex flex-col -mt-6" onClick={(e)=> e.stopPropagation()}>
-                   <Input onChange={()=> setCompleted(!completed)} checked={completed} type="checkbox" style="text-gray-700 checked:bg-[#088280]" color='transparent'/>
+                   <Input onChange={()=> {
+                    handleUpdateUserGoalStatus()
+                   }} checked={completed} type="checkbox" style="text-gray-700 checked:bg-[#088280]" color='transparent'/>
                    <small className={`px-1 rounded-md ${goal.completed ? 'bg-[#088280]': goal.isExpired ? 'bg-blue-700': 'bg-red-500'} text-[0.5rem] -mt-3 text-white`}>
                    </small>
                 </div>

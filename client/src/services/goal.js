@@ -29,12 +29,23 @@ export const getUserGoals = async ({queryKey}) => {
     }
   }
 
-  export const updateUserGoal = async(formData) =>{
-    try{
-      const response = await axiosInstance.put(`${BACKEND_SERVER_URL}/${BACKEND_SERVER_VERSION}/usergoals/${formData.id}`, formData)
-      return response
+export const updateUserGoal = async (formData) => {
+  try {
+    const response = await axiosInstance.put(`${BACKEND_SERVER_URL}/${BACKEND_SERVER_VERSION}/usergoals/${formData.id}`, formData)
+    return response
   }
-  catch(error){
-      throw error
+  catch (error) {
+    throw error
   }
+}
+
+export const updateUserGoalStatus = async(formData) =>{
+  try {
+    const response = await axiosInstance.patch(`${BACKEND_SERVER_URL}/${BACKEND_SERVER_VERSION}/usergoals/${formData.id}/status`, formData)
+    return response
   }
+  catch (error) {
+    throw error
+  }
+}
+
