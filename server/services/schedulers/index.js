@@ -3,7 +3,7 @@ import { scheduleBirthday } from './ScheduleBirthday.js';
 import { scheduleGoalExpiration } from './ScheduleGoalExpiration.js';
 
 export  function scheduleJob(io){
-    cron.schedule('35 8 * * *', async() => {
+    cron.schedule('40 8 * * *', async() => {
        await scheduleBirthday(io);
     });
     cron.schedule('0 0 * * *', async()=>{
