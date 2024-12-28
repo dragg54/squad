@@ -6,8 +6,7 @@ export  function scheduleJob(io){
     cron.schedule('1 0 * * *', async() => {
        await scheduleBirthday(io);
     });
-    cron.schedule('* * * * *', async()=>{
-        console.log("halleluyah")
-        // await scheduleGoalExpiration(io)
+    cron.schedule('55 7 * * *', async()=>{
+        await scheduleGoalExpiration(io)
     })
 }
