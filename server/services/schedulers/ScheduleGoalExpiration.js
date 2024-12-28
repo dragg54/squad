@@ -31,7 +31,6 @@ export async function scheduleGoalExpiration(io) {
         });
 
         if (expiredGoals && expiredGoals.length) {
-            await addPoint()
             await Promise.all(expiredGoals?.map(async (userGoal) => {
                 await UserGoal.update({
                     isExpired: true
@@ -39,7 +38,7 @@ export async function scheduleGoalExpiration(io) {
 
                 await Point.decrement('points', {
                     by: activityPoints.goalCreationPoints + 2
-                })
+                }, {where: {userId: userGoal.user.id}})
 
                 const notificationRequest = {
                     senderId: userGoal.squadId,
