@@ -8,7 +8,7 @@ export async function scheduleBirthday(io) {
     const today = getTodayDate()
     try {
         const birthdayUsers = await User.findAll({
-            attributes: ['userName', 'birthday', 'squadId'],
+            attributes: ['id', 'userName', 'birthday', 'squadId'],
             where: {
                 birthday: today
             }
