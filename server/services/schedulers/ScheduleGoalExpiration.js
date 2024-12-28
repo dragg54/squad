@@ -38,8 +38,8 @@ export async function scheduleGoalExpiration(io) {
                 }, { where: { id: userGoal.id } })
 
                 await Point.decrement('points', {
-                    by: activityPoints.goalCreationPoints + 2
-                }, {where: {userId: userGoal.user.id}})
+                    by: activityPoints.goalCreationPoints + 2,
+                    where: {userId: userGoal.user.id}})
 
                 const notificationRequest = {
                     senderId: userGoal.squadId,
