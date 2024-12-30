@@ -13,11 +13,13 @@ import Point from "../models/Point.js";
 import { addPoint, getUserPoints, updatePoint } from "./PointService.js";
 import { Op, where } from "sequelize";
 import { UserGoalCategory } from "../models/UserGoalCategory.js";
-import { isPast, isPastMonth, isPastYear } from "../utils/date.js";
+import { correctHour, isPast, isPastMonth, isPastYear } from "../utils/date.js";
 import { goalFrequency } from "../constants/GoalFrequency.js";
 
 export const createUserGoal = async (req, transaction) => {
   const goalData = req.body
+  goalData.startDate = correctHour(goalData.startDate)
+  goalData.endDate =   correctHour(goalData.endDate)
   const userGoal = await models.UserGoal.create({...goalData, userId: req.user.id}, { transaction });
   if (isInvalidGoalData(goalData))
    {
@@ -287,8 +289,7 @@ function isInvalidGoalData(goalData){
       return isPast(null, goalData.startDate)
         || isPast(goalData.startDate, goalData.endDate)
     case goalFrequency.daily:
-      return isPast(null, goalData.startDate)
-        || isPast(goalData.startDate, goalData.endDate)
+      return isPast(goalData.startDate, goalData.endDate)
     case goalFrequency.monthly:
       return isPastMonth(goalData.startDate, goalData.endDate)
     case goalFrequency.yearly:
