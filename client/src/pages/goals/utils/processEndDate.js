@@ -7,10 +7,9 @@ import { getMonthIndex } from "../../../utils/DateFormatter"
         let calendarValue
         switch (frequency.value) {
             case goalFrequency.daily:
-                var newEndDate = date.startDate
-                 newEndDate.setHours(11, 59, 59, 999)
-                setDate({...date,
-                    endDate: newEndDate
+                setDate({
+                    startDate: new Date(new Date(date.startDate).setHours(0, 1, 0, 999)),
+                    endDate: new Date(new Date(date.startDate).setHours(23, 59, 59, 999))
                 })
                 return
             case goalFrequency.monthly:

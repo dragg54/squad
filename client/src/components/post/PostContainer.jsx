@@ -9,7 +9,7 @@ import CommentField from '../../pages/post/CommentField';
 
 const PostContainer = ({ isParent, data, commentState, setCommentState, }) => {
   return (
-    <div className={`${isParent ? 'w-full' : 'w-[95%] self-end'} border border-gray-300 p-4 shadow-md shadow-gray-300 rounded-md h-auto`}>
+    <div className={`${isParent ? 'w-full' : 'w-[98%] self-end'} border border-gray-300 p-4 shadow-md shadow-gray-300 rounded-md h-auto`}>
       <div className="flex justify-start items-center gap-4">
         <Image isUser={true} userId={data?.user?.id} source={BACKEND_SERVER_URL + "/avatars/" + data?.user?.profileAvatar} style='h-16 w-16' />
         <div>

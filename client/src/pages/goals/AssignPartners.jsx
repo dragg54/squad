@@ -33,6 +33,7 @@ const AssignPartners = ({ goalInputs }) => {
 
     const handleSaveUserGoal = (e) => {
         e.preventDefault()
+        console.log(goalInputs)
         const updatedValue = { ...goalInputs, goalPartners: selectedItems }
         createUserGoalMutation.mutate(updatedValue)
     }

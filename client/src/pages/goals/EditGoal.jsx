@@ -57,14 +57,14 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
         }
     });
     const [inputValues, setInputValues] = useState({
-        id: goal?.id,
-        title: goal?.title,
-        description: goal?.description,
-        endDate: goal?.endDate,
-        goalPartners: goal?.goalPartners,
-        startDate: goal?.startDate,
-        completed: goal?.completed,
-        frequency: goal?.frequency
+        id:  globalModal.content?.props?.input?.id || goal?.id,
+        title:  globalModal.content?.props?.input?.title || goal?.title,
+        description:  globalModal.content?.props?.input?.description || goal?.description,
+        endDate:  globalModal.content?.props?.input?.endDate || goal?.endDate,
+        goalPartners:  globalModal.content?.props?.input?.goalPartners || goal?.goalPartners,
+        startDate:  globalModal.content?.props?.input?.startDate || goal?.startDate,
+        completed:  globalModal.content?.props?.input?.completed ||goal?.completed,
+        frequency:  globalModal.content?.props?.input?.frequency ||  goal?.frequency
     })
 
     //For validation
@@ -90,7 +90,7 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
             description: goal?.description || globalModal.content?.props?.input?.description,
             endDate: goal?.endDate,
             startDate: goal?.startDate,
-            frequency: goal?.frequency,
+            frequency: goal?.frequency || globalModal.content?.props?.input?.frequency,
             goalPartners: goal?.goal_partners || globalModal.content?.props?.input?.goalPartners || [],
             completed: goal?.completed || globalModal.content?.props?.input?.completed
         })
@@ -115,7 +115,7 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
     }
     const submitForm = (e) => {
         e.preventDefault()
-       if((goal?.user_goal_category.name == "Group" && user.isAdmin) || (goal.user_goal_category.name !="Group")){
+       if((goal?.user_goal_category.name == "Group" && user.isAdmin) || (goal?.user_goal_category.name !="Group")){
         console.log(inputValues)
         const updatedValues = {
             ...inputValues, startDate: date.startDate, endDate: date.endDate,
@@ -175,7 +175,7 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
                 </div>
                 <div className="inline-flex items-center">
                 <FaChartLine className="mr-1 text-gray-400"/>
-                   <p className="">Frequency: <span className="bg-gray-200 rounded-md p-1 text-sm font-semibold"> {capitalizeHeader(inputValues.frequency)}</span></p>
+                   <p className="">Frequency: <span className="bg-gray-200 rounded-md p-1 text-sm font-semibold"> {capitalizeHeader(inputValues.frequency || "")}</span></p>
                 </div>
                 </div>
                 <div className="w-full flex justify-between -mt-5">
@@ -215,12 +215,12 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
                              {...{ showSearch: false }} />
                      </div>:
                      <div className="w-full flex items-center justify-between mt-2">
-                    <div className="w-[48%]">
-                        <label htmlFor="start_date"><p className="">From</p></label>
+                    <div className={`${inputValues.frequency == goalFrequency.daily? 'w-full flex justify-center mt-2': 'w-[48%]'}`}>
+                        <label htmlFor="start_date"><p className="">{inputValues.frequency != goalFrequency.daily && 'From'}</p></label>
                         <Input
                             data={date}
                             type={'date'}
-                            style={`!text-sm !text-gray-500 ${error['startDate']?.length && '!border !border-red-500'}`}
+                            style={`!text-sm ${inputValues.frequency == goalFrequency.daily && '!w-full flex justify-center cursor-pointer'} !text-gray-500 ${error['startDate']?.length && '!border !border-red-500'}`}
                             id="startDate"
                             value={date?.startDate}
                             readonly={!user.isAdmin && goal.user_goal_category.name=="Group"}
@@ -237,7 +237,7 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
                             name='startDate'
                         />
                     </div>
-                    <div className="w-[48%]">
+                    <div className={`${inputValues.frequency == goalFrequency.daily && 'hidden'} w-[48%]`}>
                         <label htmlFor="end_date"><p className="">To</p></label>
                         <Input
                             data={date}
@@ -272,7 +272,7 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
                                     <Image isUser={true} source={BACKEND_SERVER_URL + "/avatars/" + partner?.profileAvatar} style='h-10 w-10 mr-2' />
                                     {partner.userName}</div>
                                     <div>
-                                        {((user.isAdmin && goal.user_goal_category.name == "Group") || goal.user_goal_category.name != "Group")  && <input onChange={() => handlePartnerSelectChange(partner)} checked={inputValues?.goalPartners?.some(pat => pat.user.id == partner.id)} name='goalPartners' type="checkbox" className="w-6 h-6" />}
+                                        {((user.isAdmin && goal?.user_goal_category.name == "Group") || goal?.user_goal_category.name != "Group")  && <input onChange={() => handlePartnerSelectChange(partner)} checked={inputValues?.goalPartners?.some(pat => pat.user.id == partner.id)} name='goalPartners' type="checkbox" className="w-6 h-6" />}
                                     </div>
                                 </li>
 

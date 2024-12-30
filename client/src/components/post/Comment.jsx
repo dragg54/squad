@@ -61,7 +61,7 @@ const Comment = ({ comments }) => {
   };
 
     return (
-      <div className="md:w-[95%] w-[95%] self-end mt-2 flex flex-col items-center border border-gray-100 border-r-gray-200 border-l-gray-300">
+      <div className="md:w-[95%] w-[98%] self-end mt-2 flex flex-col items-center border border-gray-100 border-r-gray-200 border-l-gray-300">
         {comments.data.map((comment) => {
           const isLiked = likesState[comment.id];
           const likeCount = likesCount[comment.id]; 

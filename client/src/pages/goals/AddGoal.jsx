@@ -19,7 +19,7 @@ import { validateForm } from "../../utils/ValidateInput";
 import { formatDate2, getMonthIndex, getMonthNames, isPast } from "../../utils/DateFormatter";
 import Button from "../../components/buttons";
 import { goalFrequency } from "../../constants/GoalFrequency";
-import { openSelectionModal } from "../../redux/reducers/Selection2Reducer";
+import { closeSelectionModal, openSelectionModal } from "../../redux/reducers/Selection2Reducer";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import Selection2 from "../../components/inputs/Selection2";
 import { getYears } from "./components/Years";
@@ -71,7 +71,6 @@ const AddGoal = ({ setIsUpdated }) => {
         const startYear = new Date(date.startDate).getFullYear()
         const currentYear = new Date().getFullYear()
         const endYear = new Date(date.endDate).getFullYear()
-        
         switch(frequency?.value){
             case goalFrequency.custom:
                 dateValidations.startDate = !isPast(null, date.startDate)
@@ -79,7 +78,7 @@ const AddGoal = ({ setIsUpdated }) => {
                 return dateValidations
             case goalFrequency.daily:
                 dateValidations.startDate = !isPast(null, date.startDate)
-                dateValidations.endDate = !isPast(null, date.endDate) && isPast(date.startDate, date.endDate)
+                dateValidations.endDate = !isPast(null, date.endDate) 
                 return dateValidations
 
             case goalFrequency.monthly:
@@ -87,7 +86,7 @@ const AddGoal = ({ setIsUpdated }) => {
                  dateValidations.startDate = startMonth >= new Date(currentMonth).getMonth()
                  dateValidations.endDate = endMonth >= new Date(currentMonth).getMonth()
                  return dateValidations
-            
+
             case goalFrequency.yearly:
                 dateValidations.startDate = startYear >= currentYear
                 dateValidations.endDate = endYear >= currentYear
@@ -107,13 +106,13 @@ const AddGoal = ({ setIsUpdated }) => {
             title: value => value.length > 0,
         },
         dateValidation: {
-            startDate: { 
-                isValid: validateGoalDate().startDate, 
+            startDate: {
+                isValid: validateGoalDate().startDate,
                 message: "Invalid start date" },
             endDate: {
                 isValid: validateGoalDate().endDate,
                 message: "Invalid end date"
-            }, 
+            },
         }
     };
     const handleChangeDate = (e) => {
@@ -136,6 +135,7 @@ const AddGoal = ({ setIsUpdated }) => {
     const handleSaveGoal = (e) => {
         e.preventDefault()
         if (!buttonDisabled) {
+            console.log(date)
             const updatedInput = { ...input, ...date,
                  userGoalCategoryId: globalModal.content?.props?.selectedId, frequency: selection.selected.find(sel => sel.name == "frequency")?.value}
             dispatch(openModal({component: <AssignPartners {...{ setIsUpdated }} goalInputs={updatedInput} />}))
@@ -143,7 +143,10 @@ const AddGoal = ({ setIsUpdated }) => {
     }
 
     return (
-        <div onClick={(e) => e.stopPropagation()} className='w-[90%] md:w-[30%]  md:mt-0 -mt-8 relative mx-auto bg-white min-h-auto rounded-md shadow-md  p-5'>
+        <div onClick={(e) =>{
+            e.stopPropagation()
+            dispatch(closeSelectionModal())
+        }} className='w-[90%] md:w-[30%]  md:mt-0 -mt-8 relative mx-auto bg-white min-h-auto rounded-md shadow-md  p-5'>
             <form onSubmit={handleSaveGoal} action="" className="mt-8 flex-col">
                 <div>
                     <Input
@@ -196,9 +199,9 @@ const AddGoal = ({ setIsUpdated }) => {
                         value: goalFrequency.yearly,
                         label: 'Yearly'
                     }]}
-                    
+
                       {...{ showSearch: false,
-                        fieldName: "Select Frequency"}} 
+                        fieldName: "Select Frequency"}}
                     />
                 </div>
                 {
@@ -216,7 +219,7 @@ const AddGoal = ({ setIsUpdated }) => {
                                 }))}
                                    icon={ <BiCalendar className="text-base" />}
                                    fieldName={'Select Month'}
-                                  {...{ showSearch: false }} 
+                                  {...{ showSearch: false }}
                                   />
                         </div>
                         :
@@ -296,12 +299,12 @@ const AddGoal = ({ setIsUpdated }) => {
                     />
                 </div>
                 <Button
-                    disabled={buttonDisabled}
+                    disabled={buttonDisabled || !globalModal.content?.props?.selectedId}
                     type='submit'
                     style='mt-6 !py-3 !rounded-full ml-auto'
                     name="Create Goal"
                     validationRules={validationRules}
-                    buttonDisabled={buttonDisabled}
+                    buttonDisabled={buttonDisabled || !globalModal.content?.props?.selectedId}
                     inputValues={{ ...input, ...date }}
                     setButtonDisabled={setButtonDisabled}
                     isApiRequestButton={true}
