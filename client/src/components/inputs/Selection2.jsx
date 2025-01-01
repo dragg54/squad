@@ -5,7 +5,7 @@ import { CiSearch } from "react-icons/ci";
 import { closeSelectionModal, openSelectionModal, selectOption } from '../../redux/reducers/Selection2Reducer';
 import { RiArrowDropDownLine } from 'react-icons/ri';
 
-const Selection2 = ({ name, showSearch, height, setSelectionName, content, fieldName,selected, icon, style}) => {
+const Selection2 = ({ name, showSearch, height, setSelectionName, content, fieldName, selected, icon, style }) => {
     const selection = useSelector(state => state.selection2)
     const dispatch = useDispatch()
     return (
@@ -20,7 +20,7 @@ const Selection2 = ({ name, showSearch, height, setSelectionName, content, field
             }}
                 className={`${style} mt-6 cursor-pointer flex justify-center text-sm py-1 items-center gap-1 px-2 bg-gray-100 border border-gray-300  w-auto relative`}>
                 {!selected && icon}
-                <p>{selected || selection.selected.find(sel => sel.name == name)?.label || fieldName}</p>
+                <p>{selection.selected.find(sel => sel.name == name)?.label || selected || fieldName}</p>
                 <p><RiArrowDropDownLine className="text-xl" /></p>
             </div>
             <div style={{ height }} className={` py-2 bg-white overflow-scroll h-${height || 'auto'} ${(selection?.isOpen && name == selection.name) ? 'flex' : 'hidden'}

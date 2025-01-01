@@ -33,14 +33,15 @@ export const getMonthName = (monthIndex) => {
 //Formats date string to Month and Year
 export const formatDate = (dateString) => {
   if (dateString) {
-    return format(new Date(dateString), "do MMM, yyyy");
+    return format(new Date(dateString), "do MMM, yyyy", { timeZone: 'UTC' });
   }
 }
 
 //dd/MM/YYYY
 export const formatDate2 = (dateString) => {
   if (dateString) {
-    return format(new Date(dateString), "dd/MM/yyyy");
+    console.log(dateString)
+    return format(new Date(dateString), "dd/MM/yyyy", {timeZone : 'UTC'});
   }
 }
 
@@ -60,6 +61,6 @@ export const isPast = (startDate = new Date(), endDate) => {
 }
 
 export const getMonthName2 = (date) =>{
-  const formattedDate = new Date(date).setMonth(new Date(date).getMonth() -1)
+  const formattedDate = new Date(date).setMonth(new Date(date).getMonth())
   return format(new Date(formattedDate), "MMM")
 }

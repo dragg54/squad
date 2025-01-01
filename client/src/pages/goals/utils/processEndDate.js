@@ -12,8 +12,11 @@ import { getMonthIndex } from "../../../utils/DateFormatter"
                     endDate: new Date(new Date(date.startDate).setHours(23, 59, 59, 999))
                 })
                 return
+
             case goalFrequency.monthly:
                 calendarValue = selection.selected.find(sel => sel.name == "monthNames")?.label
+                ||
+                selection.selected.find(sel => sel.name == "monthNamesUpdate")?.label
                 if (calendarValue) {
                     var monthIndex = getMonthIndex(calendarValue)
                     setDate({
@@ -22,6 +25,8 @@ import { getMonthIndex } from "../../../utils/DateFormatter"
                     })
                 }
                 return
+
+
             case goalFrequency.yearly:
                 calendarValue = selection.selected.find(sel => sel.name == "years")?.label
                 setDate({

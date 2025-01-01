@@ -12,6 +12,7 @@ import { goalFrequency } from "../../../constants/GoalFrequency"
 import { getYear } from "date-fns"
 import { useMutation } from "react-query"
 import { updateUserGoalStatus } from "../../../services/goal"
+import { subHours } from 'date-fns'
 
 const Goal = ({ goal, setIsUpdated }) => {
     const user = useSelector(state => state.user)
@@ -47,7 +48,7 @@ const Goal = ({ goal, setIsUpdated }) => {
                 <div className="ml-5 flex-col flex">
                     <span className="">{goal.title}</span>
                     {/* <small className="bg-gray-400 p-1 !w-12 rounded-md flex justify-center text-xs">{capitalizeHeader(goal.frequency)}</small> */}
-                    <p className="text-xs">{goal.frequency == goalFrequency.custom ? `${formatDate(goal.startDate)} - ${formatDate(goal.startDate)}`
+                    <p className="text-xs">{goal.frequency == goalFrequency.custom ? `${formatDate(goal.startDate)} - ${formatDate(subHours((goal.endDate), 1))}`
                    :goal.frequency == goalFrequency.daily ? formatDate(goal.startDate) : goal.frequency == goalFrequency.monthly ? getMonthName2(goal.startDate):
                    goal.frequency == goalFrequency.yearly ? getYear(goal.startDate): ''
                 }</p>

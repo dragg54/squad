@@ -74,15 +74,16 @@ const AddGoal = ({ setIsUpdated }) => {
         switch(frequency?.value){
             case goalFrequency.custom:
                 dateValidations.startDate = !isPast(null, date.startDate)
-                dateValidations.endDate = !isPast(null, date.endDate) && isPast(date.startDate, date.endDate)
+                dateValidations.endDate = !isPast(null, date.endDate) && !isPast(date.startDate, date.endDate)
                 return dateValidations
+
             case goalFrequency.daily:
                 dateValidations.startDate = !isPast(null, date.startDate)
                 dateValidations.endDate = !isPast(null, date.endDate) 
                 return dateValidations
 
             case goalFrequency.monthly:
-                currentMonth = new Date().setMonth(new Date().getMonth() + 1)
+                currentMonth = new Date().setMonth(new Date().getMonth())
                  dateValidations.startDate = startMonth >= new Date(currentMonth).getMonth()
                  dateValidations.endDate = endMonth >= new Date(currentMonth).getMonth()
                  return dateValidations
@@ -135,7 +136,6 @@ const AddGoal = ({ setIsUpdated }) => {
     const handleSaveGoal = (e) => {
         e.preventDefault()
         if (!buttonDisabled) {
-            console.log(date)
             const updatedInput = { ...input, ...date,
                  userGoalCategoryId: globalModal.content?.props?.selectedId, frequency: selection.selected.find(sel => sel.name == "frequency")?.value}
             dispatch(openModal({component: <AssignPartners {...{ setIsUpdated }} goalInputs={updatedInput} />}))

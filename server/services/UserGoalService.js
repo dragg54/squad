@@ -13,13 +13,13 @@ import Point from "../models/Point.js";
 import { addPoint, getUserPoints, updatePoint } from "./PointService.js";
 import { Op, where } from "sequelize";
 import { UserGoalCategory } from "../models/UserGoalCategory.js";
-import { correctHour, isPast, isPastMonth, isPastYear } from "../utils/date.js";
+import { correctDate, correctDateUpdate, correctHour, isPast, isPastMonth, isPastYear } from "../utils/date.js";
 import { goalFrequency } from "../constants/GoalFrequency.js";
 
 export const createUserGoal = async (req, transaction) => {
   const goalData = req.body
-  goalData.startDate = correctHour(goalData.startDate)
-  goalData.endDate =   correctHour(goalData.endDate)
+  goalData.startDate = correctDate(goalData.startDate, goalData.frequency, 'startDate')
+  goalData.endDate =   correctDate(goalData.endDate, goalData.frequency, 'endDate')
   const userGoal = await models.UserGoal.create({...goalData, userId: req.user.id}, { transaction });
   if (isInvalidGoalData(goalData))
    {
@@ -175,11 +175,13 @@ export const getUserGoalById = async (id) => {
 
 export const updateUserGoal = async (req, res, trans) => {
   const { id } = req.params;
-  const { title, description, completed, startDate, endDate, goalPartners, userGoalCategoryId, frequency } = req.body;
+  let { title, description, completed, startDate, endDate, goalPartners, userGoalCategoryId, frequency } = req.body;
   if (isInvalidGoalData(req.body))
     {
      throw new BadRequestError("Invalid start date or end date.")
    }
+   startDate = correctDateUpdate(startDate, frequency, 'startDate')
+   endDate =   correctDateUpdate(new Date(endDate).toUTCString(), frequency, 'endDate')
   const [updated] = await models.UserGoal.update(
     { title, description, completed, startDate, endDate, userGoalCategoryId },
     { where: { id }, transaction: trans }

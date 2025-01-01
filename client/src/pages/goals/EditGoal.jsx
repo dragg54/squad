@@ -25,6 +25,7 @@ import { processEndDate } from "./utils/processEndDate";
 import { getMonth, getYear } from "date-fns";
 import { FaChartLine } from "react-icons/fa";
 import { CgDetailsMore } from "react-icons/cg";
+import { subHours, addHours } from 'date-fns'
 
 
 const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
@@ -41,7 +42,7 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
     const globalModal = useSelector(state => state.globalModal)
     const [date, setDate] = useState({
         startDate: (globalModal.content?.props?.newDate?.startDate) || goal?.startDate,
-        endDate: (globalModal.content?.props?.newDate?.endDate) || goal?.endDate
+        endDate: (globalModal.content?.props?.newDate?.endDate) || (goal?.frequency == goalFrequency.custom ? subHours(goal?.endDate, 1) : goal?.endDate)
     })
 
     const queryClient = useQueryClient()
@@ -84,25 +85,31 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
     };
     const [selectedCategory, setSelectedCategory] = useState(goal?.user_goal_category || globalModal.content?.props?.selectedCategory)
     useEffect(() => {
+        const frequency = selection.selected.find(sel => sel.name == "frequency")
         setInputValues({
-            id: goal?.id || globalModal.content?.props?.input?.id,
-            title: goal?.title || globalModal.content?.props?.input?.title,
-            description: goal?.description || globalModal.content?.props?.input?.description,
+            id:  globalModal.content?.props?.input?.id || goal?.id ,
+            title: globalModal.content?.props?.input?.title || goal?.title,
+            description:  globalModal.content?.props?.input?.description || goal?.description,
             endDate: goal?.endDate,
             startDate: goal?.startDate,
-            frequency: goal?.frequency || globalModal.content?.props?.input?.frequency,
-            goalPartners: goal?.goal_partners || globalModal.content?.props?.input?.goalPartners || [],
-            completed: goal?.completed || globalModal.content?.props?.input?.completed
+            frequency: globalModal.content?.props?.input?.frequency || goal?.frequency ,
+            goalPartners:  globalModal.content?.props?.input?.goalPartners || [] || goal?.goal_partners,
+            completed: globalModal.content?.props?.input?.completed || goal?.completed 
         })
+        // if (frequency) {
+        //     processEndDate(frequency, date, selection, setDate)
+        // }
     }, [goal])
 
+    useEffect(()=>{
+            //  setDate({
+            //         startDate: new Date(date.startDate).toUTCString(),
+            //         endDate: addHours(new Date(date.endDate), 1)
+            //     })
+    }, [date.endDate])
+
     useEffect(() => {
-           if(selectionHasChanged){
-            processEndDate(inputValues.frequency, date, selection, setDate)
-           }
-           else{
-            setSelectionHasChanged(true)
-           }
+        processEndDate({ value: inputValues.frequency }, date, selection, setDate)
     }, [selection])
 
     const handleInputValueChange = (e) => {
@@ -116,12 +123,12 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
     const submitForm = (e) => {
         e.preventDefault()
        if((goal?.user_goal_category.name == "Group" && user.isAdmin) || (goal?.user_goal_category.name !="Group")){
-        console.log(inputValues)
         const updatedValues = {
             ...inputValues, startDate: date.startDate, endDate: date.endDate,
             userGoalCategoryId: localSelectedCategory ? localSelectedCategory.id : selectedCategory.id
         }
-        updateGoalMutation.mutate(updatedValues)       }
+        updateGoalMutation.mutate(updatedValues)       
+       }
     }
     const handlePartnerSelectChange = (pat) => {
         let filteredPartners = []
@@ -251,7 +258,7 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
                                     component: <EditGoal />,
                                     props: {
                                         input: inputValues, goal, selectedCategory,
-                                        date, newDate: { ...date, endDate: prop }
+                                        date, newDate: { ...date, endDate: addHours(prop, 1) }
                                     },
                                 }))
                             }}
