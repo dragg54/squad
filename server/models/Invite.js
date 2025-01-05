@@ -28,6 +28,9 @@ const Invite = db.define('invite', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    tokenHasBeenUsed: {
+       type: DataTypes.BOOLEAN
+    },
     expiresAt: {
         type: DataTypes.DATE
     },

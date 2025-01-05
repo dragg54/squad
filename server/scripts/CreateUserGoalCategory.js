@@ -12,7 +12,7 @@ const goalCategories = [
     { name: "Properties and Ownership" },
     { name: "Business and Entrepreneurship" },
     { name: "Socialization" },
-    { name: "Personal development" },
+    { name: "Personal Development" },
     { name: "Family" },
     { name: "Spiritual" },
     { name: "Health" }

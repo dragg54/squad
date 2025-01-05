@@ -6,13 +6,12 @@ export const createUser = async (req, res) => {
   const transaction = await db.transaction()
   try {
     const user = await userService.createUser(req, transaction);
-    res.status(201).json({
-        message: "user created"
-    });
-    await transaction.commit()
+    // res.status(201).json({
+    //   message: "user created"
+    // });
   } catch (error) {
     console.log(error)
-    await transaction.rollback()
+    // await transaction.rollback()
     res.status(error.statusCode || 500).json({ error: error.message || "Internal server error" });
   }
 };
@@ -65,31 +64,55 @@ export const deleteUser = async (req, res) => {
   }
 };
 
-export const loginUser = async (req, res) =>{
+export const loginUser = async (req, res) => {
   const transaction = await db.transaction()
-    try{
-        const user = await userService.loginUser(req.body, transaction)
-        await transaction.commit()
-        res.cookie('token', user.token, {
-          sameSite: 'None',
-          secure: true,
-          httpOnly: true,
-          }).send(user)
-    }
-    catch(error){
-      await transaction.rollback()
-        res.status(error.statusCode || 500).json({message: error.message || "Internal server error"})
-    }
+  try {
+    const user = await userService.loginUser(req.body, transaction)
+    await transaction.commit()
+    res.cookie('token', user.token, {
+      sameSite: 'None',
+      secure: true,
+      httpOnly: true,
+    }).send(user)
+  }
+  catch (error) {
+    await transaction.rollback()
+    res.status(error.statusCode || 500).json({ message: error.message || "Internal server error" })
+  }
 }
 
 
-export const getUserAvatars = async(req, res) =>{
-  try{
+export const getUserAvatars = async (req, res) => {
+  try {
     const avatarFiles = await userService.getUserAvatars()
     return res.json(avatarFiles)
   }
-  catch(err){
-    res.status(500).json({message: err.message})
+  catch (err) {
+    res.status(500).json({ message: err.message })
+  }
+}
+
+export const verifyEmail = async (req, res) => {
+  try {
+    const avatarFiles = await userService.verifyEmail(req)
+    return res.json('User email verification successful')
+  }
+  catch (err) {
+    res.status(err.statusCode || 500).send({
+      message: err.message || "Internal Server Error"
+    })
+  }
+}
+
+export const resendVerificationMail = async (req, res) =>{
+  try {
+    const avatarFiles = await userService.resendVerificationMail(req)
+    return res.json('Verification link has been resent')
+  }
+  catch (err) {
+    res.status(err.statusCode || 500).send({
+      message: err.message || "Internal Server Error"
+    })
   }
 }
 

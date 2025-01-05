@@ -23,6 +23,8 @@ const Input = forwardRef(({ style,
   onClick,
   done,
   readonly,
+  rows,
+  cols,
   onSelect
 }, ref) => {
   if (!type || type == "text"
@@ -64,7 +66,7 @@ const Input = forwardRef(({ style,
         onChange={onChange}
         id="ripple-on"
         ripple={true}
-          />
+      />
     )
   }
   else if (type == "select") {
@@ -74,7 +76,7 @@ const Input = forwardRef(({ style,
       />
     )
   }
- 
+
   else if (type == 'text-area') {
     return (
       <textarea
@@ -83,8 +85,8 @@ const Input = forwardRef(({ style,
         placeholder={placeholder}
         readOnly={readonly}
         value={value}
-        rows={3}
-        cols={3}
+        rows={3 || rows}
+        cols={3 || cols}
         maxLength={maxLength || 240}
         onChange={onChange} id="">
         {value}
@@ -92,13 +94,13 @@ const Input = forwardRef(({ style,
     )
   }
   else if (type == "date") {
-    return <DateInput 
-                id={id}
-                readOnly = {readonly}
-                 onDateChange={onClick} 
-                 name={name} style={style} 
-                 date={value} data={data} 
-                 done={done} />
+    return <DateInput
+      id={id}
+      readOnly={readonly}
+      onDateChange={onClick}
+      name={name} style={style}
+      date={value} data={data}
+      done={done} />
   }
 })
 

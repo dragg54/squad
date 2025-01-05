@@ -3,6 +3,7 @@ import { DataTypes } from "sequelize";
 import User from "./User.js";
 import { UserGoalCategory } from "./UserGoalCategory.js";
 import Squad from "./Squad.js";
+import GoalPartner from "./GoalPartner.js";
 
 const UserGoal = db.define('user_goal', {
   userId: {
@@ -57,6 +58,12 @@ User.hasMany(UserGoal, { foreignKey: 'userId',  onDelete: 'CASCADE', });
 
 UserGoal.belongsTo(Squad, {foreignKey: 'squadId'})
 Squad.hasMany(UserGoal, {foreignKey: 'squadId', onDelete: 'CASCADE'})
+
+GoalPartner.belongsTo(User, { foreignKey: 'userId'});
+User.hasMany(GoalPartner, { foreignKey: 'userId',  onDelete: 'CASCADE'});
+
+GoalPartner.belongsTo(UserGoal, { foreignKey: 'goalId'});
+UserGoal.hasMany(GoalPartner, { foreignKey: 'goalId',  onDelete: 'CASCADE', });
 
 db.sync()
   .then(() => {

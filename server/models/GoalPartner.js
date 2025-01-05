@@ -7,11 +7,6 @@ const GoalPartner = db.define('goal_partner', {
  
 });
 
-GoalPartner.belongsTo(User, { foreignKey: 'userId'});
-User.hasMany(GoalPartner, { foreignKey: 'userId',  onDelete: 'CASCADE'});
-
-GoalPartner.belongsTo(UserGoal, { foreignKey: 'goalId'});
-UserGoal.hasMany(GoalPartner, { foreignKey: 'goalId',  onDelete: 'CASCADE', });
 
 db.sync()
   .then(() => {

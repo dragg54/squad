@@ -11,6 +11,7 @@ import squadRoute from './routes/SquadRoute.js'
 import notificationRoute from './routes/NotificationRoute.js'
 import avatarRoute from "./routes/AvatarRoute.js"
 import inviteRoute from './routes/InviteRoute.js'
+import emailRoute from './routes/EmailRoute.js'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
@@ -82,6 +83,7 @@ app.use("/api/v1/points", pointRoute)
 app.use("/api/v1/donations", donationRoute)
 app.use("/api/v1/payments", paymentRoute)
 app.use("/api/v1/avatars", avatarRoute)
+app.use("/api/v1/emailVerifications", emailRoute)
 app.use("/api/v1/donationPayments", donationPaymentRoute)
 
 const clientBaseURl = process.env.NODE_ENV ==  'Development' || !process.env.NODE_ENV ? 

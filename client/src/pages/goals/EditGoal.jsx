@@ -26,6 +26,7 @@ import { getMonth, getYear } from "date-fns";
 import { FaChartLine } from "react-icons/fa";
 import { CgDetailsMore } from "react-icons/cg";
 import { subHours, addHours } from 'date-fns'
+import LoadingSpinner from "../../components/LoadingSpinner";
 
 
 const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
@@ -62,7 +63,7 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
         title:  globalModal.content?.props?.input?.title || goal?.title,
         description:  globalModal.content?.props?.input?.description || goal?.description,
         endDate:  globalModal.content?.props?.input?.endDate || goal?.endDate,
-        goalPartners:  globalModal.content?.props?.input?.goalPartners || goal?.goalPartners,
+        goalPartners:  globalModal.content?.props?.input?.goalPartners || goal?.goal_partners,
         startDate:  globalModal.content?.props?.input?.startDate || goal?.startDate,
         completed:  globalModal.content?.props?.input?.completed ||goal?.completed,
         frequency:  globalModal.content?.props?.input?.frequency ||  goal?.frequency
@@ -93,7 +94,7 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
             endDate: goal?.endDate,
             startDate: goal?.startDate,
             frequency: globalModal.content?.props?.input?.frequency || goal?.frequency ,
-            goalPartners:  globalModal.content?.props?.input?.goalPartners || [] || goal?.goal_partners,
+            goalPartners:  globalModal.content?.props?.input?.goalPartners ||  goal?.goal_partners || [],
             completed: globalModal.content?.props?.input?.completed || goal?.completed 
         })
         // if (frequency) {
@@ -157,12 +158,13 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
         return (
             <form onSubmit={submitForm} onClick={(e) => e.stopPropagation()} className='w-[350px] pt-6 md:w-[400px] mx-auto h-auto pb-8 p-3 px-5 bg-white rounded-md -mt-16 md:mt-0 '>
                 <div className="w-full pb-2">
-                    <Input readonly={!user?.isAdmin && goal?.user_goal_category?.name=="Group"}  name='title' style='font-extrabold !p-0  w-full border-none text-xl !text-gray-700' value={inputValues.title} onChange={(e) => handleInputValueChange(e)} />
+                    <Input type='text-area' maxLength={50} rows={1}  readonly={!user?.isAdmin && goal?.user_goal_category?.name=="Group"}  name='title'
+                     style='font-extrabold !p-0 max-h-14 w-full border-none text-xl !text-gray-700' value={inputValues.title} onChange={(e) => handleInputValueChange(e)} />
                 </div>
                <div className="flex gap-1 items-start">
                <CgDetailsMore className="text-gray-400 text-xl"/>
-                <Input readonly={!user?.isAdmin && goal?.user_goal_category?.name=="Group"} onChange={(e) => handleInputValueChange(e)} 
-                name='description' type="text-area" style="!h-10  !p-0 !border-none  !outline-none" value={inputValues.description} />
+                <Input rows={2} readonly={!user?.isAdmin && goal?.user_goal_category?.name=="Group"} onChange={(e) => handleInputValueChange(e)} 
+                name='description' type="text-area" style="  !p-0 !border-none  !outline-none" value={inputValues.description} />
                </div>
                 <div className=" flex justify-between w-full">
                     <div className="cursor-pointer w-1/2" onClick={() =>((user?.isAdmin && goal?.user_goal_category?.name == "Group") || goal?.user_goal_category?.name != "Group")  && dispatch(openModal({ component: <GoalCategory {...{ goal, inputValues, selectedCategory, setSelectedCategory, setIsUpdated }} /> }))}>
@@ -273,12 +275,13 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
                     <h4 className="font-semibold text-gray-600 pb-2 w-full border-b border-gray-300 mb-2 inline-flex items-center gap-3">Assigned Partners <span ><FaUsers className="h-6 w-6 text-gray-400" /></span></h4>
                     <ul className="h-20 overflow-scroll">
                         {
-                            userData && userData.length > 0 && userData.map((partner) => (
+                            usersIsLoading ? <LoadingSpinner isLoading={usersIsLoading} style={'!h-10 !mt-6 !mb-0 w-full'}/> : userData && userData.length > 0 && userData.map((partner) => (
                                 <li className="flex justify-between" key={partner.id}>
                                     <div className="inline-flex items-center text-gray-500">
                                     <Image isUser={true} source={BACKEND_SERVER_URL + "/avatars/" + partner?.profileAvatar} style='h-10 w-10 mr-2' />
                                     {partner.userName}</div>
                                     <div>
+                                        {console.log('parners', partner, 'inputValues', inputValues.goalPartners)}
                                         {((user?.isAdmin && goal?.user_goal_category.name == "Group") || goal?.user_goal_category.name != "Group")  && <input onChange={() => handlePartnerSelectChange(partner)} checked={inputValues?.goalPartners?.some(pat => pat.user.id == partner.id)} name='goalPartners' type="checkbox" className="w-6 h-6" />}
                                     </div>
                                 </li>

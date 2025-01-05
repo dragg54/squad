@@ -13,6 +13,8 @@ import { getYear } from "date-fns"
 import { useMutation } from "react-query"
 import { updateUserGoalStatus } from "../../../services/goal"
 import { subHours } from 'date-fns'
+import { reduceStringLength } from "../../../utils/ReduceStringLength"
+import { determineScreenSize } from "../../../utils/DetermineScreenSize"
 
 const Goal = ({ goal, setIsUpdated }) => {
     const user = useSelector(state => state.user)
@@ -46,7 +48,7 @@ const Goal = ({ goal, setIsUpdated }) => {
                 'shadow-red-800  !border-[#ff2511]'}`}><span className={`ml-6 ${completed ?
                 goal.groupGoalId? '!border-gray-800':'text-[#107869]': 'text-[#ff2511]'} text-xl`}>{userGoalCategoryConstant.find(cat => cat.categoryName == goal?.user_goal_category?.name)?.categoryIcon}</span>
                 <div className="ml-5 flex-col flex">
-                    <span className="">{goal.title}</span>
+                    <span className="">{determineScreenSize().isMobile ? reduceStringLength(goal?.title, 24, 60).mobile : reduceStringLength(goal?.title, 30, 55).desktop}</span>
                     {/* <small className="bg-gray-400 p-1 !w-12 rounded-md flex justify-center text-xs">{capitalizeHeader(goal.frequency)}</small> */}
                     <p className="text-xs">{goal.frequency == goalFrequency.custom ? `${formatDate(goal.startDate)} - ${formatDate(subHours((goal.endDate), 1))}`
                    :goal.frequency == goalFrequency.daily ? formatDate(goal.startDate) : goal.frequency == goalFrequency.monthly ? getMonthName2(goal.startDate):

@@ -8,13 +8,13 @@ const LoadingSpinner = ({ isLoading, style}) => {
     useEffect(() => {
         const timer = setTimeout(() => {
             setLoading(false);
-        }, 3000);
+        }, 50000);
 
         return () => clearTimeout(timer);
     }, []);
     if(loading)
         return (
-            <div className={`${style} flex -mt-10 md:mt-0 items-center justify-center h-screen w-full mb-[20rem]`}>
+            <div className={`${style} z-40 flex -mt-10 md:mt-0 items-center justify-center h-screen w-full mb-[20rem]`}>
                 <div className="w-10 h-10 border-4 border-blue-500 border-dotted rounded-full animate-spin"></div>
             </div>
         );

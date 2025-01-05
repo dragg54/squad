@@ -36,14 +36,23 @@ const Register = () => {
 
     const handleChange = (e) => {
         if (e.target.name == "birthday") {
-            if (e.target.value.length == 2 && input.birthday.length == 1) {
-                e.target.value = e.target.value + "/"
+
+            if ((e.target.value.length > (input['birthday']).length)
+                && ((isNumberString(e.target.value[e.target.value.length - 1])) || !e.target.value.length)
+            ) {
+                setInput({ ...input, [e.target.name]: e.target.value })
             }
-            if (isNumberString(e.target.value[0]) || !e.target.value.length) {
+            if (((e.target.value.length < input[e.target.name].length) &&
+                (input[e.target.name].length == 1 || isNumberString(e.target.value[0])))) {
+                setInput({ ...input, [e.target.name]: e.target.value })
+            }
+            if (e.target.value.length == 2 && input.birthday.length == 1
+            ) {
+                e.target.value = e.target.value + "/"
                 setInput({ ...input, [e.target.name]: e.target.value })
             }
         }
-        else {
+        else if(e.target.name != "birthday"){
             setInput({ ...input, [e.target.name]: e.target.value })
         }
     }

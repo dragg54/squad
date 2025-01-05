@@ -9,6 +9,7 @@ import { responseStatus } from '../../constants/ResponseStatus';
 import { openPopup } from '../../redux/reducers/PopUpReducer';
 import { useDispatch } from 'react-redux';
 import { createUser } from '../../services/user';
+import { saveUnverifiedUser } from '../../redux/reducers/UserReducer';
 
 
 const UserAvatar = () => {
@@ -32,6 +33,7 @@ const UserAvatar = () => {
     const handleSelectAvatar = () => {
         state.input = { ...state.input, profileAvatar: avatars[activeIndex], squadId: 1 }
         createUserMutation.mutate(state.input)
+        dispatch(saveUnverifiedUser({...state.input}))
     }
 
     const avatarImgs = avatars?.map(avatar => (

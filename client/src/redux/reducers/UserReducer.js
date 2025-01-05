@@ -15,16 +15,17 @@ export const userSlice = createSlice({
   },
   reducers: {
     fetchUser: (state, action) => {
-        const {
-            id,
-            squadId,
-            userName,
-            email,
-            firstName,
-            lastName,
-            profileAvatar,
-            isAdmin
-        } = action.payload.userDetails
+      const {
+        id,
+        squadId,
+        userName,
+        email,
+        firstName,
+        lastName,
+        profileAvatar,
+        isVerifiedEmail,
+        isAdmin
+      } = action.payload.userDetails
 
       state.id = id
       state.squadId = squadId
@@ -33,15 +34,34 @@ export const userSlice = createSlice({
       state.firstName = firstName
       state.lastName = lastName
       state.isLoggedIn = true,
-      state.isAdmin = isAdmin
-      state.profileAvatar = BACKEND_SERVER_URL+"/avatars/"+profileAvatar
+        state.isVerifiedEmail = isVerifiedEmail,
+        state.isAdmin = isAdmin
+      state.profileAvatar = BACKEND_SERVER_URL + "/avatars/" + profileAvatar
     },
-    clearUser: (state) =>{
+
+    clearUser: (state) => {
       state.isLoggedIn = false
+    },
+    
+    saveUnverifiedUser: (state, action) => {
+        const {
+          userName,
+          email,
+          firstName,
+          lastName,
+        } = action.payload.userDetails
+
+        state.userName = userName
+        state.email = email
+        state.firstName = firstName
+        state.lastName = lastName
+        state.isLoggedIn = false,
+          state.isVerifiedEmail = false
+      }
     }
   },
-});
+);
 
-export const { fetchUser, clearUser } = userSlice.actions;
+export const { fetchUser, clearUser, saveUnverifiedUser } = userSlice.actions;
 
 export default userSlice.reducer;

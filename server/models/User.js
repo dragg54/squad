@@ -23,6 +23,10 @@ const User = db.define('user', {
     type: DataTypes.BOOLEAN,
     defaultValue: false
   },
+  isVerifiedEmail:{
+    type: DataTypes.BOOLEAN,
+    defaultValue: false
+  },
   birthday:{
     type: DataTypes.STRING
   },

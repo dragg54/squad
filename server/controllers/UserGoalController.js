@@ -8,7 +8,6 @@ export const createUserGoal = async (req, res, next) => {
     req.body.userId = req.user.id
     req.body.squadId = req.user.squadId
     const goal = await userGoalService.createUserGoal(req, transaction);
-    await transaction.commit();
     return res.status(201).json({message: "User goal created"});
   } catch (error) {
     await transaction.rollback()
@@ -87,8 +86,9 @@ export const getUserGoalsByMonth = async (req, res, next) => {
 };
 
 export const updateUserGoalStatus = async(req, res) =>{
+  const transaction = await db.transaction();
   try {
-    await userGoalService.updateGoalStatus(req);
+    await userGoalService.updateGoalStatus(req, transaction);
     return res.json({message: "User goal status updated"})
   } catch (error) {
      res.status(error.statusCode || 500).send({

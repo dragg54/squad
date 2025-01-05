@@ -24,6 +24,26 @@ export const createUser = async (formData) =>{
     }
   }
 
+  export const verifyEmail = async (formData) =>{
+    try{
+        const response = await axiosInstance.post(`${BACKEND_SERVER_URL}/${BACKEND_SERVER_VERSION}/emailVerifications?token=${formData.token}`, formData)
+        return response.data
+    }
+    catch(error){
+        throw error
+    }
+  }
+
+  export const sendVerificationMail = async (formData) =>{
+    try{
+      const response = await axiosInstance.post(`${BACKEND_SERVER_URL}/${BACKEND_SERVER_VERSION}/emailVerifications/resend`, formData)
+      return response.data
+  }
+  catch(error){
+      throw error
+  }
+  }
+
   export const getAllUsers = async ({queryKey}=null) =>{
       const [_key, {limit, order}] = queryKey
     try{
@@ -49,3 +69,4 @@ export const createUser = async (formData) =>{
         throw error
     }
   }
+  

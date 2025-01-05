@@ -10,6 +10,7 @@ import { openPopup } from "../../redux/reducers/PopUpReducer"
 import { useState } from "react"
 import { getAllUsers } from "../../services/user"
 import { socket } from "../../utils/Socket"
+import LoadingSpinner from "../../components/LoadingSpinner"
 
 const AssignPartners = ({ goalInputs }) => {
     const dispatch = useDispatch()
@@ -29,7 +30,8 @@ const AssignPartners = ({ goalInputs }) => {
         }
     });
 
-    const { data: usersData, isLoading, isError } = useQuery(['goals'], getAllUsers)
+
+
 
     const handleSaveUserGoal = (e) => {
         e.preventDefault()
@@ -52,24 +54,31 @@ const AssignPartners = ({ goalInputs }) => {
             <h1 className='text font-bold '>Assign partners to your new goal</h1>
             <p className='mt-2 text-gray-500 text-sm'><span className='text-orange-700'>*</span>Only assigned accountabilty partners will be able to view this goal</p>
             <p className='mt-8 font-semibold'>Members</p>
-            <form onSubmit={handleSaveUserGoal} action="" className="h-60 md:h-64 overflow-y-scroll mt-4 flex-col items-start">
-                {userData && userData.length > 0 && userData.map(partner => (
-                    user.id != partner.id && <div className="flex justify-start items-center -mb-2" key={partner.id}>
-                        <Input
-                            checked={isChecked(partner.id)}
-                            type="checkbox"
-                            value={partner.id}
-                            onChange={handleChange}
-                            className={"mb- 1 !m-0 text-2xl !h-6 !w-6 "} />
-                        <label htmlFor="">{partner.userName}</label>
-                    </div>
-                ))}
-                <Button
-                    type={'submit'}
-                    name="Save Changes"
-                    style="w-full py-3 !bg-[#B175FF]"
-                />
-            </form>
+            {
+                usersIsLoading ? <LoadingSpinner isLoading={usersIsLoading} style={'!h-40 w-full !mb-0 !mt-0'} /> :
+                    <form onSubmit={handleSaveUserGoal} action="" className="h-60 md:h-64 overflow-y-scroll mt-4 flex-col items-start">
+                        {
+
+                            userData && userData.length > 0 && userData.map(partner => (
+                                user.id != partner.id &&
+                                <div className="flex justify-start items-center -mb-2" key={partner.id}>
+                                    <Input
+                                        checked={isChecked(partner.id)}
+                                        type="checkbox"
+                                        value={partner.id}
+                                        onChange={handleChange}
+                                        className={"mb- 1 !m-0 text-2xl !h-6 !w-6 "} />
+                                    <label htmlFor="">{partner.userName}</label>
+                                </div>
+                            ))}
+                            <Button
+                type={'submit'}
+                name="Save Changes"
+                style="w-full py-3 !bg-[#B175FF] mt-6"
+            />
+                    </form>
+            }
+        
         </div>
     )
 }

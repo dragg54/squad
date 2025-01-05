@@ -152,7 +152,7 @@ export const getAllUserGoals = async (req) => {
   else{
     const userGoalsData = await models.UserGoal.findAndCountAll(
       {
-        attributes: { exclude: 'userGoalCategoryId' },
+        attributes: { exclude: 'userGoalCategoryId'},
         include: [
           { model: models.UserGoalCategory, attributes: ['id', 'name'] },
           {
@@ -170,7 +170,14 @@ export const getAllUserGoals = async (req) => {
 };
 
 export const getUserGoalById = async (id) => {
-  return await models.UserGoal.findByPk(id);
+  return await models.UserGoal.findByPk(id,
+  {include: [
+    { model: models.UserGoalCategory, attributes: ['id', 'name'] },
+    {
+      model: GoalPartner, attributes: ["id"],
+      include: { model: User, attributes: { exclude: ["userId", "password", "createdAt", "updatedAt"] }, as: "user" },
+    },
+  ]})
 };
 
 export const updateUserGoal = async (req, res, trans) => {
@@ -217,7 +224,7 @@ export const updateUserGoal = async (req, res, trans) => {
         await createNotification(notificationRequest)
     })
   }
-  // updateGoalPoint(existingGoal, req.body, trans)
+  await updateGoalPoint(existingGoal, req.body, trans)
 };
 
 export const deleteUserGoal = async (id) => {
@@ -256,7 +263,7 @@ function groupData(data, groupBy) {
   return groupedGoals;
 }
 
-export const updateGoalStatus = async(req) =>{
+export const updateGoalStatus = async(req, trans) =>{
   const existingGoal = await getUserGoalById(req.params.id)
   if(!existingGoal){
     throw new NotFoundError("user goal not found")
@@ -264,6 +271,8 @@ export const updateGoalStatus = async(req) =>{
   await UserGoal.update({completed: req.body.completed}, {where:{
     id: req.params.id
   }})
+
+  await updateGoalPoint(existingGoal, req.body, trans)
 }
 
 async function updateGoalPoint(goal, updatedGoal, trans) {
@@ -273,12 +282,12 @@ async function updateGoalPoint(goal, updatedGoal, trans) {
   if ((goal.completed && updatedGoal.completed) || (!goal.completed && !updatedGoal.completed)) {
     return
   }
-  const userPoints = getUserPoints(goal.userId)
+  const userPoints = await getUserPoints(goal.userId)
   if (goal.completed && !updatedGoal.completed) {
-    await updatePoint({ points: userPoints - activityPoints.goalCompletionPoints }, { transaction: trans })
+    await updatePoint({ points: userPoints.points - activityPoints.goalCompletionPoints, userId: goal.userId }, { transaction: trans })
   }
   else if (!goal.completed && updatedGoal.completed) {
-    await updatePoint({ points: userPoints + activityPoints.goalCompletionPoints }, { transaction: trans })
+    await updatePoint({ points: userPoints.points + activityPoints.goalCompletionPoints, userId: goal.userId }, { transaction: trans })
   }
 }
 
