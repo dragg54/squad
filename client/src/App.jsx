@@ -29,6 +29,7 @@ import Bio from './pages/register/Bio'
 import VerifyEmail from './pages/register/VerifyEmail'
 import CheckMail from './pages/register/CheckMail'
 import UserEmailVerified from './pages/register/UserEmailVerified'
+import UserEmailUnverified from './pages/register/UserEmailUnverified'
 // import Notification from './pages/notifications'
 
 
@@ -84,8 +85,9 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/" element={<Momentom/>} />
-        <Route path="/verifyEmail" element={<VerifyEmail />} />
         <Route path="/checkMail" element={<CheckMail />} />
+        <Route path ="/verify" element={<VerifyEmail />} />
+        <Route path ="/emailUnverified" element={<UserEmailUnverified />} />
         <Route path="/emailVerified" element={<UserEmailVerified />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/*" element={<NotFound />} />

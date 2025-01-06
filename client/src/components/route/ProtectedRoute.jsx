@@ -14,10 +14,10 @@ const ProtectedRoute = () => {
     const authToken = useSelector(state => state.auth).token
     const dispatch = useDispatch()
     const currentTime = Date.now() / 1000  
-    if(!authToken || !user.isLoggedIn){
+    if(!authToken || !user.isLoggedIn ){
        return  <Navigate to="/login" /> 
     }
-    if(jwtDecode(authToken)?.exp < currentTime){
+    else if(jwtDecode(authToken)?.exp < currentTime){
         handleLogout(dispatch)
     }
     else{

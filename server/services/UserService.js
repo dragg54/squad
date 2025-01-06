@@ -18,13 +18,19 @@ import { request } from 'http';
 import jwt from 'jsonwebtoken'
 import { sendMail } from './EmailService.js';
 import dotenv from 'dotenv'
+import { UnauthorizedError } from '../errors/UnauthorizedError.js';
+import { invitationStatus } from '../constants/InvitationStatus.js';
 
 dotenv.config()
 
 export const createUser = async (req, trans) => {
     const existingSquad = await getSquadById(req.body.squadId)
     const existingInvite = await getInvitation(req)
-    if (!existingInvite || existingInvite.expiredAt > new Date() || existingInvite.tokenHasBeenUsed) {
+    if (!existingInvite || 
+        existingInvite.expiredAt > new Date() || 
+        existingInvite.tokenHasBeenUsed
+        || existingInvite.status == invitationStatus.ACCEPTED
+    ) {
         throw new BadRequestError("Valid invitation required")
     }
     if (!existingSquad) {
@@ -134,7 +140,7 @@ export const loginUser = async (userData, trans) => {
         where: {
             email: userData.email
         }
-    },
+        },
         {
             attributes: ["id", "email", "password"]
         }
@@ -155,6 +161,9 @@ export const loginUser = async (userData, trans) => {
     const isPasswordValid = await bcrypt.compare(userData.password, existingUser.password);
     if (!isPasswordValid) {
         throw new BadRequestError('Invalid email or password');
+    }
+    if(!existingUser.isVerifiedEmail){
+        throw new UnauthorizedError('User email is not yet verified')
     }
     const token = generateToken(existingUser)
     return {
@@ -184,11 +193,14 @@ export const getUserAvatars = async () => {
 export const verifyEmail = async (req) => {
     const token = req.query
     const { email } = jwt.verify(token.token, process.env.SECRET_KEY);
+    if(!email){
+        throw new BadRequestError('Invalid token or email')
+    }
     const user = await User.findOne({ email });
     if(!user){
         throw new BadRequestError("User must exist before email can be verified")
     }
-    await User.update({ isVerifiedEmail: true }, {where:{email}})
+    await User.update({ isVerifiedEmail: true }, {where:{id: user.id}})
 }
 
 export const resendVerificationMail = async(req) =>{
@@ -204,7 +216,7 @@ export const resendVerificationMail = async(req) =>{
             message: `Click the link to verify your email. <a style="color:red;" href="${process.env.NODE_ENV === 'production'
                 ? process.env.PROD_CLIENT_BASE_URL
                 : process.env.LOCAL_CLIENT_BASE_URL
-                }/verify?token=${token}">Verify Email</a>`
+                }/verify?token=${token}/email=${req.body.email}">Verify Email</a>`
         }
         await sendMail(email)
 }

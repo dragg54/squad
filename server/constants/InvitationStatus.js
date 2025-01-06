@@ -1,4 +1,4 @@
-const invitationStatus = {
+export const invitationStatus = {
     PENDING: 'PENDING',
     ACCEPTED: 'ACCEPTED',
     REJECTED: 'REJECTED'

@@ -6,12 +6,12 @@ export const createUser = async (req, res) => {
   const transaction = await db.transaction()
   try {
     const user = await userService.createUser(req, transaction);
-    // res.status(201).json({
-    //   message: "user created"
-    // });
+    res.status(201).json({
+      message: "user created"
+    });
   } catch (error) {
     console.log(error)
-    // await transaction.rollback()
+    await transaction.rollback()
     res.status(error.statusCode || 500).json({ error: error.message || "Internal server error" });
   }
 };

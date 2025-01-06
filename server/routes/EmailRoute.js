@@ -1,11 +1,10 @@
 import { Router } from "express";
 import { getDonationPaymentPerDonation } from "../controllers/DonationController.js";
-import { verifyEmail } from "../controllers/UserController.js";
-import { resendVerificationMail } from "../services/UserService.js";
+import { resendVerificationMail, verifyEmail } from "../controllers/UserController.js";
 
 const route = Router()
 
-route.post("/", verifyEmail)
+route.put("/", verifyEmail)
 route.post('/resend', resendVerificationMail)
 
 export default route

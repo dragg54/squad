@@ -25,7 +25,7 @@ const UserAvatar = () => {
     }
     const createUserMutation = useMutation(createUser, {
         onSuccess: () => {
-            navigate("/intro")
+            navigate("/checkmail", {state: {username: state.input.userName}})
             dispatch(openPopup({ message: "User successfully created", status: responseStatus.success }))
         },
     });
@@ -33,7 +33,7 @@ const UserAvatar = () => {
     const handleSelectAvatar = () => {
         state.input = { ...state.input, profileAvatar: avatars[activeIndex], squadId: 1 }
         createUserMutation.mutate(state.input)
-        dispatch(saveUnverifiedUser({...state.input}))
+        dispatch(saveUnverifiedUser({userDetails:{...state.input}}))
     }
 
     const avatarImgs = avatars?.map(avatar => (

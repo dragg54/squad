@@ -34,32 +34,32 @@ export const userSlice = createSlice({
       state.firstName = firstName
       state.lastName = lastName
       state.isLoggedIn = true,
-        state.isVerifiedEmail = isVerifiedEmail,
-        state.isAdmin = isAdmin
+      state.isVerifiedEmail = isVerifiedEmail,
+      state.isAdmin = isAdmin
       state.profileAvatar = BACKEND_SERVER_URL + "/avatars/" + profileAvatar
     },
 
     clearUser: (state) => {
       state.isLoggedIn = false
     },
-    
-    saveUnverifiedUser: (state, action) => {
-        const {
-          userName,
-          email,
-          firstName,
-          lastName,
-        } = action.payload.userDetails
 
-        state.userName = userName
-        state.email = email
-        state.firstName = firstName
-        state.lastName = lastName
-        state.isLoggedIn = false,
-          state.isVerifiedEmail = false
-      }
+    saveUnverifiedUser: (state, action) => {
+      const {
+        userName,
+        email,
+        firstName,
+        lastName,
+      } = action.payload.userDetails
+
+      state.userName = userName
+      state.email = email
+      state.firstName = firstName
+      state.lastName = lastName
+      state.isLoggedIn = false
+      state.isVerifiedEmail = false
     }
-  },
+  }
+},
 );
 
 export const { fetchUser, clearUser, saveUnverifiedUser } = userSlice.actions;

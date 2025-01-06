@@ -46,6 +46,9 @@ const Login = () => {
             }
         },
         onError: (err) => {
+            if(err.response.status == 403){
+                navigate("/checkmail", {state: {email: input.email}})
+            }
             setResponse(true)
             dispatch(openPopup({ status: 'error', message: err.response.data.message }))
         }
