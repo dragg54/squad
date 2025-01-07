@@ -19,7 +19,7 @@ const ProgressChart = () => {
         ...goal,
         month: monthName,
         completedGoals: parseInt(goal.completedGoals, 5),
-        uncompletedGoals: parseInt(goal.uncompletedGoals, 5) || 0.2,
+        uncompletedGoals: parseInt(goal.uncompletedGoals, 5) || (!goal.completedGoals && 0.2),
       };
     });
   }
@@ -41,10 +41,10 @@ const ProgressChart = () => {
               <YAxis domain={[0, 6]} />
               <Tooltip />
               <Legend />
-              <Bar dataKey="completedGoals" stackId="a" fill="#7e1e80" name="Completed Goals" />
-              <Bar dataKey="uncompletedGoals" stackId="a" fill="#b175ff" name="Uncompleted Goals" />
+              <Bar dataKey="completedGoals" stackId="a" fill="#7e1e80" name="Completed" />
+              <Bar dataKey="uncompletedGoals" stackId="a" fill="#b175ff" name="Uncompleted " />
               <text x={200} y={5} fill="gray" textAnchor="middle" dominantBaseline="central">
-                <tspan fontSize="14" fontWeight={600}>Achievement Progress</tspan>
+                <tspan fontSize="12" fontWeight={600}>Achievement Progress</tspan>
               </text>
             </BarChart>
           </ResponsiveContainer>
