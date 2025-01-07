@@ -43,7 +43,7 @@ const ProgressChart = () => {
               <Legend />
               <Bar dataKey="completedGoals" stackId="a" fill="#7e1e80" name="Completed" />
               <Bar dataKey="uncompletedGoals" stackId="a" fill="#b175ff" name="Uncompleted " />
-              <text x={200} y={5} fill="gray" textAnchor="middle" dominantBaseline="central">
+              <text x={200} y={12} fill="gray" textAnchor="middle" dominantBaseline="central">
                 <tspan fontSize="12" fontWeight={600}>Achievement Progress</tspan>
               </text>
             </BarChart>
