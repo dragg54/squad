@@ -26,7 +26,7 @@ const ProgressChart = () => {
 
 
   return (
-    <div className='mt-10 border border-gray-300 rounded-md shadow-sm flex mx-auto justify-center text-xs pt-3 h-[450px]' style={{ width: '100%', height: 320 }}>
+    <div className='mt-10 border border-gray-300 rounded-md shadow-sm flex mx-auto justify-center text-xs pt-4 h-[450px]' style={{ width: '100%', height: 320 }}>
       {
         monthlyGoalsLoading ?
           <Skeleton />
