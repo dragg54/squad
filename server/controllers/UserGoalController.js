@@ -8,6 +8,7 @@ export const createUserGoal = async (req, res, next) => {
     req.body.userId = req.user.id
     req.body.squadId = req.user.squadId
     const goal = await userGoalService.createUserGoal(req, transaction);
+    await transaction.commit()
     return res.status(201).json({message: "User goal created"});
   } catch (error) {
     await transaction.rollback()
