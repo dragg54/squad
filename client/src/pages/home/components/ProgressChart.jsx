@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { getUserMonthlyGoals } from '../../../services/goal';
 import { format, parse } from 'date-fns';
 import Skeleton from './Skeleton';
@@ -26,7 +26,7 @@ const ProgressChart = () => {
 
 
   return (
-    <div className='mt-10 border border-gray-200 flex mx-auto justify-center text-xs p h-[400px]' style={{ width: '100%', height: 300 }}>
+    <div className='mt-10 border border-gray-300 rounded-md shadow-sm flex mx-auto justify-center text-xs pt-3 h-[450px]' style={{ width: '100%', height: 320 }}>
       {
         monthlyGoalsLoading ?
           <Skeleton />
@@ -34,17 +34,17 @@ const ProgressChart = () => {
           <ResponsiveContainer>
             <BarChart
               data={processedData}
-              margin={{ top: 15, bottom: 0, right: 6, left: -12 }}
+              margin={{ top: 15, bottom: 0, right: 12, left: -18}}
+              padding={{top:3}}
             >
-              <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="month" />
-              <YAxis domain={[0, 1]} />
+              <YAxis domain={[0, 6]} />
               <Tooltip />
               <Legend />
               <Bar dataKey="completedGoals" stackId="a" fill="#7e1e80" name="Completed Goals" />
               <Bar dataKey="uncompletedGoals" stackId="a" fill="#b175ff" name="Uncompleted Goals" />
-              <text x={200} y={18} fill="gray" textAnchor="middle" dominantBaseline="central">
-                <tspan fontSize="12">Achievement Progress</tspan>
+              <text x={200} y={5} fill="gray" textAnchor="middle" dominantBaseline="central">
+                <tspan fontSize="14" fontWeight={600}>Achievement Progress</tspan>
               </text>
             </BarChart>
           </ResponsiveContainer>
