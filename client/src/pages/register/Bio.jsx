@@ -20,7 +20,7 @@ const Bio = () => {
                 <form action="" className='w-full mt-6 rounded-md'>
                     <Input maxLength={65} onChange={(e)=>handleChangeBio(e)} type="text-area" placeholder="Say something about yourself" style='text-2xl !w-full border border-gray-200'/>
                     <div className=" mt-4 flex items-center gap-2">
-                    <Button type={'button'} onClick={() => navigate("/register/userAvatar")} name='Skip' style={'!border w-32 !border-purple-500 !rounded-full !bg-purple-700 !text-white hover:!bg-purple-400 hover:border-2'} />
+                    <Button type={'button'} onClick={() => navigate("/register/userAvatar", { state: {input:{...userProfileState.input, bio}}})} name='Skip' style={'!border w-32 !border-purple-500 !rounded-full !bg-purple-700 !text-white hover:!bg-purple-400 hover:border-2'} />
                     <Button onClick={()=>{
                         navigate("/register/userAvatar", {
                             state: {input:{...userProfileState.input, bio}}

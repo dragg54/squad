@@ -15,6 +15,7 @@ import { Op, where } from "sequelize";
 import { UserGoalCategory } from "../models/UserGoalCategory.js";
 import { correctDate, correctDateUpdate, correctHour, isPast, isPastMonth, isPastYear } from "../utils/date.js";
 import { goalFrequency } from "../constants/GoalFrequency.js";
+import { format, subMonths } from "date-fns"
 
 export const createUserGoal = async (req, transaction) => {
   const goalData = req.body
@@ -112,7 +113,7 @@ export const getAllUserGoals = async (req) => {
       [Op.lt]: new Date(`${currentYear + 1}-01-01`),
     }
     queryOpts['frequency'] = goalFrequency.monthly
-    const goalsGroupedByMonth = await models.UserGoal.findAll({
+    const goalsGroupedByMonth = await models.UserGoal.findAndCountAll({
       where: queryOpts,
       attributes: [
         [db.fn('DATE_FORMAT', db.col('user_goal.startDate'), '%m'), 'month'],
@@ -126,7 +127,7 @@ export const getAllUserGoals = async (req) => {
         }
       ], order: [[db.literal('month'), 'ASC']],
     });
-    return groupData(goalsGroupedByMonth, groupBy)
+    return groupData(goalsGroupedByMonth.rows, groupBy, goalsGroupedByMonth.count)
   }
 
   if (groupBy === "year") {
@@ -237,18 +238,60 @@ export const deleteUserGoal = async (id) => {
 };
 
 export const getGoalsGroupedByMonth = async (req) => {
+  const currentYear = new Date().getFullYear(); 
+
+  const staticMonths = Array.from({ length: 6 }, (_, index) => {
+    const month = index + 1; 
+    return {
+      month: month.toString().padStart(2, '0'), 
+      monthName: format(new Date(currentYear, month - 1), 'MMMM'), 
+    };
+  });
+
   const goals = await UserGoal.findAll({
     attributes: [
       [db.fn('DATE_FORMAT', db.col('endDate'), '%m'), 'month'],
       [db.fn('COUNT', db.col('id')), 'goalCount'],
+      [
+        db.fn('SUM', db.literal("CASE WHEN completed = 1 THEN 1 ELSE 0 END")),
+        'completedGoals',
+      ], 
+      [
+        db.fn('SUM', db.literal("CASE WHEN completed = 0 THEN 1 ELSE 0 END")),
+        'uncompletedGoals',
+      ], 
     ],
     group: ['month'],
     order: [[db.literal('month'), 'ASC']],
-    where: { userId: req.user.id }
-  });
-  return goals
+    where: { userId: req.user.id,
+      [db.Sequelize.Op.and]: [
+        db.where(db.fn('YEAR', db.col('endDate')), currentYear), 
+        { frequency: { [db.Sequelize.Op.ne]: 'yearly' } } 
+      ],
+  }});
+
+  const goalsMap = goals.reduce((acc, goal) => {
+    const { dataValues } = goal; // Extract dataValues
+    acc[dataValues.month] = {
+      goalCount: parseInt(dataValues.goalCount, 10) || 0,
+      completedGoals: parseInt(dataValues.completedGoals, 10) || 0,
+      uncompletedGoals: parseInt(dataValues.uncompletedGoals, 10) || 0,
+    };
+    return acc;
+  }, {});
+  
+  const completeGoalsData = staticMonths.map(({ month, monthName }) => ({
+    month,
+    monthName,
+    goalCount: goalsMap[month]?.goalCount || 0,
+    completedGoals: goalsMap[month]?.completedGoals || 0,
+    uncompletedGoals: goalsMap[month]?.uncompletedGoals || 0,
+  }));
+
+  return completeGoalsData
 };
-function groupData(data, groupBy) {
+
+function groupData(data, groupBy, count=0) {
   const groupedGoals = data.reduce((acc, goal) => {
     const period = goal.dataValues[groupBy];
 

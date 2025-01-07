@@ -36,7 +36,7 @@ const Aside = () => {
                     members && members.map((user)=>(
                         <li key={user.id} className="flex gap-2 items-center">
                         <Image isUser={true} source={BACKEND_SERVER_URL+"/avatars/"+user.profileAvatar} style="rounded-full h-14 w-14"/>
-                        Kelvin Joe
+                         {user.firstName} {user.lastName}
                     </li>
                     ))
                    }

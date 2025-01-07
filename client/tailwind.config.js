@@ -38,12 +38,18 @@ export default withMT({
           '0%': { transform: 'translateX(0%)', opacity: '1' },
           '100%': { transform: 'translateX(-100%)', opacity: '0' },
         },
+        pulse: {
+          "0%": { opacity: "0.5" },
+          "50%": { opacity: "1" },
+          "100%": { opacity: "0.5" },
+        },
       },
       animation: {
         'slide-down': 'slide-down 0.30s ease-in-out',
         'slide-up': 'slide-up 0.3s ease-in-out',
         'slide-right': 'slide-right 0.3s ease-in-out',
         'slide-left': 'slide-left 0.3s ease-in-out',
+        pulse: "pulse 1.5s ease-in-out infinite",
 
       }
     },

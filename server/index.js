@@ -16,6 +16,7 @@ import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import paymentRoute from "./routes/PaymentRoute.js"
+import { router as monthlyGoalRoute } from "./routes/UserMonthlyGoalRoute.js"
 import { UserGoalCategory } from './models/UserGoalCategory.js'
 import userGoalCategoryRouter from './routes/UserGoalCategoryRoute.js'
 import http from 'http'
@@ -85,6 +86,7 @@ app.use("/api/v1/payments", paymentRoute)
 app.use("/api/v1/avatars", avatarRoute)
 app.use("/api/v1/emailVerifications", emailRoute)
 app.use("/api/v1/donationPayments", donationPaymentRoute)
+app.use("/api/v1/monthlyGoals", monthlyGoalRoute)
 
 const clientBaseURl = process.env.NODE_ENV ==  'Development' || !process.env.NODE_ENV ? 
                     process.env.LOCAL_CLIENT_BASE_URL :

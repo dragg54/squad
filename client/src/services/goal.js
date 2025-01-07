@@ -49,3 +49,13 @@ export const updateUserGoalStatus = async(formData) =>{
   }
 }
 
+export const getUserMonthlyGoals = async () => {
+  try {
+    const response = await axiosInstance.get(`${BACKEND_SERVER_URL}/${BACKEND_SERVER_VERSION}/monthlyGoals`);
+    return response.data;
+  }
+  catch (err) {
+    throw err
+  }
+}
+

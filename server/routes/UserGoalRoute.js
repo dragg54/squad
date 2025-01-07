@@ -9,7 +9,6 @@ const router = Router();
 router.post('/', authMiddleware, validateRequest(goalSchema), createUserGoal);
 router.get('/', authMiddleware, getAllUserGoals);
 router.get('/:id', authMiddleware, getUserGoalById);
-router.get('/', authMiddleware, getUserGoalsByMonth);
 router.put('/:id', authMiddleware, validateRequest(updateGoalSchema), updateUserGoal);
 router.delete('/:id', authMiddleware, deleteUserGoal);
 router.patch('/:id/status', authMiddleware, updateUserGoalStatus)

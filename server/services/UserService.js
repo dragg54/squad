@@ -74,12 +74,13 @@ export const createUser = async (req, trans) => {
             message: `Click the link to verify your email. <a style="color:red;" href="${process.env.NODE_ENV === 'production'
                 ? process.env.PROD_CLIENT_BASE_URL
                 : process.env.LOCAL_CLIENT_BASE_URL
-                }/verify?token=${token}">Verify Email</a>`
+                }/verify?token=${token}&email=${req.body.email}">Verify Email</a>`
         }
+        console.log(email)
         await sendMail(email)
     }
     catch (err) {
-        console.log(err)
+        throw new InternalServerError("Failed to send mail")
     }
 };
 
@@ -196,7 +197,7 @@ export const verifyEmail = async (req) => {
     if(!email){
         throw new BadRequestError('Invalid token or email')
     }
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ where: {email} });
     if(!user){
         throw new BadRequestError("User must exist before email can be verified")
     }
