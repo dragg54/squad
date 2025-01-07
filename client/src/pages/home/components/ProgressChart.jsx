@@ -28,7 +28,7 @@ const ProgressChart = () => {
   return (
     <div className='mt-10 border border-gray-200 flex mx-auto justify-center text-xs p h-[400px]' style={{ width: '100%', height: 300 }}>
       {
-        !monthlyGoalsLoading ?
+        monthlyGoalsLoading ?
           <Skeleton />
           :
           <ResponsiveContainer>
