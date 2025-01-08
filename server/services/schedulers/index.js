@@ -10,7 +10,7 @@ export  function scheduleJob(io){
     cron.schedule('0 0 * * *', async()=>{
         await scheduleGoalExpiration(io)
     })
-    cron.schedule('15 20 * * *', async()=>{
+    cron.schedule('0 7 1 * *', async()=>{
        scheduleMonthGoalKPI()
     })
 }

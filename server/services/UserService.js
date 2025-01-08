@@ -86,8 +86,10 @@ export const createUser = async (req, trans) => {
 
 export const getAllUsers = async (req) => {
     const queryOpts = {
-        where: { squadId: req.user.squadId },
-        order: [['createdAt', 'DESC']],
+       order:  [['createdAt', 'DESC']]
+    }
+    if(req.user && req.user.squadId){
+        queryOpts['where'] = { squadId: req.user.squadId }
     }
     if (req.query) {
         const { limit, order } = req.query

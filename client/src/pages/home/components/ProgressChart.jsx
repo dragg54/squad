@@ -5,10 +5,14 @@ import { format, parse } from 'date-fns';
 import Skeleton from './Skeleton';
 
 const ProgressChart = () => {
-  const { data: monthlyGoals, isLoading: monthlyGoalsLoading } = useQuery('monthlyGoals', {
-    queryFn: getUserMonthlyGoals
-  })
-
+  const { data: monthlyGoals, isLoading: monthlyGoalsLoading } = useQuery(
+    ['monthGoalsProgress', {
+    }],
+    getUserMonthlyGoals,
+    // {
+    //   keepPreviousData: true, 
+    // }
+  );
 
   let processedData = []
 

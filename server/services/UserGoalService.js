@@ -277,7 +277,7 @@ export const getGoalsGroupedByMonth = async (req) => {
   }});
 
   const goalsMap = goals.reduce((acc, goal) => {
-    const { dataValues } = goal; // Extract dataValues
+    const { dataValues } = goal; 
     acc[dataValues.month] = {
       goalCount: parseInt(dataValues.goalCount, 10) || 0,
       completedGoals: parseInt(dataValues.completedGoals, 10) || 0,

@@ -49,13 +49,17 @@ export const updateUserGoalStatus = async(formData) =>{
   }
 }
 
-export const getUserMonthlyGoals = async () => {
+export const getUserMonthlyGoals = async ({queryKey}) => {
+  const [_key, {userId, squadId, month }] = queryKey;
   try {
-    const response = await axiosInstance.get(`${BACKEND_SERVER_URL}/${BACKEND_SERVER_VERSION}/monthlyGoals`);
+    const response = await axiosInstance.get(`${BACKEND_SERVER_URL}/${BACKEND_SERVER_VERSION}/monthlyGoals`, {
+      params: {userId, squadId, month}
+    });
     return response.data;
   }
   catch (err) {
     throw err
   }
 }
+
 

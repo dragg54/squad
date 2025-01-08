@@ -120,3 +120,8 @@ export const correctDate = (date, frequency, dateType = null) => {
         return date
     }
 }
+
+export const getMonthName = (monthIndex) => {
+  const date = setMonth(new Date(), monthIndex);
+  return format(date, 'MMMM');
+};
