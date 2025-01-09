@@ -10,6 +10,7 @@ import { openPopup } from '../../redux/reducers/PopUpReducer';
 import { useDispatch } from 'react-redux';
 import { createUser } from '../../services/user';
 import { saveUnverifiedUser } from '../../redux/reducers/UserReducer';
+import NotFound from '../notFound';
 
 
 const UserAvatar = () => {
@@ -20,9 +21,13 @@ const UserAvatar = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const state = useLocation().state
+    if(!state){
+        return <NotFound />
+    }
     if (avatarsIsLoading) {
         console.log("Loading...")
     }
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const createUserMutation = useMutation(createUser, {
         onSuccess: () => {
             navigate("/checkmail", {state: {username: state.input.userName}})

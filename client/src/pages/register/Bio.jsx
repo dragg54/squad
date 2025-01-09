@@ -3,6 +3,7 @@ import Button from "../../components/buttons"
 import BackButton from "../../components/buttons/BackButton"
 import Input from "../../components/inputs"
 import { useState } from "react"
+import NotFound from "../notFound"
 
 const Bio = () => {
     const navigate = useNavigate()
@@ -10,6 +11,9 @@ const Bio = () => {
     const userProfileState = useLocation().state
     function handleChangeBio(e){
         setBio(e.target.value)
+    }
+    if(!userProfileState){
+        return <NotFound />
     }
     return (
         <div className='w-full flex flex-col items-center justify-center p-3 h-screen'>

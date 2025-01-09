@@ -3,6 +3,8 @@ import Button from '../../components/buttons'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useState } from 'react'
 import Logo from '../../components/logo'
+import { validateForm } from '../../utils/ValidateInput'
+import NotFound from '../notFound'
 
 
 const Register = () => {
@@ -18,6 +20,9 @@ const Register = () => {
         password: ""
     })
 
+    const [error, setError] = useState({
+    })
+
     const validationRules = {
         textValidation: {
             firstName: value => value?.length,
@@ -27,8 +32,15 @@ const Register = () => {
             birthday: value => Number(value.substring(1, 2)) <= 31 && Number(value.substring(4, 5)) <= 12,
             password: value => value?.length >= 8
         },
-
     };
+
+    const inputValueValidationRules = {
+        firstName: { minLength: 2, noWhiteSpace: true, maxLength: 20 },
+        lastName: { minLength: 2, noWhiteSpace: true, maxLength: 20 },
+        password: { isPassword: true },
+        email: { isEmail: true },
+        birthday: { isDDMMDate: true }
+    }
 
     const isNumberString = (value) => {
         return (["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"].some(x => x.toString() == value))
@@ -52,7 +64,7 @@ const Register = () => {
                 setInput({ ...input, [e.target.name]: e.target.value })
             }
         }
-        else if(e.target.name != "birthday"){
+        else if (e.target.name != "birthday") {
             setInput({ ...input, [e.target.name]: e.target.value })
         }
     }
@@ -61,14 +73,26 @@ const Register = () => {
     const squadId = searchParams.get("squad")
     const token = searchParams.get("inviteToken")
     const invitedBy = searchParams.get("invitedBy")
+
+    if(!token){
+        return <NotFound />
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault()
-        if (!buttonDisabled) {
-            input.squadId = squadId
-            input.token = token
-            input.invitedBy = invitedBy
-            navigate("bio", { state: { input } })
+        const validationResult = validateForm(input, inputValueValidationRules)
+        if (validationResult.hasErrors) {
+            setError(validationResult.errors);
         }
+        else {
+            if (!buttonDisabled) {
+                input.squadId = squadId
+                input.token = token
+                input.invitedBy = invitedBy
+                navigate("bio", { state: { input } })
+            }
+        }
+
     }
     return (
         <section className='flex items-center flex-col md:mt-10 mt-2'>
@@ -79,13 +103,31 @@ const Register = () => {
                 </div>
                 <h1 className="font-semibold text-2xl mt-2 md:mt-5 md:text-4xl">Register</h1>
                 <p className="text-gray-500 text-sm md:text-xl">Create an account</p>
-                <form onSubmit={handleSubmit} action="" className="mt-5">
-                    <Input value={input.firstName} onChange={handleChange} name='firstName' placeholder='First Name' style='' />
-                    <Input value={input.lastName} onChange={handleChange} name='lastName' placeholder='Last Name' style='' />
-                    <Input value={input.userName} onChange={handleChange} name='userName' placeholder='UserName' style='' />
-                    <Input value={input.email} onChange={handleChange} name='email' placeholder='Email' style='' />
-                    <Input maxLength={5} value={input.birthday} onChange={handleChange} name='birthday' placeholder='Birthday DD/MM' style='' />
-                    <Input inputMode="numeric" onChange={handleChange} type="password" name='password' placeholder='Password' style='' />
+                <form onSubmit={handleSubmit} action="" className="mt-5 w-full">
+                    <div className='w-full'>
+                        <Input value={input.firstName} onChange={handleChange} name='firstName' placeholder='First Name' style='' />
+                        <small className='mb-1 text-red-400'>{error['firstName']}</small>
+                    </div>
+                    <div className='w-full'>
+                        <Input value={input.lastName} onChange={handleChange} name='lastName' placeholder='Last Name' style='' />
+                        <small className='mb-1 text-red-400'>{error['lastName']}</small>
+                    </div>
+                    <div className='w-full'>
+                        <Input value={input.userName} onChange={handleChange} name='userName' placeholder='UserName' style='' />
+                        <small className='mb-1 text-red-400'>{error['userName']}</small>
+                    </div>
+                    <div className='w-full'>
+                        <Input value={input.email} onChange={handleChange} name='email' placeholder='Email' style='' />
+                        <small className='mb-1 text-red-400'>{error['email']}</small>
+                    </div>
+                    <div className='w-full'>
+                        <Input maxLength={5} value={input.birthday} onChange={handleChange} name='birthday' placeholder='Birthday DD/MM' style='' />
+                        <small className='mb-1 text-red-400'>{error['birthday']}</small>
+                    </div>
+                    <div className='w-full'>
+                        <Input onChange={handleChange} type="password" name='password' placeholder='Password' style='' />
+                        <small className='mb-1 text-red-400'>{error['password']}</small>
+                    </div>
                     <Button validationRules={validationRules}
                         buttonDisabled={buttonDisabled}
                         inputValues={input}

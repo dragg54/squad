@@ -3,8 +3,10 @@ import { useSelector } from 'react-redux';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { getUserMonthlyGoals } from '../../../services/goal';
 import LoadingSpinner from '../../../components/LoadingSpinner';
-import { useSearchParams } from 'react-router-dom';
+import {  useSearchParams } from 'react-router-dom';
 import { getMonthName } from '../../../utils/DateFormatter';
+import { addToLocalStorage, removeFromLocalStorage } from '../../../utils/LocalStorage';
+import { useEffect } from 'react';
 
 const COLORS = ['#8884d8', '#82ca9d', '#d84c4c'];
 
@@ -12,8 +14,8 @@ const COLORS = ['#8884d8', '#82ca9d', '#d84c4c'];
 const MonthlyProgressDonut = () => {
   const user = useSelector(state => state.user)
   const [searchParams] = useSearchParams();
+  const pageHasBeenView = searchParams.get('seen')
   const month = searchParams.get('month');
-  console.log(month)
   const { data: goalData, isLoading: dataIsLoading } = useQuery(
     ['monthGoalsProgress', {
       squadId: 3, userId: user.id, month: '01'
@@ -23,16 +25,26 @@ const MonthlyProgressDonut = () => {
     //   keepPreviousData: true, 
     // }
   );
+
+  useEffect(()=>{
+    console.log(pageHasBeenView)
+    if(pageHasBeenView){
+      removeFromLocalStorage('monthlyProgress')
+    }
+    else{
+      addToLocalStorage('monthlyProgress', window.location.href)
+    }
+  },[])
+
   if (dataIsLoading) {
     return <LoadingSpinner isLoading={dataIsLoading} />
   }
-  console.log(goalData)
   const chartData = [
     { name: 'Completed', value: goalData && goalData.length && +goalData[0].completedGoals },
     { name: 'Uncompleted', value: goalData && goalData.length  && +goalData[0].uncompletedGoals },
   ];
-  const renderCustomLabel = ({ percent }) => {
-    return `${(percent * 100).toFixed(0)}%`;
+  const renderCustomLabel = ({ percent, value }) => {
+    return `${value} ${value > 1 ? 'goals': 'goal'}: ${(percent * 100).toFixed(0)}%`;
   };
   return (
     <div className="flex flex-col w-full h-screen justify-start items-center  mt-20 px-3">
