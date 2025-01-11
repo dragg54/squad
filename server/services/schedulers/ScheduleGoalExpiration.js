@@ -8,11 +8,14 @@ import { updateUserGoal } from "../UserGoalService.js";
 import { addPoint } from "../PointService.js";
 import Point from "../../models/Point.js";
 import { activityPoints } from "../../constants/ActivityPoints.js";
+import db from "../../configs/db.js";
+import { createNotification } from "../NotificationService.js";
 
 export async function scheduleGoalExpiration(io) {
     try {
-        const now = new Date();
-        const formattedNow = now.toISOString().slice(0, 19).replace('T', ' ');
+        const now = new Date().setMonth(new Date().getMonth() + 1);
+        const transaction = await db.transaction()
+        const formattedNow = new Date(now).toISOString().slice(0, 19).replace('T', ' ');
         const expiredGoals = await UserGoal.findAll({
             attributes: ['id', 'squadId'],
             include: [
@@ -34,11 +37,12 @@ export async function scheduleGoalExpiration(io) {
             await Promise.all(expiredGoals?.map(async (userGoal) => {
                 await UserGoal.update({
                     isExpired: true
-                }, { where: { id: userGoal.id } })
+                }, { where: { id: userGoal.id } }, { transaction})
 
                 await Point.decrement('points', {
                     by: activityPoints.goalCreationPoints + 2,
-                    where: {userId: userGoal.user.id}})
+                    where: {userId: userGoal.user.id,
+                    }}, {transaction})
 
                 const notificationRequest = {
                     senderId: userGoal.squadId,
@@ -48,9 +52,10 @@ export async function scheduleGoalExpiration(io) {
                     message: `One of your goals has expired`,
                     type: notificationType.INFO,
                     sourceId: userGoal.id,
-                    sourceName: notificationSource.GOAL
+                    sourceName: notificationSource.GOALEXPIRATION
                 }
-                await Notification.create(notificationRequest)
+                await createNotification(notificationRequest)
+                await transaction.commit()
                 await sendGoalExpiredNotification(userGoal.user.id, userGoal.squadId, io)
             }))
         }

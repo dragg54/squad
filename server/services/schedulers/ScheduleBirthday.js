@@ -31,7 +31,7 @@ export async function scheduleBirthday(io) {
                         message: `Today is ${user.userName}'s birthday`,
                         type: notificationType.INFO,
                         sourceId: user.id,
-                        sourceName: notificationSource.CELEBRATION
+                        sourceName: notificationSource.BIRTHDAY
                     }
                 })
                 await Notification.bulkCreate(notificationRequest)

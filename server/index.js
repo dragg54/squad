@@ -28,6 +28,8 @@ import { sendGoalCreatedNotification } from './socket.io/goalNotification.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { scheduleJob } from './services/schedulers/index.js';
+import logger from './logger.js';
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -52,6 +54,26 @@ const corsOptions = {
   },
 };
 const server = http.createServer(app,  {cors: corsOptions});
+
+// Middleware to log all incoming requests
+app.use((req, res, next) => {
+  const startTime = Date.now();
+  
+  res.on('finish', () => {
+    const duration = Date.now() - startTime;
+    const { method, url } = req;
+    const { statusCode } = res;
+    const logMessage = `${method} ${url} ${statusCode} - ${duration}ms`;
+    if (statusCode >= 500) {
+      logger.error(logMessage);
+    } else if (statusCode >= 400) {
+      logger.warn(logMessage);
+    } else {
+      logger.info(logMessage);
+    }  });
+  
+  next();
+});
 
 app.use(express.static(path.join(__dirname, 'public')));
 

@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { BACKEND_SERVER_URL } from '../../Appconfig';
+import { removeFromLocalStorage } from '../../utils/LocalStorage';
 
 export const userSlice = createSlice({
   name: 'user',
@@ -40,6 +41,8 @@ export const userSlice = createSlice({
     },
 
     clearUser: (state) => {
+      removeFromLocalStorage('authToken')
+      document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC"
       state.isLoggedIn = false
     },
 

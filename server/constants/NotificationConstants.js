@@ -14,5 +14,6 @@ export const notificationType= {
 export const notificationSource = {
     POST: 'POST',
     GOAL:' GOAL',
-    CELEBRATION: 'CELEBRATION'
+    CELEBRATION: 'CELEBRATION',
+    GOALEXPIRATION: 'GOALEXPIRATION'
 }

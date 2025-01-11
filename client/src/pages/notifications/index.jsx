@@ -7,6 +7,7 @@ import { customizeNotificationTime } from "../../utils/customizeNotificationTime
 import { BACKEND_SERVER_URL } from "../../Appconfig"
 import { useNavigate } from "react-router-dom"
 import LoadingSpinner from "../../components/LoadingSpinner"
+import { MdOutlineDangerous } from "react-icons/md";
 
 const NotificationContainer = ({ openNotificationContainer }) => {
   const { data: notificationData, isLoading: notificationSummaryIsLoading } = useQuery('notifications', {
@@ -48,11 +49,18 @@ const NotificationContainer = ({ openNotificationContainer }) => {
                           <li className="text-[0.85rem] inline-flex items-center gap-2" key={not.id} onClick={() => {
                             gotoSource(not["notification_sources.sourceId"], not["notification_sources.sourceName"])
                           }}>
-                            <span><Image source={BACKEND_SERVER_URL + "/avatars/" + not?.['user.profileAvatar']} style={'rounded-full h-8 w-8 text-[0.5rem]'} /></span>{not.message}{not.message.lastIndexOf(".") == -1 && '.'} {customizeNotificationTime(not.createdAt)}
+                            {console.log((not["notification_sources.sourceName"]))}
+                            <span>
+                              {
+                                  ['USER', 'POST', 'BIRTHDAY'].includes(not["notification_sources.sourceName"]) 
+                                           ? <Image source={BACKEND_SERVER_URL + "/avatars/" + not?.['user.profileAvatar']} style={'rounded-full h-8 w-8 text-[0.5rem]'}/>
+                                           : (not["notification_sources.sourceName"] == "GOALEXPIRATION") ? 
+                                          <MdOutlineDangerous className="text-red-600 text-2xl"/>: ''
+                                          }</ span>{not.message}{not.message.lastIndexOf(".") == -1 && '.'} {customizeNotificationTime(not.createdAt)}
                           </li>
                         )
                       })
-                    }
+                    } 
                   </ul>
                 ))
               }

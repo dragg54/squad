@@ -223,3 +223,11 @@ export const resendVerificationMail = async(req) =>{
         }
         await sendMail(email)
 }
+
+export const logoutUser = (res) =>{
+    res.cookie('token','', {
+        sameSite: 'None',
+        secure: true,
+        httpOnly: true,
+      })
+}

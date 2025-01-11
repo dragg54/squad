@@ -24,6 +24,16 @@ export const createUser = async (formData) =>{
     }
   }
 
+  export const logoutUser = async () =>{
+    try{
+        const response = await axiosInstance.post(`${BACKEND_SERVER_URL}/${BACKEND_SERVER_VERSION}/users/logout`)
+        return response
+    }
+    catch(error){
+        throw error
+    }
+  }
+
   export const verifyEmail = async (formData) =>{
     try{
         const response = await axiosInstance.put(`${BACKEND_SERVER_URL}/${BACKEND_SERVER_VERSION}/emailVerifications?token=${formData.token}`, formData)

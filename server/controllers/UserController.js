@@ -81,6 +81,16 @@ export const loginUser = async (req, res) => {
   }
 }
 
+export const logoutUser = async (req, res) =>{
+  try{
+    userService.logoutUser(res)
+    res.json('User logged out')
+  }
+  catch(error){
+    res.status(error.statusCode || 500).json({ message: error.message || "Internal server error" })
+  }
+}
+
 
 export const getUserAvatars = async (req, res) => {
   try {
