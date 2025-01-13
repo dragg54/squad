@@ -17,7 +17,7 @@ const ProgressChart = () => {
   let processedData = []
 
   if (!monthlyGoalsLoading) {
-    processedData = monthlyGoals.map((goal) => {
+    processedData = monthlyGoals?.map((goal) => {
       const monthName = format(parse(goal.month, "MM", new Date()), "MMM");
       return {
         ...goal,

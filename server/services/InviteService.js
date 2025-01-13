@@ -1,6 +1,7 @@
 import crypto from 'crypto' 
 import Invite from '../models/Invite.js';
 import { BadRequestError } from '../errors/BadRequestError.js';
+import logger from '../logger.js';
 
 function generateInviteToken() {
     return crypto.randomBytes(32).toString('hex');
@@ -19,16 +20,16 @@ export async function createInvitation(req){
         invitedBy: id,
         expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000) 
     });
-
-   if(req.body.email){
-    // await sendEmail(email, `You're invited! Register here: ${inviteLink}`);
-   }
    return inviteLink
 }
 
 export async function updateInvitationStatus(id, req){
     const existingInvitation = await Invite.findByPk(id)
-    if(!existingInvitation) throw new BadRequestError("Invitation not found")
+    if(!existingInvitation){
+        const errMsg = "Invitation not found"
+        logger.error(errMsg)
+        throw new BadRequestError(errMsg)
+    }
     await Invite.update({status: req.status, tokenHasBeenUsed: true}, {where:{id}})
 }
 

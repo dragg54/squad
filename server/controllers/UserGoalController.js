@@ -1,5 +1,6 @@
 import db from '../configs/db.js';
 import { BadRequestError } from '../errors/BadRequestError.js';
+import logger from '../logger.js';
 import * as userGoalService from '../services/UserGoalService.js'
 
 export const createUserGoal = async (req, res, next) => {
@@ -9,6 +10,7 @@ export const createUserGoal = async (req, res, next) => {
     req.body.squadId = req.user.squadId
     const goal = await userGoalService.createUserGoal(req, transaction);
     await transaction.commit()
+    logger.info("user goal created")
     return res.status(201).json({message: "User goal created"});
   } catch (error) {
     await transaction.rollback()
@@ -49,6 +51,7 @@ export const updateUserGoal = async (req, res, next) => {
   try {
     await userGoalService.updateUserGoal(req, res, transaction);
     transaction.commit()
+    logger.info("user goal updated")
     res.json("Goal updated")
   } catch (error) {
     console.log(error.message)
@@ -90,6 +93,7 @@ export const updateUserGoalStatus = async(req, res) =>{
   const transaction = await db.transaction();
   try {
     await userGoalService.updateGoalStatus(req, transaction);
+    logger.info("User goal updated", req.params.id)
     return res.json({message: "User goal status updated"})
   } catch (error) {
      res.status(error.statusCode || 500).send({

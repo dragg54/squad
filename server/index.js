@@ -71,7 +71,7 @@ app.use((req, res, next) => {
     } else {
       logger.info(logMessage);
     }  });
-  
+  //  logger.info(statusMessage)
   next();
 });
 

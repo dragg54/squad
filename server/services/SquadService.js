@@ -1,5 +1,6 @@
 import model from '../models/index.js'
 import {DuplicateError} from '../errors/DuplicateError.js'
+import logger from '../logger.js'
 
 export const createSquad = async(req) =>{
     const existingSquad = await getAllSquads({query:{
@@ -7,7 +8,9 @@ export const createSquad = async(req) =>{
         email: req.body.email
     }}) 
     if(existingSquad.length > 0){
-        throw new DuplicateError("Squad already exists")
+        const errMsg = "Squad already exists"
+        logger.error(errMsg)
+        throw new DuplicateError(errMsg)
     }
     await model.Squad.create(req.body)
 }

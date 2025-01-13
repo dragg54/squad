@@ -1,4 +1,5 @@
 import { createLogger, format, transports } from 'winston';
+import  DailyRotateFile  from 'winston-daily-rotate-file'
 
 const logger = createLogger({
   level: 'info', 
@@ -16,6 +17,13 @@ const logger = createLogger({
                 return `${timestamp} [${level}]: ${message}`;
               })
         )
+    }),
+    new DailyRotateFile({
+      filename: 'logs/serverlog-%DATE%.log',
+      datePattern: 'YYYY-MM-DD',
+      zippedArchive: true,
+      maxSize: '10m',
+      maxFiles: '5d',
     }),
     new transports.File({ filename: 'app.log',
         format: format.combine(

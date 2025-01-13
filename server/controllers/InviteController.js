@@ -1,8 +1,10 @@
+import logger from '../logger.js'
 import * as InviteService from '../services/InviteService.js'
 
 export const createInvite = async (req, res) => {
     try {
         const invite = await InviteService.createInvitation(req)
+        logger.info("Invite created")
         return res.json(invite)
     }
     catch (error) {

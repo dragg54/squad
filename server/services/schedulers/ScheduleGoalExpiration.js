@@ -10,6 +10,7 @@ import Point from "../../models/Point.js";
 import { activityPoints } from "../../constants/ActivityPoints.js";
 import db from "../../configs/db.js";
 import { createNotification } from "../NotificationService.js";
+import logger from "../../logger.js";
 
 export async function scheduleGoalExpiration(io) {
     try {
@@ -57,11 +58,12 @@ export async function scheduleGoalExpiration(io) {
                 await createNotification(notificationRequest)
                 await transaction.commit()
                 await sendGoalExpiredNotification(userGoal.user.id, userGoal.squadId, io)
+                logger.INFO("Expiration notification sent")
             }))
         }
     }
     catch (err) {
-        console.log(err)
+        logger.error('Goal expiration failed', err.message)
     }
 
 }

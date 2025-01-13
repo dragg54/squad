@@ -16,6 +16,7 @@ import { UserGoalCategory } from "../models/UserGoalCategory.js";
 import { correctDate, correctDateUpdate, correctHour, isPast, isPastMonth, isPastYear } from "../utils/date.js";
 import { goalFrequency } from "../constants/GoalFrequency.js";
 import { format, subMonths } from "date-fns"
+import logger from "../logger.js";
 
 export const createUserGoal = async (req, transaction) => {
   const goalData = req.body
@@ -24,11 +25,15 @@ export const createUserGoal = async (req, transaction) => {
   const userGoal = await models.UserGoal.create({...goalData, userId: req.user.id}, { transaction });
   if (isInvalidGoalData(goalData))
    {
+    const errMsg = "Invalid start date or end date."
+    logger.error(errMsg)
     throw new BadRequestError("Invalid start date or end date.")
   }
   const isGroupGoal = await UserGoalCategory.findByPk(req.body.categoryId) == "Group"
   if(isGroupGoal && !goalData.goalPartners.length){
-    throw new BadRequestError("Invalid goal: Group goals must have at least a partner")
+    const errMsg = "Invalid start date or end date."
+    logger.error(errMsg)
+    throw new BadRequestError(errMsg)
   }
   if (goalData.goalPartners && goalData.goalPartners.length > 0) {
     if(isGroupGoal){
@@ -186,7 +191,9 @@ export const updateUserGoal = async (req, res, trans) => {
   let { title, description, completed, startDate, endDate, goalPartners, userGoalCategoryId, frequency } = req.body;
   if (isInvalidGoalData(req.body))
     {
-     throw new BadRequestError("Invalid start date or end date.")
+      const errMsg = "Invalid start date or end date."
+      logger.error(errMsg)
+      throw new BadRequestError(errMsg)
    }
    startDate = correctDateUpdate(startDate, frequency, 'startDate')
    endDate =   correctDateUpdate(new Date(endDate).toUTCString(), frequency, 'endDate')
@@ -195,13 +202,17 @@ export const updateUserGoal = async (req, res, trans) => {
     { where: { id }, transaction: trans }
   );
   if (!updated) {
-    throw new NotFoundError("Goal not found")
+    const errMsg = "Goal not found"
+    logger.error(errMsg)
+    throw new NotFoundError(errMsg)
   }
 
   const existingGoal = await UserGoalCategory.findByPk(req.body.userGoalCategoryId)
   const isGroupGoal = existingGoal?.name == "Group"
   if(isGroupGoal && !goalPartners.length){
-    throw new BadRequestError("Invalid goal: Group goals must have at least a partner")
+    const errMsg = "Invalid goal: Group goals must have at least a partner"
+    logger.error(errMsg)
+    throw new BadRequestError(errMsg)
   }
   if (goalPartners && goalPartners.length > 0) {
     const partners = goalPartners.map(part => ({ userId: part.user.id }))
@@ -315,7 +326,9 @@ function groupData(data, groupBy, count=0) {
 export const updateGoalStatus = async(req, trans) =>{
   const existingGoal = await getUserGoalById(req.params.id)
   if(!existingGoal){
-    throw new NotFoundError("user goal not found")
+    const errMsg = "user goal not found"
+    logger.error(errMsg)
+    throw new BadRequestError(errMsg)
   }
   await UserGoal.update({completed: req.body.completed}, {where:{
     id: req.params.id
@@ -326,7 +339,9 @@ export const updateGoalStatus = async(req, trans) =>{
 
 async function updateGoalPoint(goal, updatedGoal, trans) {
   if (!goal || !updatedGoal) {
-    throw BadRequestError("Invalid goals")
+    const errMsg = "Invalid goals"
+    logger.error(errMsg)
+    throw BadRequestError(errMsg)
   }
   if ((goal.completed && updatedGoal.completed) || (!goal.completed && !updatedGoal.completed)) {
     return

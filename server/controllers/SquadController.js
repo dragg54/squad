@@ -1,8 +1,10 @@
+import logger from '../logger.js'
 import * as SquadService from '../services/SquadService.js'
 
 export const createSquad = async (req, res) => {
     try {
         await SquadService.createSquad(req)
+        logger.info("Squad created")
         return res.json({ message: "Squad created" })
     }
     catch (error) {

@@ -1,3 +1,4 @@
+import logger from "../../logger.js"
 import { getMonthName } from "../../utils/date.js"
 import { sendMail } from "../EmailService.js"
 import { getGoalsGroupedByMonth } from "../UserGoalService.js"
@@ -19,6 +20,7 @@ export const scheduleMonthGoalKPI = async () => {
                 }/monthlyProgress?month=${month}&userId=${user.id}">View</a>`
         }
         sendMail(email)
+        logger.info("Monthly goal KPI notification sent")
     }))
 
 }

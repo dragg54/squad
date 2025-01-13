@@ -1,6 +1,7 @@
 import { notificationSource, notificationType } from "../../constants/NotificationConstants.js";
 import Notification from "../../models/Notification.js";
 import User from "../../models/User.js";
+import logger from "../../logger.js";
 import { sendBirthdayNotification } from "../../socket.io/birthdayNotification.js";
 import { createNotification } from "../NotificationService.js";
 
@@ -36,12 +37,13 @@ export async function scheduleBirthday(io) {
                 })
                 await Notification.bulkCreate(notificationRequest)
                 await sendBirthdayNotification(user.id, user.squadId, io)
+                logger.info("Birthday notification sent")
             }))
         }
     }
 
     catch (err) {
-        console.log(err)
+        logger.error("Send birthday notification failed", err.message)
     }
 
 }

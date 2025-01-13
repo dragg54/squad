@@ -20,20 +20,25 @@ import { sendMail } from './EmailService.js';
 import dotenv from 'dotenv'
 import { UnauthorizedError } from '../errors/UnauthorizedError.js';
 import { invitationStatus } from '../constants/InvitationStatus.js';
+import logger from '../logger.js';
 
 dotenv.config()
 
 export const createUser = async (req, trans) => {
     const existingSquad = await getSquadById(req.body.squadId)
     const existingInvite = await getInvitation(req)
-    if (!existingInvite || 
-        existingInvite.expiredAt > new Date() || 
+    if (!existingInvite ||
+        existingInvite.expiredAt > new Date() ||
         existingInvite.tokenHasBeenUsed
         || existingInvite.status == invitationStatus.ACCEPTED
     ) {
-        throw new BadRequestError("Valid invitation required")
+        const errMsg = "Valid invitation required"
+        logger.error(errMsg)
+        throw new BadRequestError(errMsg)
     }
     if (!existingSquad) {
+        const errMsg = "Squad must exist before user can be added"
+        logger.error(errMsg)
         throw new BadRequestError("Squad must exist before user can be added")
     }
     const existingUser = await User.findOne({
@@ -43,7 +48,9 @@ export const createUser = async (req, trans) => {
         }
     })
     if (existingUser) {
-        throw new DuplicateError(`User already exists`)
+        const errMsg = "Squad must exist before user can be added"
+        logger.error(errMsg)
+        throw new DuplicateError(`Squad must exist before user can be added`)
     }
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
@@ -76,7 +83,6 @@ export const createUser = async (req, trans) => {
                 : process.env.LOCAL_CLIENT_BASE_URL
                 }/verify?token=${token}&email=${req.body.email}">Verify Email</a>`
         }
-        console.log(email)
         await sendMail(email)
     }
     catch (err) {
@@ -86,9 +92,9 @@ export const createUser = async (req, trans) => {
 
 export const getAllUsers = async (req) => {
     const queryOpts = {
-       order:  [['createdAt', 'DESC']]
+        order: [['createdAt', 'DESC']]
     }
-    if(req.user && req.user.squadId){
+    if (req.user && req.user.squadId) {
         queryOpts['where'] = { squadId: req.user.squadId }
     }
     if (req.query) {
@@ -143,14 +149,16 @@ export const loginUser = async (userData, trans) => {
         where: {
             email: userData.email
         }
-        },
+    },
         {
             attributes: ["id", "email", "password"]
         }
 
     )
     if (!existingUser) {
-        throw new NotFoundError(`User does not exist`)
+        const errMsg = `User does not exist`
+        logger.error(errMsg)
+        throw new BadRequestError(errMsg)
     }
     if (existingUser.isFirst) {
         const addPointRequest = {
@@ -163,10 +171,13 @@ export const loginUser = async (userData, trans) => {
     }
     const isPasswordValid = await bcrypt.compare(userData.password, existingUser.password);
     if (!isPasswordValid) {
+
         throw new BadRequestError('Invalid email or password');
     }
-    if(!existingUser.isVerifiedEmail){
-        throw new UnauthorizedError('User email is not yet verified')
+    if (!existingUser.isVerifiedEmail) {
+        const errMsg = 'User email is not yet verified'
+        logger.error(errMsg)
+        throw new UnauthorizedError(errMsg)
     }
     const token = generateToken(existingUser)
     return {
@@ -196,38 +207,44 @@ export const getUserAvatars = async () => {
 export const verifyEmail = async (req) => {
     const token = req.query
     const { email } = jwt.verify(token.token, process.env.SECRET_KEY);
-    if(!email){
-        throw new BadRequestError('Invalid token or email')
+    if (!email) {
+        const errMsg = 'Invalid token or email'
+        logger.error(errMsg)
+        throw new BadRequestError(errMsg)
     }
-    const user = await User.findOne({ where: {email} });
-    if(!user){
-        throw new BadRequestError("User must exist before email can be verified")
+    const user = await User.findOne({ where: { email } });
+    if (!user) {
+        const errMsg = "User must exist before email can be verified"
+        logger.error(errMsg)
+        throw new BadRequestError(errMsg)
     }
-    await User.update({ isVerifiedEmail: true }, {where:{id: user.id}})
+    await User.update({ isVerifiedEmail: true }, { where: { id: user.id } })
 }
 
-export const resendVerificationMail = async(req) =>{
-    const  existingUser = await User.findOne({where: {email: req.body.email}})
-    if(!existingUser){
-        throw new BadRequestError('User does not exist')
+export const resendVerificationMail = async (req) => {
+    const existingUser = await User.findOne({ where: { email: req.body.email } })
+    if (!existingUser) {
+        const errMsg = "User does not exist"
+        logger.error(errMsg)
+        throw new BadRequestError(errMsg)
     }
-    const updatedNewUser = { id:existingUser.id, email: req.body.email }
-        const token = generateToken(updatedNewUser)
-        const email = {
-            recipientAddress: req.body.email,
-            subject: "Email Verification",
-            message: `Click the link to verify your email. <a style="color:red;" href="${process.env.NODE_ENV === 'production'
-                ? process.env.PROD_CLIENT_BASE_URL
-                : process.env.LOCAL_CLIENT_BASE_URL
-                }/verify?token=${token}/email=${req.body.email}">Verify Email</a>`
-        }
-        await sendMail(email)
+    const updatedNewUser = { id: existingUser.id, email: req.body.email }
+    const token = generateToken(updatedNewUser)
+    const email = {
+        recipientAddress: req.body.email,
+        subject: "Email Verification",
+        message: `Click the link to verify your email. <a style="color:red;" href="${process.env.NODE_ENV === 'production'
+            ? process.env.PROD_CLIENT_BASE_URL
+            : process.env.LOCAL_CLIENT_BASE_URL
+            }/verify?token=${token}/email=${req.body.email}">Verify Email</a>`
+    }
+    await sendMail(email)
 }
 
-export const logoutUser = (res) =>{
-    res.cookie('token','', {
+export const logoutUser = (res) => {
+    res.cookie('token', '', {
         sameSite: 'None',
         secure: true,
         httpOnly: true,
-      })
+    })
 }

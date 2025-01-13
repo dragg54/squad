@@ -1,14 +1,15 @@
 import db from '../configs/db.js';
 import { BadRequestError } from '../errors/BadRequestError.js';
+import logger from '../logger.js';
 import * as CommentService from '../services/CommentService.js'
 
 export const createComment = async (req, res) => {
   try {
     req.body.userId = req.user.id
     const comment = await CommentService.createComment(req, res);
+    logger.info('Comment created')
     return res.status(201).json({ message: "User Comment created" });
   } catch (error) {
-    console.log(error)
     res.status(error.statusCode || 500).send({
       message: error.message || "Internal Server Error"
     })
@@ -44,6 +45,7 @@ export const getComment = async (req, res) => {
 export const updateComment = async (req, res) => {
   try {
     await CommentService.updateComment(req, res);
+    logger.info("Comment updated")
     res.json("Comment updated")
   } catch (error) {
     console.log(error.message)

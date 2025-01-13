@@ -1,16 +1,17 @@
 import db from "../configs/db.js";
 import { DuplicateError } from "../errors/DuplicateError.js";
+import logger from "../logger.js";
 import * as userService from "../services/UserService.js"
 
 export const createUser = async (req, res) => {
   const transaction = await db.transaction()
   try {
     const user = await userService.createUser(req, transaction);
+    logger.info("User created")
     res.status(201).json({
       message: "user created"
     });
   } catch (error) {
-    console.log(error)
     await transaction.rollback()
     res.status(error.statusCode || 500).json({ error: error.message || "Internal server error" });
   }
@@ -42,6 +43,7 @@ export const updateUser = async (req, res) => {
   try {
     const user = await userService.updateUser(req.params.id, req.body);
     if (user) {
+      logger.info("User updated")
       res.status(200).json(user);
     } else {
       res.status(404).json({ error: 'User not found' });
@@ -117,6 +119,7 @@ export const verifyEmail = async (req, res) => {
 export const resendVerificationMail = async (req, res) =>{
   try {
     const avatarFiles = await userService.resendVerificationMail(req)
+    logger.info('Verification link resent')
     return res.json('Verification link has been resent')
   }
   catch (err) {

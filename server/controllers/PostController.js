@@ -1,5 +1,6 @@
 import db from '../configs/db.js';
 import { BadRequestError } from '../errors/BadRequestError.js';
+import logger from '../logger.js';
 import * as postService from '../services/PostService.js'
 
 export const createPost = async (req, res) => {
@@ -8,9 +9,9 @@ export const createPost = async (req, res) => {
     req.body.userId = req.user.id
     const post = await postService.createPost(req, res, trans);
     await trans.commit()
+    logger.info('Post created')
     return res.status(201).json({ message: "User Post created" });
   } catch (error) {
-    console.log(error)
     await trans.rollback()
     res.status(error.statusCode || 500).send({
       message: error.message || "Internal Server Error"
@@ -45,6 +46,7 @@ export const getPost = async (req, res) => {
 export const updatePost = async (req, res) => {
   try {
     await postService.updatePost(req, res);
+    logger.info('Post updated')
     res.json("Post updated")
   } catch (error) {
     console.log(error.message)

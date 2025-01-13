@@ -1,3 +1,4 @@
+import logger from "../logger.js";
 import { getAllUsers } from "../services/UserService.js";
 import { users } from "./users.js";
 
@@ -17,13 +18,13 @@ export async function sendGoalCreatedNotification(userId, squadId, io) {
                 if (recipientSocketId) {
                     io.to(recipientSocketId).emit('receiveNotification', "Message delivered");
                 } else {
-                    console.log(`User ${userId} is not connected`);
+                    logger.error(`User ${userId} is not connected`);
                 }
             }
         })
     }
     catch (err) {
-        console.log(err)
+        logger.error(err)
     }
 }
 
@@ -33,10 +34,10 @@ export async function sendGoalExpiredNotification(userId, squadId, io) {
         if (recipientSocketId) {
             io.to(recipientSocketId).emit('receiveNotification', "Message delivered");
         } else {
-            console.log(`User ${userId} is not connected`);
+            logger.error(`User ${userId} is not connected`);
         }
     }
     catch (err) {
-        console.log(err)
+        logger.error(err.message)
     }
 }

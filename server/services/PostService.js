@@ -2,6 +2,7 @@ import { activityPoints } from "../constants/ActivityPoints.js"
 import { notificationSource, notificationType } from "../constants/NotificationConstants.js"
 import { BadRequestError } from "../errors/BadRequestError.js"
 import { DuplicateError } from "../errors/DuplicateError.js"
+import logger from "../logger.js"
 import Comment from "../models/Comment.js"
 import Point from "../models/Point.js"
 import Post from "../models/Post.js"
@@ -19,7 +20,9 @@ export const createPost = async (req, res, trans) => {
     const userId = req.user.id
     const existingSquad = getSquadById(squadId)
     if (!existingSquad) {
-        throw new BadRequestError("Squad must exist before user can be added")
+        const errMsg = "Squad must exist before user can be added"
+        logger.error(errMsg)
+        throw new BadRequestError(errMsg)
     }
 
     const newPost = await Post.create({
@@ -60,7 +63,9 @@ export const updatePost = async (req, res) => {
     const userId = req.user.id
     const existingPost = await Post.findOne({ where: { id: req.params.id } })
     if (!existingPost) {
-        throw new BadRequestError("Failed to update post: Post must be added before it can be updated")
+        const errMsg = "Failed to update post: Post must be added before it can be updated"
+        logger.error(errMsg)
+        throw new BadRequestError(errMsg)
     }
     await Post.update({
         title, description
@@ -147,7 +152,9 @@ export const likePost = async (req, res, trans) => {
     const { id } = req.params
     const post = await getPost(req, res)
     if (!post) {
-        throw new NotFoundError(`Post not found ${id}`)
+        const errMsg = `Post not found ${id}`
+        logger.error(errMsg)    
+        throw new BadRequestError()
     }
     const existingLike = await PostLike.findOne({ where: { postId: id, userId: req.user.id } })
     if (existingLike) {
