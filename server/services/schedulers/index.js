@@ -2,6 +2,7 @@ import cron from 'node-cron'
 import { scheduleBirthday } from './ScheduleBirthday.js';
 import { scheduleGoalExpiration } from './ScheduleGoalExpiration.js';
 import { scheduleMonthGoalKPI } from './ScheduleMonthlyGoalKPI.js';
+import { scheduleGoalExpirationReminder } from './ScheduleGoalExpirationReminder.js';
 
 export  function scheduleJob(io){
     cron.schedule('1 0 * * *', async() => {
@@ -13,4 +14,8 @@ export  function scheduleJob(io){
     cron.schedule('0 7 1 * *', async()=>{
        scheduleMonthGoalKPI()
     })
+
+    cron.schedule("0 * * * *", async () => {
+        scheduleGoalExpirationReminder(io)
+    })      
 }

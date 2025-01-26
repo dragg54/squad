@@ -17,11 +17,11 @@ const Home = () => {
           <QuoteBox />
           <ProgressChart />
           <NewGoal />
-          <div className="mt-4">
+          {/* <div className="mt-4">
             <img src="../../images/planning.png" alt="" />
           </div>
           <News />
-          <Quotes />
+          <Quotes /> */}
         </div>
       </section>
     )

@@ -1,7 +1,7 @@
 import User from '../models/User.js'
 import bcrypt from 'bcryptjs'
 import { generateToken } from '../utils/generateToken.js';
-import { where } from 'sequelize';
+import { Op, Sequelize, where } from 'sequelize';
 import { BadRequestError } from '../errors/BadRequestError.js';
 import { NotFoundError } from '../errors/NotFoundError.js';
 import { InternalServerError } from '../errors/InternalServerError.js';
@@ -21,6 +21,9 @@ import dotenv from 'dotenv'
 import { UnauthorizedError } from '../errors/UnauthorizedError.js';
 import { invitationStatus } from '../constants/InvitationStatus.js';
 import logger from '../logger.js';
+import { createNotification } from './NotificationService.js';
+import { notificationSource, notificationType } from '../constants/NotificationConstants.js';
+import db from '../configs/db.js';
 
 dotenv.config()
 
@@ -48,9 +51,9 @@ export const createUser = async (req, trans) => {
         }
     })
     if (existingUser) {
-        const errMsg = "Squad must exist before user can be added"
+        const errMsg = "User already exists"
         logger.error(errMsg)
-        throw new DuplicateError(`Squad must exist before user can be added`)
+        throw new DuplicateError(errMsg)
     }
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
@@ -69,6 +72,33 @@ export const createUser = async (req, trans) => {
 
     await updateInvitationStatus(existingInvite.id, { status: 'ACCEPTED', tokenHasBeenUsed: true }, trans)
 
+    const squadMembers = await User.findAll({
+        where: {
+            squadId: req.body.squadId, id: {
+                [Op.ne]: newUser.id,
+            }
+        },
+        attributes: ["id"]
+    })
+    if (squadMembers) {
+        for (const mem of squadMembers) {
+            const notificationRequest = {
+                squadId: req.body.squadId,
+                senderId: newUser.id,
+                recipientId: mem.dataValues.id,
+                sourceId: req.body.squadId,
+                notificationSource: notificationSource.NEWUSER,
+                sourceName:notificationSource.NEWUSER,
+                title: 'NOTIFICATION FOR NEW USER',
+                type: notificationType.INFO,
+                detailLink: `/member/${newUser.id}`,
+                message: `${req.body.userName} has joined the squad`,
+            };
+        
+            await createNotification(notificationRequest, trans);
+            logger.info("Notification for new user creation sent");
+        }
+    }
     await trans.commit();
 
     try {
@@ -123,7 +153,7 @@ export const getUserById = async (id) => {
     });
 };
 
-export const updateUser = async (id, userData) => {
+export const updateUserPassword = async (id, userData) => {
     const user = await User.findByPk(id);
     if (user) {
         if (userData.password) {
@@ -134,6 +164,15 @@ export const updateUser = async (id, userData) => {
     }
     return null;
 };
+
+export const updateUser = async(req) =>{
+    const { id } = req.params
+    const existingUser = await getUserById(id)
+    if(!existingUser){
+        throw new BadRequestError(`Update user failed: User ${id} does not exist`)
+    }
+    await User.update(req.body, {where: {id}})
+}
 
 export const deleteUser = async (id) => {
     const user = await User.findByPk(id);

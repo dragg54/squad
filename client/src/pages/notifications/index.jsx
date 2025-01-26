@@ -47,12 +47,11 @@ const NotificationContainer = ({ openNotificationContainer }) => {
                       notification.notifications.map((not) => {
                         return (
                           <li className="text-[0.85rem] inline-flex items-center gap-2" key={not.id} onClick={() => {
-                            gotoSource(not["notification_sources.sourceId"], not["notification_sources.sourceName"])
+                            not.detailLink ? navigate(not.detailLink) : gotoSource(not["notification_sources.sourceId"], not["notification_sources.sourceName"])
                           }}>
-                            {console.log((not["notification_sources.sourceName"]))}
                             <span>
                               {
-                                  ['USER', 'POST', 'BIRTHDAY'].includes(not["notification_sources.sourceName"]) 
+                                  ['USER', 'POST', 'BIRTHDAY', 'NEWUSER'].includes(not["notification_sources.sourceName"]) 
                                            ? <Image source={BACKEND_SERVER_URL + "/avatars/" + not?.['user.profileAvatar']} style={'rounded-full h-8 w-8 text-[0.5rem]'}/>
                                            : (not["notification_sources.sourceName"] == "GOALEXPIRATION") ? 
                                           <MdOutlineDangerous className="text-red-600 text-2xl"/>: ''

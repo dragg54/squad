@@ -90,7 +90,7 @@ export const likeComment = async (req, res) =>{
 export const getCommentLikes = async(req, res)=>{
   try{
     const commentLikes = await CommentService.getCommentLikes(req, res)
-    return res.json(CommentLikes)
+    return res.json(commentLikes)
   }
   catch (error) {
     res.status(error.statusCode || 500).send({

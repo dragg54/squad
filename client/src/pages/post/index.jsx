@@ -54,12 +54,13 @@ return (
           ))
       
         }
-      </div>
-      <Pagination
+         <Pagination
         currentPage={page}
         totalPages={data?.totalPages}
         onPageChange={setPage}
       />
+      </div>
+     
     </section>
   )
 }

@@ -14,7 +14,6 @@ if (!dbName || !dbUserName || !dbPassword) {
   throw new Error("Database environment variables are missing.");
 }
 
-
 const db = new Sequelize(dbName, dbUserName, dbPassword, {
   host: dbHost,
   dialect: "mysql",

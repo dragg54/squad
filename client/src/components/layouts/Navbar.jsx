@@ -18,8 +18,9 @@ const Navbar = ({ setMenuContainerOpened, setOpenNotificationContainer, openNoti
   // const user = useSelector(state => state.user)
   const notifications = useSelector(state => state.notification)
   const dispatch = useDispatch()
-  if (!isLoadingNotificationSummary && notificationSummaryData && notificationSummaryData.unreadCount < 1) {
-    dispatch(fetchNotifications({ notifications: notificationSummaryData }))
+  if (!isLoadingNotificationSummary && notificationSummaryData) {
+    console.log(notificationSummaryData.data[0])
+    dispatch(fetchNotifications({ data: notificationSummaryData.data[0] }))
   }
   const user = useSelector(state => state.user)
   const readAllNotificationsMutation = useMutation(readAllNotifications, {
@@ -33,9 +34,9 @@ const Navbar = ({ setMenuContainerOpened, setOpenNotificationContainer, openNoti
     dispatch(readNotifications())
     readAllNotificationsMutation.mutate({ status: 'READ' })
   }
-  if (!isLoadingNotificationSummary && notificationSummaryData) {
-    dispatch(fetchNotifications({ data: notificationSummaryData?.data[0] }))
-  }
+  // if (!isLoadingNotificationSummary && notificationSummaryData && !notifications.hasLoaded) {
+  //   dispatch(fetchNotifications({ data: notificationSummaryData }))
+  // }
   if (!useIgnoreMatchedPath())
     return (
       <div className={`w-full fixed z-40 md:h-20   h-20 border-b shadow-md shadow-gray-300 `}>
@@ -58,7 +59,7 @@ const Navbar = ({ setMenuContainerOpened, setOpenNotificationContainer, openNoti
               setOpenUserContainer(!openUserContainer)
               setOpenNotificationContainer(false)
             }}>
-              <Image hasNavigated={true} isUser={true} style="h-10 w-10" source={user.profileAvatar} />
+              <Image hasNavigated={true} userId={user.id} isUser={true} style="h-10 w-10" source={user.profileAvatar} />
             </div>
             <p className="cursor-pointer md:text-3xl"><IoNotificationsOutline className="cursor-pointer" /></p>
             < p className="cursor-pointer md:hidden" onClick={(e) => {

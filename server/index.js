@@ -145,6 +145,10 @@ io.on('connection', (socket) => {
     sendGoalCreatedNotification(authorId, squadId, io)
   })
 
+  socket.on('goalCreated', ({ authorId, squadId}) =>{
+    sendGoalCreatedNotification(authorId, squadId, io)
+  })
+
   socket.on('disconnect', () => {
       removeUser(socket.id);
   });

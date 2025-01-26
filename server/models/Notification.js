@@ -29,6 +29,9 @@ const Notification = db.define('notification', {
             key: 'id',
         },
     },
+    detailLink:{
+        type: DataTypes.STRING
+    },
     title: {
         type: DataTypes.STRING,
         allowNull: true

@@ -4,8 +4,10 @@ import { MdForum } from "react-icons/md";
 import { LuUsers } from "react-icons/lu";
 import { LuGoal } from "react-icons/lu";
 import { FaClipboard } from "react-icons/fa";
-import { MdOutlinePayment } from "react-icons/md";
+// import { MdOutlinePayment } from "react-icons/md";
 import { BsShop } from "react-icons/bs";
+// import { IoSettingsOutline } from "react-icons/io5";
+
 
 
 const Sidebar = () => {
@@ -21,8 +23,9 @@ const Sidebar = () => {
         <li className="menus"><LuUsers /><Link className="menus" to="/member">Squad</Link></li>
         <li className="menus"><LuGoal /><Link className="menus" to="/goals">Goals</Link></li>
         <li className="menus"><FaClipboard /><Link className="menus" to="/leaderboard">Leaderboard</Link></li>
-        <li className="menus" ><MdOutlinePayment /><Link className="menus" to="/donation">Donation</Link></li>
+        {/* <li className="menus" ><MdOutlinePayment /><Link className="menus" to="/donation">Donation</Link></li> */}
         <li className="menus"><BsShop /><Link className="menus" to="/shop">{"Tom's"} Shop</Link></li>
+        {/* <li className="menus"><IoSettingsOutline /><Link className="menus" to="/settings"> Settings</Link></li> */}
       </ul>
     </div>
   )

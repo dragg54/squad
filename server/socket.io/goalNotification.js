@@ -41,3 +41,18 @@ export async function sendGoalExpiredNotification(userId, squadId, io) {
         logger.error(err.message)
     }
 }
+
+export async function sendGoalExpirationReminderNotification(userId, squadId, io) {
+    try {
+        const recipientSocketId = users.get(userId)
+        if (recipientSocketId) {
+            logger.info("Notification handled")
+            io.to(recipientSocketId).emit('receiveNotification', "Message delivered");
+        } else {
+            logger.error(`User ${userId} is not connected`);
+        }
+    }
+    catch (err) {
+        logger.error(err.message)
+    }
+}

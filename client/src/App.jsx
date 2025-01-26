@@ -31,6 +31,7 @@ import CheckMail from './pages/register/CheckMail'
 import UserEmailVerified from './pages/register/UserEmailVerified'
 import UserEmailUnverified from './pages/register/UserEmailUnverified'
 import MonthlyProgressDonut from './pages/home/components/MonthlyProgressDonut'
+// import Settings from './pages/settings/Settings'
 // import Notification from './pages/notifications'
 
 
@@ -75,6 +76,7 @@ function App() {
             <Route path="/leaderboard" element={<LeaderBoard />} />
             <Route path="/donation" element={<Donations />} />
             <Route path="/shop" element={<Shop />} />
+            {/* <Route path="/settings" element={<Settings />} /> */}
             <Route path="/donation/:id" element={<Donation />} />
             <Route path="/donation/create" element={<CreateDonation />} />
             <Route path="/donation/:id/donate" element={<Donate />} />

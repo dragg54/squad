@@ -1,11 +1,12 @@
 /* eslint-disable react/prop-types */
 import { Link } from "react-router-dom"
 import { GoHome } from "react-icons/go";
-import { MdForum, MdOutlinePayment } from "react-icons/md";
+import { MdForum } from "react-icons/md";
 import { LuUsers } from "react-icons/lu";
 import { LuGoal } from "react-icons/lu";
 import { FaClipboard } from "react-icons/fa";
 import { BsShop } from "react-icons/bs";
+// import { IoSettingsOutline } from "react-icons/io5";
 // import { MdOutlineSettings } from "react-icons/md";
 const Menu = ({menuContainerOpened, setMenuContainerOpened}) => {
   return (
@@ -17,8 +18,9 @@ const Menu = ({menuContainerOpened, setMenuContainerOpened}) => {
           <li className="menus" onClick={()=>setMenuContainerOpened(false)}><LuUsers /><Link className="menus" to="/member">Squad</Link></li>
           <li className="menus" onClick={()=>setMenuContainerOpened(false)}><LuGoal /><Link className="menus" to="/goals">Goals</Link></li>
           <li className="menus" onClick={()=>setMenuContainerOpened(false)}><FaClipboard /><Link className="menus" to="/leaderboard">Leaderboard</Link></li>
-          <li className="menus" onClick={()=>setMenuContainerOpened(false)}><MdOutlinePayment/><Link className="menus" to="/donation">Donation</Link></li>
+          {/* <li className="menus" onClick={()=>setMenuContainerOpened(false)}><MdOutlinePayment/><Link className="menus" to="/donation">Donation</Link></li> */}
           <li className="menus" onClick={()=>setMenuContainerOpened(false)}><BsShop/><Link className="menus" to="/shop">{"Tom's"} Shop</Link></li>
+          {/* <li className="menus" onClick={()=>setMenuContainerOpened(false)}><IoSettingsOutline /><Link className="menus" to="/settings"> Settings</Link></li> */}
         </ul>
       </div>
     </div>

@@ -19,6 +19,7 @@ import BackButton from '../../components/buttons/BackButton'
 import { LuCalendarDays } from "react-icons/lu";
 import ResponseError from "../../components/ResponseError"
 import { openModal } from "../../redux/reducers/GlobalModalReducer"
+import EditProfile from "../../components/EditProfile"
 
 const Member = () => {
   const { id } = useParams()
@@ -75,7 +76,7 @@ const Member = () => {
             <p className="mt-3 font-bold md:text-xl text-base inline-flex items-center"><BiSolidCoinStack /> {member?.point?.points || 0} GP</p>
           </div>
           <div>
-            {user.id == member.id ? <Button name='Edit Profile' style={'mt-28 md:mr-12 mr-2 md:!text-[0.8rem] md:!w-[120px] !text-[0.6rem] !w-[93px] !flex whitespace-none !bg-white !rounded-full border !border-gray-400 !text-gray-600'} />
+            {user.id == member.id ? <Button onClick={()=> dispatch(openModal({component: <EditProfile {...{username: member.userName, id: member.id, bio: member.bio}}/>}))} name='Edit Profile' style={'mt-28 md:mr-12 mr-2 md:!text-[0.8rem] md:!w-[120px] !text-[0.6rem] !w-[93px] !flex whitespace-none !bg-white !rounded-full border !border-gray-400 !text-gray-600'} />
               :
               <div className="p-1 mt-28 md:mr-12 mr-2  md:p-2 bg-[#ffd898] rounded-full border border-gray-400 ml-auto mr-4 md:mr-8 text-2xl text-gray-700">
                 <CgGift className="" />

@@ -4,7 +4,7 @@
 @tailwind utilities;
 
 .goal-box{
-    @apply cursor-pointer hover:shadow-lg  rounded-sm p-6  hover:shadow-gray-400 border mb-3 pl-0;
+    @apply cursor-pointer hover:shadow-lg  rounded-sm p-2 md:p-6  hover:shadow-gray-400 border mb-3 pl-0;
 }
 
 .menus{
@@ -71,4 +71,12 @@
 
 .error{
   @apply text-xs text-gray-600 text-red-600
+}
+
+.settings-header{
+  @apply text-base font-medium 
+}
+
+.settings-menu{
+  @apply text-sm
 }

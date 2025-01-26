@@ -41,14 +41,10 @@ export const getUserById = async (req, res) => {
 
 export const updateUser = async (req, res) => {
   try {
-    const user = await userService.updateUser(req.params.id, req.body);
-    if (user) {
-      logger.info("User updated")
-      res.status(200).json(user);
-    } else {
-      res.status(404).json({ error: 'User not found' });
-    }
-  } catch (error) {
+       await userService.updateUser(req);
+      res.status(200).json("User updated");
+       }
+  catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
