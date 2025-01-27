@@ -108,7 +108,7 @@ export const createUser = async (req, trans) => {
         const email = {
             recipientAddress: req.body.email,
             subject: "Email Verification",
-            message: `Click the link to verify your email. <a style="color:red;" href="${process.env.NODE_ENV === 'production'
+            message: `Click the link to verify your email. <a style="color:red;" href="${process.env.NODE_ENV === 'Production'
                 ? process.env.PROD_CLIENT_BASE_URL
                 : process.env.LOCAL_CLIENT_BASE_URL
                 }/verify?token=${token}&email=${req.body.email}">Verify Email</a>`
