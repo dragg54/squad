@@ -28,6 +28,11 @@ export const getAllNotifications = async (req) => {
       attributes: ['profileAvatar']
     },
     {
+      model: User,
+      as: 'sender',
+      attributes: ["profileAvatar"]
+    },
+    {
       model: NotificationSource
     }
   ],

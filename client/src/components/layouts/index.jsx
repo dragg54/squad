@@ -11,12 +11,23 @@ import { Outlet } from 'react-router-dom'
 import CurrentUser from '../CurrentUser'
 import { useDispatch } from 'react-redux'
 import { closeSelectionModal } from '../../redux/reducers/Selection2Reducer'
+import { useQuery } from 'react-query'
+import {  getGoalReminders } from "../../services/goalReminder"
+import { openModal } from '../../redux/reducers/GlobalModalReducer'
+import GoalReminderNotificationSlider from '../../pages/notifications/GoalReminderNotification'
 
 const Layout = () => {
   const [menuContainerOpened, setMenuContainerOpened] = useState(undefined)
   const [openNotificationContainer, setOpenNotificationContainer] = useState(false)
   const [openUserContainer, setOpenUserContainer] = useState(false)
+
+  const { data: goalReminders } = useQuery(['goalReminders', {isSeen: false}],
+    getGoalReminders
+  )
   const dispatch = useDispatch()
+  if(goalReminders && goalReminders.length > 0){
+    dispatch(openModal({component: <GoalReminderNotificationSlider reminders={goalReminders}/>}))
+  }
   return (
     <div className='w-full relative md:overflow-visible' onClick={()=>{
       setOpenNotificationContainer(false)

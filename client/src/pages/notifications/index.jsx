@@ -50,16 +50,18 @@ const NotificationContainer = ({ openNotificationContainer }) => {
                             not.detailLink ? navigate(not.detailLink) : gotoSource(not["notification_sources.sourceId"], not["notification_sources.sourceName"])
                           }}>
                             <span>
+                              {['GOAL'].includes(not["notification_sources.sourceName"]) && console.log(not)}
                               {
-                                  ['USER', 'POST', 'BIRTHDAY', 'NEWUSER'].includes(not["notification_sources.sourceName"]) 
-                                           ? <Image source={BACKEND_SERVER_URL + "/avatars/" + not?.['user.profileAvatar']} style={'rounded-full h-8 w-8 text-[0.5rem]'}/>
-                                           : (not["notification_sources.sourceName"] == "GOALEXPIRATION") ? 
-                                          <MdOutlineDangerous className="text-red-600 text-2xl"/>: ''
-                                          }</ span>{not.message}{not.message.lastIndexOf(".") == -1 && '.'} {customizeNotificationTime(not.createdAt)}
+                                ['USER', 'POST', 'BIRTHDAY', 'NEWUSER', 'GOAL'].includes(not["notification_sources.sourceName"])
+                                  ? <Image source={BACKEND_SERVER_URL + "/avatars/" + not?.['user.profileAvatar']} style={'rounded-full h-8 w-8 text-[0.5rem]'} />
+                                  : (not["notification_sources.sourceName"] == "GOALEXPIRATION") ?
+                                    <MdOutlineDangerous className="text-red-600 text-2xl" /> :
+                                    ''
+                              }</ span>{not.message}{not.message.lastIndexOf(".") == -1 && '.'} {customizeNotificationTime(not.createdAt)}
                           </li>
                         )
                       })
-                    } 
+                    }
                   </ul>
                 ))
               }

@@ -11,6 +11,8 @@ import { activityPoints } from "../../constants/ActivityPoints.js";
 import db from "../../configs/db.js";
 import { createNotification } from "../NotificationService.js";
 import logger from "../../logger.js";
+import GoalPartner from "../../models/GoalPartner.js";
+import GoalReminder from "../../models/GoalReminder.js";
 
 export async function scheduleGoalExpiration(io) {
     try {
@@ -23,7 +25,12 @@ export async function scheduleGoalExpiration(io) {
                 {
                     model: User,
                     attributes: ['id', 'userName']
+                },
+                {
+                    model: GoalPartner,
+                    attributes: ["id"]
                 }
+
             ],
             where: {
                 endDate: {
@@ -38,13 +45,10 @@ export async function scheduleGoalExpiration(io) {
             await Promise.all(expiredGoals?.map(async (userGoal) => {
                 await UserGoal.update({
                     isExpired: true
-                }, { where: { id: userGoal.id } }, { transaction})
+                }, { where: { id: userGoal.id } }, { transaction })
 
-                await Point.decrement('points', {
-                    by: activityPoints.goalCreationPoints + 2,
-                    where: {userId: userGoal.user.id,
-                    }}, {transaction})
-
+                await deductUserPoint(userGoal.user.id, transaction, userGoal.user.id, 3)
+                await deductPartnerPoint(userGoal, transaction)
                 const notificationRequest = {
                     senderId: userGoal.squadId,
                     recipientId: userGoal.user.id,
@@ -66,4 +70,52 @@ export async function scheduleGoalExpiration(io) {
         logger.error('Goal expiration failed', err.message)
     }
 
+}
+
+async function deductUserPoint(userId, transaction, deductionPoint) {
+    await Point.decrement('points', {
+        by: activityPoints.goalCreationPoints + deductionPoint,
+        where: {
+            userId: userId,
+        }
+    }, { transaction })
+}
+
+
+export async function deductPartnerPoint(userGoal, transaction) {
+    const goalReminders = await GoalReminder.findOne({
+        where:
+        {
+            goalId: userGoal.id,
+            remindedBy: {
+                [Op.notIn]: userGoal.partner
+            },
+            include: [{
+                model: GoalPartner,
+                as: 'reminder',
+                attributes: ['id'],
+                include:{
+                    model: User,
+                    attributes: ["id"]
+                }
+            }]
+        }
+    })
+    for(const rem of goalReminders){
+        await deductUserPoint(rem.reminder.user.id, transaction, 2)
+        const notificationRequest = {
+            senderId: userGoal.squadId,
+            recipientId: rem.reminder.user.id,
+            squadId: userGoal.squadId,
+            title: "NOTIFICATION",
+            message: `Oops!!! Your point got deducted because you forgot to remind ${userGoal.user.userName} about one of his goal.`,
+            type: notificationType.INFO,
+            sourceId: userGoal.id,
+            sourceName: notificationSource.GOALEXPIRATION
+        }
+        await createNotification(notificationRequest)
+        await transaction.commit()
+        await sendGoalExpiredNotification(userGoal.user.id, userGoal.squadId, io)
+        logger.INFO("Expiration notification sent")
+}
 }

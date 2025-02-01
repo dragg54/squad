@@ -13,10 +13,11 @@ import Point from "../models/Point.js";
 import { addPoint, getUserPoints, updatePoint } from "./PointService.js";
 import { Op, where } from "sequelize";
 import { UserGoalCategory } from "../models/UserGoalCategory.js";
-import { correctDate, correctDateUpdate, correctHour, isPast, isPastMonth, isPastYear } from "../utils/date.js";
+import { correctDate, correctDateUpdate, correctHour, isInvalidCustomDate, isPast, isPastMonth, isPastYear } from "../utils/date.js";
 import { goalFrequency } from "../constants/GoalFrequency.js";
 import { format, subMonths } from "date-fns"
 import logger from "../logger.js";
+import GoalReminder from "../models/GoalReminder.js";
 
 export const createUserGoal = async (req, transaction) => {
   const goalData = req.body
@@ -155,6 +156,40 @@ export const getAllUserGoals = async (req) => {
 
     return groupData(goalsGroupedByYear, groupBy)
   }
+
+  if (groupBy == "today") {
+    const today = new Date().toISOString().split('T')[0];
+    queryOpts['frequency'] = {
+      [Op.or]:[goalFrequency.daily, goalFrequency.custom]
+    }
+    queryOpts['startDate'] = {
+      [Op.gte]: new Date(today + "T00:00:00.000Z"),
+      [Op.lt]: new Date(today + "T23:59:59.999Z"),
+  };
+
+  console.log(queryOpts)
+    const goalsGroupedByDay = await models.UserGoal.findAndCountAll({
+      where: queryOpts,
+      attributes: [
+        [db.fn('DATE_FORMAT', db.col('user_goal.startDate'), '%Y-%m-%d'), 'day'],
+        'title', 'description', 'startDate', 'endDate', 'completed', 'frequency'
+      ],
+      include: [
+        { model: models.UserGoalCategory, attributes: ['id', 'name'] },
+        {
+          model: GoalPartner,
+          attributes: ["id"],
+          include: {
+            model: User,
+            attributes: { exclude: ["userId", "password", "createdAt", "updatedAt"] },
+            as: "user"
+          }
+        }
+      ],
+      order: [[db.literal('day'), 'ASC']],
+    });
+    return getPagingData(goalsGroupedByDay, page, size)
+}
   else{
     const userGoalsData = await models.UserGoal.findAndCountAll(
       {
@@ -163,10 +198,16 @@ export const getAllUserGoals = async (req) => {
           { model: models.UserGoalCategory, attributes: ['id', 'name'] },
           {
             model: GoalPartner, attributes: ["id"],
+            where: partnerId && {userId: req.user.id},
             include: { model: User, attributes: { exclude: ["userId", "password", "createdAt", "updatedAt"] }, as: "user" },
           },
+          {
+            model: GoalReminder,
+            as: 'reminder',
+            attributes:["id"]
+          }
         ],
-        where: queryOpts,
+        where:{... queryOpts},
         order: [['createdAt', 'DESC']],
         limit, offset
       }
@@ -189,7 +230,7 @@ export const getUserGoalById = async (id) => {
 export const updateUserGoal = async (req, res, trans) => {
   const { id } = req.params;
   let { title, description, completed, startDate, endDate, goalPartners, userGoalCategoryId, frequency } = req.body;
-  if (isInvalidGoalData(req.body))
+  if (validateUpdateGoalData(req.body))
     {
       const errMsg = "Invalid start date or end date."
       logger.error(errMsg)
@@ -198,7 +239,7 @@ export const updateUserGoal = async (req, res, trans) => {
    startDate = correctDateUpdate(startDate, frequency, 'startDate')
    endDate =   correctDateUpdate(new Date(endDate).toUTCString(), frequency, 'endDate')
   const [updated] = await models.UserGoal.update(
-    { title, description, completed, startDate, endDate, userGoalCategoryId },
+    { title, description, completed, startDate, endDate, userGoalCategoryId, isExpired: false },
     { where: { id }, transaction: trans }
   );
   if (!updated) {
@@ -221,7 +262,6 @@ export const updateUserGoal = async (req, res, trans) => {
     partners.map(async(partner)=>{
       await UserGoal.update({ title, description, completed, startDate, endDate, userGoalCategoryId },
         {where:{userId: partner.userId, groupGoalId: id}})
-
         const notificationRequest = {
           senderId: req.user.id,
           recipientId: partner.userId,
@@ -330,6 +370,11 @@ export const updateGoalStatus = async(req, trans) =>{
     logger.error(errMsg)
     throw new BadRequestError(errMsg)
   }
+  if(!existingGoal.isExpired){
+    const errMsg = "Expired goal status cannot be updated without updating end date"
+    logger.error(errMsg)
+    throw new BadRequestError(errMsg)
+  }
   await UserGoal.update({completed: req.body.completed}, {where:{
     id: req.params.id
   }})
@@ -363,6 +408,22 @@ function isInvalidGoalData(goalData){
     case goalFrequency.custom:
       return isPast(null, goalData.startDate)
         || isPast(goalData.startDate, goalData.endDate)
+    case goalFrequency.daily:
+      return isPast(goalData.startDate, goalData.endDate)
+    case goalFrequency.monthly:
+      return isPastMonth(goalData.startDate, goalData.endDate)
+    case goalFrequency.yearly:
+      return isPastYear(goalData.startDate, goalData.endDate)
+  }
+}
+
+function validateUpdateGoalData(goalData){
+  if(!Object.keys(goalFrequency).some(frequency => frequency != goalData.frequency)){
+    return true
+  }
+  switch(goalData.frequency){
+    case goalFrequency.custom:
+      return isInvalidCustomDate(goalData.startDate, goalData.endDate)
     case goalFrequency.daily:
       return isPast(goalData.startDate, goalData.endDate)
     case goalFrequency.monthly:

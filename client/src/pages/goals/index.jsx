@@ -21,7 +21,7 @@ import ResponseError from "../../components/ResponseError"
 import YearlyGoals from "./YearlyGoals"
 
 const Goals = () => {
-    const [presentTab, setPresentTab] = useState("allGoals")
+    const [presentTab, setPresentTab] = useState("today")
     const [groupBy, setGroupBy] = useState("")
     const [page, setPage] = useState(1);
     const [size, setSize] = useState(5);
@@ -51,7 +51,8 @@ const Goals = () => {
         setIsUpdated(false)
     }, [isUpdated])
     useEffect(() => {
-        setPresentTab("allGoals")
+        setPresentTab("today")
+        setGroupBy("today")
         const goalMonthContainerState = allMonths.map((month) => ({
             [month]: false
         }))
@@ -108,20 +109,21 @@ const Goals = () => {
                     <div className="mb-3 flex gap-5">
                         <p onClick={() => {
                             setGroupBy("")
-                            setPresentTab("allGoals")
-                        }} className={`mb-3  cursor-pointer font-semibold ${presentTab == "allGoals" && 'border-b-4 border-[#FF2511]'}`}>All goals</p>
+                            setPresentTab("today")
+                            setGroupBy("today")
+                        }} className={`mb-3  cursor-pointer font-semibold ${presentTab == "today" && 'border-b-4 border-[#FF2511]'}`}>{"Today"}</p>
                         <p onClick={() => {
                             setPresentTab("monthlyGoals")
                             setGroupBy("month")
                         }
                         }
-                            className={`mb-3  cursor-pointer  font-semibold ${presentTab == "monthlyGoals" && 'border-b-4 border-[#FF2511]'}`}>Monthly Goals</p>
+                            className={`mb-3  cursor-pointer  font-semibold ${presentTab == "monthlyGoals" && 'border-b-4 border-[#FF2511]'}`}>Monthly</p>
                         <p onClick={() => {
                             setPresentTab("yearlyGoals")
                             setGroupBy("year")
                         }
                         }
-                            className={`mb-3 font-semibold  cursor-pointer ${presentTab == "yearlyGoals" && 'border-b-4 border-[#FF2511]'}`}>Yearly Goals</p>
+                            className={`mb-3 font-semibold  cursor-pointer ${presentTab == "yearlyGoals" && 'border-b-4 border-[#FF2511]'}`}>Yearly</p>
                     </div>
                     {presentTab == "monthlyGoals" ? <MonthlyGoals {...{ allMonths, openMonthGoalsContainer, setOpenMonthGoalsContainer, data, presentTab }} /> :
                      

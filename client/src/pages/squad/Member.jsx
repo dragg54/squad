@@ -64,9 +64,9 @@ const Member = () => {
         <BackButton className='mt-2' />
       </div>
       <div className="w-full">
-        <div className="w-full md:w-[60%] h-[200px]  bg-gradient-to-r from-[#8155BA] to-[#FE5BD6] ">
+        <div className="w-full md:w-[50%] h-[200px]  bg-gradient-to-r from-[#8155BA] to-[#FE5BD6] ">
         </div>
-        <div className="w-full flex justify-between  md:w-[60%] -mt-14">
+        <div className="w-full flex justify-between  md:w-[50%] -mt-14">
           <div className=" p-4">
             <Image isUser={true} userId={member.id} source={BACKEND_SERVER_URL + "/avatars/" + member.profileAvatar} style={'h-24 w-24 z-10 bg-white'} />
             <p className="mt-3 font-semibold">{member.firstName} {member.LastName}</p>
@@ -91,7 +91,7 @@ const Member = () => {
             <p className={`mb-3 font-semibold cursor-pointer ${currentTab == 2 && 'border-b-4 border-[#FF2511]'}`} onClick={() => setCurrentTab(2)}>Goals</p>
           </div>
           {currentTab == 1 ?
-            <div className="w-full  md:w-[60%]">{
+            <div className="w-full  md:w-[50%]">{
               postData && postData.data && postData.data.length > 0 ?
                 postData.data.map((post) => (<PostCard post={post} key={post.id} />))
                 :
@@ -103,7 +103,7 @@ const Member = () => {
                 onPageChange={setPage}
               />
             </div> :
-            <div className="w-full  md:w-[60%]">
+            <div className="w-full  md:w-[50%]">
               {userGoals && userGoals.data && userGoals.data.length > 0 ?
                 userGoals.data.map((goal) => (
                   <Goal goal={goal} key={goal.id} setIsUpdated={false} />

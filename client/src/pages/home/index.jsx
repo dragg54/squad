@@ -2,8 +2,6 @@ import { getFromLocalStorage } from "../../utils/LocalStorage"
 import ProgressChart from "./components/ProgressChart"
 import QuoteBox from "./components/QuoteBox"
 import NewGoal from "./NewGoal"
-import News from "./News"
-import Quotes from "./Quotes"
 
 const Home = () => {
   const monthlyProgressPathName = getFromLocalStorage('monthlyProgress')

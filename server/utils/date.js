@@ -19,6 +19,16 @@ export const isPast = (startDate, endDate) => {
   }
 }
 
+export const isInvalidCustomDate = (startDate, endDate) => {
+  const today = startOfToday()
+  if (isAfter(startDate, new Date(endDate)) || isAfter(today, endDate)) {
+    return true
+  }
+  else {
+    return false
+  }
+}
+
 export const isPastMonth = (startDate, endDate) => {
   const startMonth = new Date(startDate).getMonth()
   const currentMonth = new Date()

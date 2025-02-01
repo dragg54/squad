@@ -19,7 +19,6 @@ const Navbar = ({ setMenuContainerOpened, setOpenNotificationContainer, openNoti
   const notifications = useSelector(state => state.notification)
   const dispatch = useDispatch()
   if (!isLoadingNotificationSummary && notificationSummaryData) {
-    console.log(notificationSummaryData.data[0])
     dispatch(fetchNotifications({ data: notificationSummaryData.data[0] }))
   }
   const user = useSelector(state => state.user)

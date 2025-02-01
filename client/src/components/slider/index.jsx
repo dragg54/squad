@@ -8,20 +8,26 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/effect-coverflow';
 
-const UserAvatar = ({
+const Slider = ({
     imgs,
     autoplay,
     setActiveIndex,
     activeIndex,
     isImage,
+    styles,
     width,
     height,
-    shouldPaginate
+    shouldPaginate,
+    handleSlideChange,
+    sliderRef
 }) => {
-
-    const handleSlideChange = (swiper) => {
-        setActiveIndex(swiper.activeIndex);
-    };
+       if(!handleSlideChange)
+         handleSlideChange = (swiper) => {
+            setActiveIndex(swiper.activeIndex);
+    }
+    if(!styles){
+        styles = {}
+    }
     return (
         <Swiper
             modules={[Navigation, Pagination, EffectCoverflow, Autoplay]}
@@ -34,14 +40,19 @@ const UserAvatar = ({
             autoplay={autoplay && {
                 delay: 4000,
             }}
+            ref={sliderRef}
+            onSwiper={(swiper) => {
+                if (sliderRef) sliderRef.current = swiper; 
+            }}
             navigation
-            onSlideChange={handleSlideChange}
+            onSlideChange={(swiper)=>handleSlideChange(swiper)}
             pagination={shouldPaginate && { clickable: false }}
             className="mySwiper"
-            style={{ width: width || '400px', height: height || '350px', display: 'flex', alignItems: 'center'}}
+            style={{...styles, width: width || '400px', height: height || '350px', display: 'flex', alignItems: 'center'}}
         >
             {imgs?.map((image, index) => (
                 <SwiperSlide key={index} style={{ visibility: activeIndex === index ? 'visible' : 'hidden', height: 'full' }}>
+                    {console.log(index)}
                     {isImage ? <img
                         src={image}
                         alt={`Slide ${index + 1}`}
@@ -55,4 +66,4 @@ const UserAvatar = ({
     );
 };
 
-export default UserAvatar;
+export default Slider;

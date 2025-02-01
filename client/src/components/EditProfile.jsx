@@ -40,8 +40,8 @@ const EditProfile = ({username, bio, id}) => {
         updateUserMutation.mutate({...inputValues, id})
     }
   return (
-    <div  onClick={(e) => e.stopPropagation()} className="w-[75%] p-4 h-[60%] md:w-[26%] md:h-[50%] mt-10 bg-white rounded-md shadow-gray-400 shadow-sm">
-        <p className="font-semibold text-xl mb-3">Edit your profile</p>
+    <div  onClick={(e) => e.stopPropagation()} className="w-[80%] p-4 h-[450pxx] md:w-[26%] md:h-[50%] mt-10 bg-white rounded-md shadow-gray-400 shadow-sm">
+        <p className="font-semibold text-xl mb-3 mt-4">Edit your profile</p>
        <form onSubmit={(e)=>handleUpdateUser(e)} action="" className="flex flex-col gap-3">
         <Input onChange={handleChange}  name="userName" placeholder="Username" value={inputValues.userName}/>
         <Input onChange={handleChange} style={"border border-gray-300"} value={inputValues.bio} type="text-area" height={20} name="bio" placeholder="Bio"/>

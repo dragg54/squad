@@ -58,8 +58,8 @@ Notification.belongsTo(User, { foreignKey: 'recipientId' });
 User.hasMany(Notification, { foreignKey: 'recipientId', onDelete: 'CASCADE', });
 
 
-Notification.belongsTo(User, { foreignKey: 'senderId' });
-User.hasMany(Notification, { foreignKey: 'senderId', onDelete: 'CASCADE', });
+Notification.belongsTo(User, { foreignKey: 'senderId', as: 'sender' });
+User.hasMany(Notification, { foreignKey: 'senderId', as: 'sender', onDelete: 'CASCADE', });
 
 Notification.belongsTo(Squad, { foreignKey: 'squadId' });
 Squad.hasMany(Notification, { foreignKey: 'squadId', onDelete: 'CASCADE', });

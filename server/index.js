@@ -29,6 +29,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { scheduleJob } from './services/schedulers/index.js';
 import logger from './logger.js';
+import { goalReminderRoute } from './routes/GoalReminderRoute.js';
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -109,6 +110,7 @@ app.use("/api/v1/avatars", avatarRoute)
 app.use("/api/v1/emailVerifications", emailRoute)
 app.use("/api/v1/donationPayments", donationPaymentRoute)
 app.use("/api/v1/monthlyGoals", monthlyGoalRoute)
+app.use("/api/v1/goalReminders", goalReminderRoute)
 
 const clientBaseURl = process.env.NODE_ENV ==  'Development' || !process.env.NODE_ENV ? 
                     process.env.LOCAL_CLIENT_BASE_URL :
