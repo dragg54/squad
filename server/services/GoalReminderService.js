@@ -45,7 +45,7 @@ export async function createGoalReminder(req) {
         logger.info("goal reminded updated")
     }
     else {
-        await GoalReminder.create({ ...req.body, remindedBy: req.user.id, goalOwnerId: existingGoal.userId })
+        await GoalReminder.create({ ...req.body, remindedBy: req.user.id, goalOwnerId: existingGoal.userId, isSeen: false })
     }
 }
 

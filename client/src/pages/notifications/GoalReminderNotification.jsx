@@ -11,6 +11,7 @@ import { useMutation } from "react-query";
 import { updateGoalReminderStatus } from "../../services/goalReminder";
 import { useDispatch } from "react-redux";
 import { closeModal } from "../../redux/reducers/GlobalModalReducer";
+import { getTimeDifference } from "../../utils/GetTimeDifference";
 
 
 const GoalReminderNotificationSlider = ({reminders}) => {
@@ -39,7 +40,7 @@ const GoalReminderNotificationSlider = ({reminders}) => {
                 styles={{ background: '#fff' }}
             />
              <div className="flex  w-full justify-between items-center">
-                <Button onClick={()=> dispatch(closeModal)} style={'!rounded-full !bg-white !text-gray-500 !border !border-gray-400'} name={'Dismiss'} />
+                <Button onClick={()=> dispatch(closeModal())} style={'!rounded-full !bg-white !text-gray-500 !border !border-gray-400'} name={'Dismiss'} />
                 <div className="flex gap-2">
                 <Button buttonDisabled={activeIndex == 0} onClick={()=> sliderRef.current?.slidePrev()} style={'!rounded-full'} name={'Prev'} />
                 <Button onClick={()=> {
@@ -68,7 +69,7 @@ const GoalReminderNotification = ({reminder}) => {
             </div>
             <div className="mt-2 self-start">
                 <p className="text-gray-500 text-sm flex gap-1 items-center"><MdOutlineAccessTime /> Deadline: 20th January, 2025</p>
-                <p className="text-red-600 font-semibold text-xs">(20 days left)</p>
+                <p className="text-red-600 font-semibold text-xs">({getTimeDifference(reminder.userGoal.endDate)} left)</p>
             </div>
             </div>
     )

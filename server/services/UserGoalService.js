@@ -170,8 +170,9 @@ export const getAllUserGoals = async (req) => {
   console.log(queryOpts)
     const goalsGroupedByDay = await models.UserGoal.findAndCountAll({
       where: queryOpts,
-      attributes: [
+      attributes: ['id',
         [db.fn('DATE_FORMAT', db.col('user_goal.startDate'), '%Y-%m-%d'), 'day'],
+        'userId',
         'title', 'description', 'startDate', 'endDate', 'completed', 'frequency'
       ],
       include: [

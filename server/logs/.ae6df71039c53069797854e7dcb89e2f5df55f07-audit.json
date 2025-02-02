@@ -24,6 +24,11 @@
             "date": 1738400486220,
             "name": "logs\\serverlog-2025-02-01.log",
             "hash": "ed33f378989a47c9bbfc91284318229b4c5d74ba03b1980599645d61f15d8aab"
+        },
+        {
+            "date": 1738458581402,
+            "name": "logs\\serverlog-2025-02-02.log",
+            "hash": "52521ca240b466bc797f00c8f5c01f08291ab545525b209e7289ede1f03b8d7a"
         }
     ],
     "hashType": "sha256"

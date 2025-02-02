@@ -106,7 +106,7 @@ const Goals = () => {
                    </div>
                </div>
                 <div className="w-full mt-12 mb-5 ">
-                    <div className="mb-3 flex gap-5">
+                    <div className="mb-3 flex gap-5 md:gap-7">
                         <p onClick={() => {
                             setGroupBy("")
                             setPresentTab("today")
