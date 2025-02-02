@@ -133,9 +133,9 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
     }
     const handlePartnerSelectChange = (pat) => {
         let filteredPartners = []
-        // Object.defineProperty(filteredPartners, 'length', {
-        //     writable: true
-        //   });
+        Object.defineProperty(filteredPartners, 'length', {
+            writable: true
+          });
         if (inputValues.goalPartners && inputValues.goalPartners.some(x => x.user.id == pat.id)) {
             filteredPartners = inputValues?.goalPartners?.filter(partner => (partner.user.id != pat.id))
     }

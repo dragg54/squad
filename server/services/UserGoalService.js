@@ -122,6 +122,7 @@ export const getAllUserGoals = async (req) => {
     const goalsGroupedByMonth = await models.UserGoal.findAndCountAll({
       where: queryOpts,
       attributes: [
+        'id', 'userId',
         [db.fn('DATE_FORMAT', db.col('user_goal.startDate'), '%m'), 'month'],
         'title', 'description','startDate', 'endDate', 'completed', 'frequency'
       ],
@@ -139,7 +140,7 @@ export const getAllUserGoals = async (req) => {
   if (groupBy === "year") {
     const goalsGroupedByYear = await models.UserGoal.findAll({
       where: {userId: req.user.id, frequency: goalFrequency.yearly},
-      attributes: [
+      attributes: ['id', 'userId',
         [db.fn('DATE_FORMAT', db.col('user_goal.startDate'), '%Y'), 'year'],
         'title', 'description', 'completed', 'startDate', 'endDate', 'frequency'
       ],
@@ -167,7 +168,6 @@ export const getAllUserGoals = async (req) => {
       [Op.lt]: new Date(today + "T23:59:59.999Z"),
   };
 
-  console.log(queryOpts)
     const goalsGroupedByDay = await models.UserGoal.findAndCountAll({
       where: queryOpts,
       attributes: ['id',
