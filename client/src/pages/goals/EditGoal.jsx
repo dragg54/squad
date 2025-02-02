@@ -140,7 +140,6 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
             filteredPartners = inputValues?.goalPartners?.filter(partner => (partner.user.id != pat.id))
     }
         else {
-            filteredPartners = inputValues.goalPartners
             const newPartner = {
                 id: pat.id,
                 user: {
@@ -149,9 +148,8 @@ const EditGoal = ({ goal, setIsUpdated, localSelectedCategory }) => {
                     email: pat.email
                 }
             }
-            filteredPartners.push(newPartner)
+            filteredPartners = [...inputValues.goalPartners, newPartner];
         }
-        console.log(filteredPartners)
         setInputValues({ ...inputValues, goalPartners: filteredPartners })
     }
     if (goal?.id || globalModal.content?.props?.input) {
