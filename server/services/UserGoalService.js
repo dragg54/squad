@@ -172,7 +172,9 @@ export const getAllUserGoals = async (req) => {
       where: queryOpts,
       attributes: ['id',
         [db.fn('DATE_FORMAT', db.col('user_goal.startDate'), '%Y-%m-%d'), 'day'],
-        'userId',
+        'squadId',
+        'userId', 
+        'groupGoalId',
         'title', 'description', 'startDate', 'endDate', 'completed', 'frequency'
       ],
       include: [
