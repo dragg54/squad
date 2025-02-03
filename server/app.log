@@ -19540,3 +19540,5 @@
 2025-02-02T02:33:23.267Z [INFO]: GET /?page=1&size=5&groupBy=&userId=48&partnerId=16 304 - 85ms
 2025-02-02T02:33:23.320Z [INFO]: GET /?page=1&size=5&groupBy=&userId=48 304 - 56ms
 2025-02-02T02:33:23.329Z [INFO]: GET /?size=3 304 - 61ms
+2025-02-03T01:23:11.857Z [INFO]: Squad created
+2025-02-03T01:23:11.872Z [INFO]: POST / 200 - 63ms

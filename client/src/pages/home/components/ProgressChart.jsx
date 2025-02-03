@@ -22,8 +22,8 @@ const ProgressChart = () => {
       return {
         ...goal,
         month: monthName,
-        completedGoals: parseInt(goal.completedGoals, 5),
-        uncompletedGoals: parseInt(goal.uncompletedGoals, 5) || (!goal.completedGoals && 0.2),
+        completedGoals: parseInt(goal.completedGoals),
+        uncompletedGoals: parseInt(goal.uncompletedGoals) || (!goal.completedGoals && 1),
       };
     });
   }
@@ -42,7 +42,7 @@ const ProgressChart = () => {
               padding={{top:3}}
             >
               <XAxis dataKey="month" />
-              <YAxis domain={[0, 6]} />
+              <YAxis domain={[0, 50]} />
               <Tooltip />
               <Legend />
               <Bar dataKey="completedGoals" stackId="a" fill="#7e1e80" name="Completed" />

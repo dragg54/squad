@@ -1,7 +1,10 @@
 import { createLogger, format, transports } from 'winston';
 import  DailyRotateFile  from 'winston-daily-rotate-file'
+import dotenv from 'dotenv'
 
-const logger = createLogger({
+dotenv.config()
+
+const logger = process.env.NODE_ENV == "Development" && createLogger({
   level: 'info', 
   format: format.combine(
     format.timestamp(),

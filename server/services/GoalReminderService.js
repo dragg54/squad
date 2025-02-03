@@ -79,7 +79,6 @@ export async function getGoalReminders(req) {
         ],
         attributes: ["id"]
     })
-    console.log(reminders)
     return reminders
 }
 
