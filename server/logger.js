@@ -4,7 +4,7 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-const logger = createLogger({
+const logger = process.env.NODE_ENV == 'Development' ? createLogger({
   level: 'info', 
   format: format.combine(
     format.timestamp(),
@@ -21,14 +21,14 @@ const logger = createLogger({
               })
         )
     }),
-    process.env.NODE_ENV == "Development" && new DailyRotateFile({
+    new DailyRotateFile({
       filename: 'logs/serverlog-%DATE%.log',
       datePattern: 'YYYY-MM-DD',
       zippedArchive: true,
       maxSize: '10m',
       maxFiles: '5d',
     }),
-    process.env.NODE_ENV == "Development" &&  new transports.File({ filename: 'app.log',
+     new transports.File({ filename: 'app.log',
         format: format.combine(
             format.uncolorize(), 
             format.timestamp(),
@@ -37,6 +37,23 @@ const logger = createLogger({
             }))
      }) 
   ],
-});
+}) : 
+createLogger({
+  level: 'info', 
+  format: format.combine(
+    format.timestamp(),
+    format.printf(({ level, message, timestamp }) => {
+      return `${timestamp} [${level.toUpperCase()}]: ${message}`;
+    })
+  ),
+  transports: [
+    new transports.Console({
+        format: format.combine(
+            format.colorize(),
+            format.printf(({ level, message, timestamp }) => {
+                return `${timestamp} [${level}]: ${message}`;
+              })
+        )
+    })]})
 
 export default logger
