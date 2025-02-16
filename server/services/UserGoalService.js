@@ -158,6 +158,36 @@ export const getAllUserGoals = async (req) => {
     return groupData(goalsGroupedByYear, groupBy)
   }
 
+  if (groupBy === "day") {
+    queryOpts['frequency'] = {
+      [Op.or]: [goalFrequency.daily, goalFrequency.custom]
+    };
+
+    const goalsGroupedByDay = await models.UserGoal.findAll({
+      where: queryOpts,
+      attributes: [
+        'id', 'userId', 'title', 'description', 'startDate', 'endDate', 'completed', 'frequency',
+        [db.fn('DATE_FORMAT', db.col('user_goal.startDate'), '%Y-%m-%d'), 'sortDate'],
+        [db.fn('DATE_FORMAT', db.col('user_goal.startDate'), '%Y-%m-%d'), 'day']
+      ],
+      include: [
+        { model: models.UserGoalCategory, attributes: ['id', 'name'] },
+        {
+          model: GoalPartner,
+          attributes: ["id"],
+          include: {
+            model: User,
+            attributes: { exclude: ["userId", "password", "createdAt", "updatedAt"] },
+            as: "user"
+          }
+        }
+      ],
+      order: [[db.literal('sortDate'), 'DESC']],
+    });
+    return groupData(goalsGroupedByDay, groupBy)
+
+  }
+
   if (groupBy == "today") {
     const today = new Date().toISOString().split('T')[0];
     queryOpts['frequency'] = {

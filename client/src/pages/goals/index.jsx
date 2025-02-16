@@ -19,6 +19,7 @@ import { getAllGoalCategories } from "../../services/goalCategory"
 import Image from "../../components/containers/Image"
 import ResponseError from "../../components/ResponseError"
 import YearlyGoals from "./YearlyGoals"
+import DailyGoal from "./DailyGoals"
 
 const Goals = () => {
     const [presentTab, setPresentTab] = useState("today")
@@ -112,6 +113,13 @@ const Goals = () => {
                             setPresentTab("today")
                             setGroupBy("today")
                         }} className={`mb-3  cursor-pointer font-semibold ${presentTab == "today" && 'border-b-4 border-[#FF2511]'}`}>{"Today"}</p>
+                         <p onClick={() => {
+                            setPresentTab("dailyGoals")
+                            setGroupBy("day")
+                        }
+                        }
+                            className={`mb-3  cursor-pointer  font-semibold ${presentTab == "dailyGoals" && 'border-b-4 border-[#FF2511]'}`}>Daily</p>
+                 
                         <p onClick={() => {
                             setPresentTab("monthlyGoals")
                             setGroupBy("month")
@@ -125,8 +133,9 @@ const Goals = () => {
                         }
                             className={`mb-3 font-semibold  cursor-pointer ${presentTab == "yearlyGoals" && 'border-b-4 border-[#FF2511]'}`}>Yearly</p>
                     </div>
-                    {presentTab == "monthlyGoals" ? <MonthlyGoals {...{ allMonths, openMonthGoalsContainer, setOpenMonthGoalsContainer, data, presentTab }} /> :
-                     
+                    {
+                    presentTab == "monthlyGoals" ? <MonthlyGoals {...{ allMonths, openMonthGoalsContainer, setOpenMonthGoalsContainer, data, presentTab }} /> :
+                      presentTab == "dailyGoals" ? <DailyGoal goals={data}/> :
                         presentTab == "yearlyGoals"  ? <YearlyGoals data={data}/>
                         :
                         <div>
