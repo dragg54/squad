@@ -403,7 +403,7 @@ export const updateGoalStatus = async(req, trans) =>{
     logger.error(errMsg)
     throw new BadRequestError(errMsg)
   }
-  if(!existingGoal.isExpired){
+  if(existingGoal.isExpired){
     const errMsg = "Expired goal status cannot be updated without updating end date"
     logger.error(errMsg)
     throw new BadRequestError(errMsg)
