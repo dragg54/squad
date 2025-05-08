@@ -329,7 +329,7 @@ export const getGoalsGroupedByMonth = async (req) => {
   }
   const currentYear = new Date().getFullYear(); 
 
-  const staticMonths = Array.from({ length: 6 }, (_, index) => {
+  const staticMonths = Array.from({ length: 12 }, (_, index) => {
     const month = index + 1; 
     return {
       month: month.toString().padStart(2, '0'), 
@@ -349,6 +349,10 @@ export const getGoalsGroupedByMonth = async (req) => {
         db.fn('SUM', db.literal("CASE WHEN completed = 0 THEN 1 ELSE 0 END")),
         'uncompletedGoals',
       ], 
+      [
+        db.fn('SUM', db.literal("CASE WHEN isExpired = 1 THEN 1 ELSE 0 END")),
+        'expiredGoals',
+      ]
     ],
     group: ['month'],
     order: [[db.literal('month'), 'ASC']],
@@ -366,6 +370,7 @@ export const getGoalsGroupedByMonth = async (req) => {
       goalCount: parseInt(dataValues.goalCount, 10) || 0,
       completedGoals: parseInt(dataValues.completedGoals, 10) || 0,
       uncompletedGoals: parseInt(dataValues.uncompletedGoals, 10) || 0,
+      expiredGoals: parseInt(dataValues.expiredGoals, 10) || 0,
     };
     return acc;
   }, {});
@@ -376,6 +381,7 @@ export const getGoalsGroupedByMonth = async (req) => {
     goalCount: goalsMap[month]?.goalCount || 0,
     completedGoals: goalsMap[month]?.completedGoals || 0,
     uncompletedGoals: goalsMap[month]?.uncompletedGoals || 0,
+    expiredGoals: goalsMap[month]?.expiredGoals || 0,
   }));
 
   return month ? goals : completeGoalsData
@@ -432,6 +438,39 @@ async function updateGoalPoint(goal, updatedGoal, trans) {
     await updatePoint({ points: userPoints.points + activityPoints.goalCompletionPoints, userId: goal.userId }, { transaction: trans })
   }
 }
+
+export const getGoalAggregate = async(req) =>{
+  const {groupBy} = req.query
+  if(!groupBy){
+    logger.error("Group by clause cannot be empty")
+    throw new BadRequestError("Group by clause cannot be empty")
+  }
+  switch(groupBy){
+    case "month":
+      const goals = await UserGoal.findAll({
+        attributes: [
+          [db.fn('DATE_FORMAT', db.col('endDate'), '%m'), 'month'],
+          [db.fn('COUNT', db.col('id')), 'goalCount'],
+          [
+            db.fn('SUM', db.literal("CASE WHEN completed = 1 THEN 1 ELSE 0 END")),
+            'completedGoals',
+          ], 
+          [
+            db.fn('SUM', db.literal("CASE WHEN completed = 0 THEN 1 ELSE 0 END")),
+            'uncompletedGoals',
+          ], 
+        ],
+        group: ['month'],
+        order: [[db.literal('month'), 'ASC']],
+        where: {userId: req.user.id,
+          [db.Sequelize.Op.and]: [
+            db.where(db.fn('YEAR', db.col('endDate')), currentYear), 
+            { frequency: { [db.Sequelize.Op.ne]: 'yearly' } },
+            (month &&  db.where(db.fn('month', db.col('endDate')), month)),
+          ],
+      }});
+  }
+ }
 
 function isInvalidGoalData(goalData){
   if(!Object.keys(goalFrequency).some(frequency => frequency != goalData.frequency)){
