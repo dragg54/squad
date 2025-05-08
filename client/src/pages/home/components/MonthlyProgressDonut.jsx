@@ -18,7 +18,7 @@ const MonthlyProgressDonut = () => {
   const month = searchParams.get('month');
   const { data: goalData, isLoading: dataIsLoading } = useQuery(
     ['monthGoalsProgress', {
-      squadId: 3, userId: user.id, month: '01'
+      squadId: 3, userId: user.id, month, includeDailyGoals: true
     }],
     getUserMonthlyGoals,
     // {

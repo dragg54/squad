@@ -322,7 +322,7 @@ export const deleteUserGoal = async (id) => {
 };
 
 export const getGoalsGroupedByMonth = async (req) => {
-  const { month } = req.query
+  const { month, includeDailyGoals } = req.query
   let maxMonth;
   if(month){
     maxMonth = parseInt(month || new Date().getMonth() + 1, 10);
@@ -359,7 +359,7 @@ export const getGoalsGroupedByMonth = async (req) => {
     where: {userId: req.user.id,
       [db.Sequelize.Op.and]: [
         db.where(db.fn('YEAR', db.col('endDate')), currentYear), 
-        { frequency: { [db.Sequelize.Op.ne]: 'yearly' } },
+        { frequency: includeDailyGoals ? { [db.Sequelize.Op.ne]: 'yearly' }  : "monthly"},
         (month &&  db.where(db.fn('month', db.col('endDate')), month)),
       ],
   }});
@@ -382,6 +382,7 @@ export const getGoalsGroupedByMonth = async (req) => {
     completedGoals: goalsMap[month]?.completedGoals || 0,
     uncompletedGoals: goalsMap[month]?.uncompletedGoals || 0,
     expiredGoals: goalsMap[month]?.expiredGoals || 0,
+    pointEarned : goalsMap[month]?.completedGoals * activityPoints.goalCompletionPoints
   }));
 
   return month ? goals : completeGoalsData

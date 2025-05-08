@@ -29,7 +29,7 @@ const MonthCard = ({ month, openMonthGoalsContainer, setOpenMonthGoalsContainer,
         <li className="flex items-center  gap-1 text-green-700"><span className="rounded-full bg-green-700 text-white p-1 text-[7px]"><FaCheck /> </span>{monthlyGoal.completedGoals || 0}</li>
         <li className="flex items-center gap-1 text-orange-800"><span className="rounded-full bg-orange-800 text-white p-1 text-[7px]"><GrInProgress /> </span>{(Number(monthlyGoal.uncompletedGoals) +
          (Number(monthlyGoal.expiredgoals) || 0)) || 0}</li>
-          <li className="flex items-center gap-1 text-sm text-black"><RiCoinFill /> 7 Pts</li>
+          <li className="flex items-center gap-1 text-sm text-black"><RiCoinFill /> {monthlyGoal.pointsEarned || 0} Pts</li>
         </ul>
       </span>
       </div>

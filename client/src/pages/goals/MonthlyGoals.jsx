@@ -27,9 +27,9 @@ const MonthlyGoals = ({allMonths, openMonthGoalsContainer, setOpenMonthGoalsCont
            
             goalData?.map((monthlyGoal, index)=>(
               <div className="w-full" key={index}>
-                <MonthCard {...{openMonthGoalsContainer, setOpenMonthGoalsContainer}}  {...{monthlyGoal, month: getMonthName(+monthlyGoal.month - 1)}}/>
-                {Object.values(openMonthGoalsContainer.find(mnth => Object.keys(mnth)[0] ==  getMonthName(+monthlyGoal.month - 1)))[0] 
-                && < MonthlyGoalCard key={index} {...{goals: data && data[getMonthIndex(getMonthName(+monthlyGoal.month - 1))]}}/>} 
+                <MonthCard {...{openMonthGoalsContainer, setOpenMonthGoalsContainer}}  {...{monthlyGoal, month: monthlyGoal.monthName}}/>
+                {Object.values(openMonthGoalsContainer.find(mnth => Object.keys(mnth)[0] ==  monthlyGoal.monthName))[0] 
+                && < MonthlyGoalCard key={index} {...{goals: data && data[getMonthIndex(monthlyGoal.monthName)]}}/>} 
               </div>
             ))
         }
