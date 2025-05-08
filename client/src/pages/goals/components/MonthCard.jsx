@@ -34,7 +34,7 @@ const MonthCard = ({ month, openMonthGoalsContainer, setOpenMonthGoalsContainer,
       </span>
       </div>
     <div className="flex gap-4 items-center">
-      {thisMonth < Number(monthlyGoal.month) - 1 ? "":monthlyGoal.expiredgoals > 0 || monthlyGoal.uncompletedGoals > 0 ? <PiMaskSadLight /> :
+      {thisMonth < Number(monthlyGoal.month) - 1 ? "": thisMonth > Number(monthlyGoal.month) - 1  && (monthlyGoal.expiredgoals > 0 || monthlyGoal.uncompletedGoals > 0) ? <PiMaskSadLight /> :
        monthlyGoal.completedGoals > 0 && monthlyGoal.uncompletedGoals < 1 ?
       <GrTrophy />: thisMonth == Number(monthlyGoal.month) - 1 ?
       <RiProgress2Fill className="text-[1.6rem]"/>: ""}
