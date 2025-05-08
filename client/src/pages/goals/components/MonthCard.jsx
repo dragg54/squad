@@ -25,7 +25,7 @@ const MonthCard = ({ month, openMonthGoalsContainer, setOpenMonthGoalsContainer,
       {month}
       </span>
       <span className="text-sm font-normal mt-4">
-        <ul className="flex gap-4 ">
+        <ul className="flex gap-2">
         <li className="flex items-center  gap-1 text-green-700"><span className="rounded-full bg-green-700 text-white p-1 text-[7px]"><FaCheck /> </span>{monthlyGoal.completedGoals || 0}</li>
         <li className="flex items-center gap-1 text-orange-800"><span className="rounded-full bg-orange-800 text-white p-1 text-[7px]"><GrInProgress /> </span>{(Number(monthlyGoal.uncompletedGoals) +
          (Number(monthlyGoal.expiredgoals) || 0)) || 0}</li>
@@ -34,8 +34,9 @@ const MonthCard = ({ month, openMonthGoalsContainer, setOpenMonthGoalsContainer,
       </span>
       </div>
     <div className="flex gap-4 items-center">
-      {monthlyGoal.expiredgoals > 0 || monthlyGoal.uncompletedGoals > 0 ? <PiMaskSadLight /> : monthlyGoal.completedGoals > 0 && monthlyGoal.completedGoals < 1 ?
-      <GrTrophy />: thisMonth == Number(monthlyGoal.month) - 1?
+      {thisMonth < Number(monthlyGoal.month) - 1 ? "":monthlyGoal.expiredgoals > 0 || monthlyGoal.uncompletedGoals > 0 ? <PiMaskSadLight /> :
+       monthlyGoal.completedGoals > 0 && monthlyGoal.uncompletedGoals < 1 ?
+      <GrTrophy />: thisMonth == Number(monthlyGoal.month) - 1 ?
       <RiProgress2Fill className="text-[1.6rem]"/>: ""}
     {openMonthGoalsContainer.find(st => st[month]) ? <FaChevronUp
         onClick={() => toggleCardContainerModal()}
